@@ -31,6 +31,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Inject Supabase runtime config
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          node -e "const fs=require('fs');const path='public/runtime-config.json';const config=JSON.parse(fs.readFileSync(path,'utf8'));const required={SUPABASE_URL:process.env.SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY:process.env.SUPABASE_PUBLISHABLE_KEY};for (const [key,value] of Object.entries(required)){if(!value||!value.trim()){throw new Error('Missing required GitHub Actions secret: '+key);}}config.SUPABASE_URL=required.SUPABASE_URL.trim();config.SUPABASE_PUBLISHABLE_KEY=required.SUPABASE_PUBLISHABLE_KEY.trim();fs.writeFileSync(path,JSON.stringify(config,null,2)+'\n');"
+
       - name: Build site
         run: npm run build
 
