@@ -447,7 +447,12 @@ export async function fetchWordsAcquiredCount(
 
 	const uniqueWords = new Set<string>();
 	for (const row of result.data) {
-		if (!row.is_seen || typeof row.word_ar !== "string") {
+		const normalizedStatus =
+			typeof row.status === "string" ? row.status.trim().toLowerCase() : null;
+		const isAcquiredByStatus =
+			normalizedStatus === null ? Boolean(row.is_seen) : normalizedStatus === "review";
+
+		if (!isAcquiredByStatus || typeof row.word_ar !== "string") {
 			continue;
 		}
 		const normalizedWord = normalizeArabicWord(row.word_ar);

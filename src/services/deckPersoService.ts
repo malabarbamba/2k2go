@@ -697,6 +697,22 @@ function isDuplicateReviewError(error?: PostgrestError | null): boolean {
 	);
 }
 
+function isMissingLegacySubmitReviewSignature(
+	error?: PostgrestError | null,
+): boolean {
+	if (!error) {
+		return false;
+	}
+
+	const haystack =
+		`${error.message ?? ""} ${error.details ?? ""} ${error.hint ?? ""}`.toLowerCase();
+	return (
+		(error.code === "PGRST202" || haystack.includes("schema cache")) &&
+		haystack.includes("submit_review_fsrs_v2") &&
+		haystack.includes("p_client_review_id")
+	);
+}
+
 function extractUnknownErrorText(error: unknown): string {
 	if (!error || typeof error !== "object") {
 		return "";
@@ -804,12 +820,20 @@ function shouldFallbackToLegacySubmitRpc(error: unknown): boolean {
 		return true;
 	}
 
+	if (typeof status === "number" && status >= 500) {
+		return true;
+	}
+
 	return (
 		haystack.includes("failed to send a request to the edge function") ||
 		haystack.includes("relay error") ||
 		haystack.includes("invalid jwt") ||
 		haystack.includes("scheduler-review-v1 not found") ||
-		haystack.includes("function not found")
+		haystack.includes("function not found") ||
+		haystack.includes("commit_review_failed") ||
+		haystack.includes("unable to commit scheduler review") ||
+		haystack.includes("scheduler_compute_unavailable") ||
+		haystack.includes("scheduler_compute_rejected")
 	);
 }
 
@@ -5777,12 +5801,48 @@ async function submitReviewNow(
 			trackReviewLifecycle?: boolean;
 		}): Promise<ServiceResult<SubmitReviewSchedulerPayload | null>> => {
 			const trackReviewLifecycle = options?.trackReviewLifecycle ?? true;
-			const { data, error } = await submitReviewFsrsV2(client, {
-				p_quality: FSRS_RATING_BY_RATING[rating],
-				p_client_review_id: clientReviewId,
-				p_vocabulary_card_id: card.vocabularyCardId ?? null,
-				p_foundation_card_id: card.foundationCardId ?? null,
-			});
+			const hasLegacyCardIds =
+				!!card.vocabularyCardId || !!card.foundationCardId;
+			const schedulerCardId =
+				typeof card.schedulerCardId === "string" && card.schedulerCardId.trim().length > 0
+					? card.schedulerCardId.trim()
+					: typeof card.remoteId === "string" &&
+						  card.remoteId.trim().length > 0 &&
+						  !card.remoteId.startsWith("due-")
+						? card.remoteId.trim()
+						: null;
+
+			const submitBatchSignature = async () =>
+				submitReviewFsrsV2(client, {
+					p_session_id: reviewSessionId,
+					p_reviews: [
+						{
+							card_id: schedulerCardId,
+							rating: FSRS_RATING_BY_RATING[rating],
+							client_event_id: clientReviewId,
+							event_at: nowUtc,
+						},
+					],
+				});
+
+			const submitLegacySignature = async () =>
+				submitReviewFsrsV2(client, {
+					p_quality: FSRS_RATING_BY_RATING[rating],
+					p_client_review_id: clientReviewId,
+					p_vocabulary_card_id: card.vocabularyCardId ?? null,
+					p_foundation_card_id: card.foundationCardId ?? null,
+				});
+
+			let data: unknown = null;
+			let error: PostgrestError | null = null;
+			if (!hasLegacyCardIds && schedulerCardId) {
+				({ data, error } = await submitBatchSignature());
+			} else {
+				({ data, error } = await submitLegacySignature());
+				if (error && isMissingLegacySubmitReviewSignature(error) && schedulerCardId) {
+					({ data, error } = await submitBatchSignature());
+				}
+			}
 
 			if (error) {
 				if (isDuplicateReviewError(error)) {
@@ -5807,7 +5867,10 @@ async function submitReviewNow(
 				clearClientReviewId(cardKey);
 			}
 			emitProfileInsightsRefresh();
-			return { ok: true, data: data ?? null };
+			return {
+				ok: true,
+				data: (data as SubmitReviewSchedulerPayload | null) ?? null,
+			};
 		};
 
 		const invoke = (
@@ -6255,6 +6318,7 @@ export const deckPersoDueReviewInternals = {
 	resolveSchedulerShadowDiffContext,
 	isDeckPersoSchedulerRollbackToLegacyEnabled,
 	isDeckPersoSchedulerLegacyFallbackSunsetGuardEnabled,
+	shouldFallbackToLegacySubmitRpc,
 	shouldFallbackToLegacyDueFetch,
 	shouldAllowLegacyFallbackOnTransportFailure,
 	shouldAllowLegacyFallbackOnInvalidRuntimePayload,

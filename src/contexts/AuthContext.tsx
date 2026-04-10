@@ -27,6 +27,10 @@ interface AuthContextType {
 		password: string,
 		options?: { emailRedirectPath?: string },
 	) => Promise<{ error: Error | null; emailConfirmationSent: boolean }>;
+	resendConfirmation: (
+		email: string,
+		options?: { emailRedirectPath?: string },
+	) => Promise<{ error: Error | null; resent: boolean }>;
 	signOut: () => Promise<void>;
 }
 
@@ -65,6 +69,24 @@ const isAuthSessionError = (error: unknown): boolean => {
 		message.includes("auth session missing") ||
 		message.includes("already signed out")
 	);
+};
+
+const resolveEmailRedirectUrl = (redirectPath: string): string => {
+	if (/^https?:\/\//i.test(redirectPath)) {
+		return redirectPath;
+	}
+
+	const normalizedRedirectPath = redirectPath.startsWith("/")
+		? redirectPath
+		: `/${redirectPath}`;
+	const basePath = (import.meta.env.BASE_URL ?? "/").trim();
+	const normalizedBasePath =
+		basePath === "/" ? "" : `/${basePath.replace(/^\/+|\/+$/g, "")}`;
+
+	return new URL(
+		`${normalizedBasePath}${normalizedRedirectPath}`,
+		window.location.origin,
+	).toString();
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -259,10 +281,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		options?: { emailRedirectPath?: string },
 	) => {
 		const redirectPath = options?.emailRedirectPath ?? "/";
-		const redirectUrl = new URL(
-			redirectPath,
-			window.location.origin,
-		).toString();
+		const redirectUrl = resolveEmailRedirectUrl(redirectPath);
 
 		const { data, error } = await supabase.auth.signUp({
 			email,
@@ -333,9 +352,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		return signOutInFlightRef.current;
 	};
 
+	const resendConfirmation = async (
+		email: string,
+		options?: { emailRedirectPath?: string },
+	) => {
+		const redirectPath = options?.emailRedirectPath ?? "/";
+		const redirectUrl = resolveEmailRedirectUrl(redirectPath);
+		const { error } = await supabase.auth.resend({
+			type: "signup",
+			email,
+			options: {
+				emailRedirectTo: redirectUrl,
+			},
+		});
+
+		return { error, resent: !error };
+	};
+
 	return (
 		<AuthContext.Provider
-			value={{ user, session, loading, signIn, signUp, signOut }}
+			value={{
+				user,
+				session,
+				loading,
+				signIn,
+				signUp,
+				resendConfirmation,
+				signOut,
+			}}
 		>
 			{children}
 		</AuthContext.Provider>

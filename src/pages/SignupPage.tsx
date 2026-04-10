@@ -1,6 +1,6 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAppLocale } from "@/contexts/AppLocaleContext";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -27,7 +27,6 @@ const plainLinkStyle = {
 export default function SignupPage() {
 	const { user, loading, signUp } = useAuth();
 	const { locale } = useAppLocale();
-	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
@@ -79,7 +78,11 @@ export default function SignupPage() {
 		}
 
 		setIsSubmitting(false);
-		navigate("/login?signup=confirm-email-sent", { replace: true });
+		setMessage(
+			isEnglish
+				? "Confirmation email sent. Check your inbox and spam folder."
+				: "Email de confirmation envoye. Verifie ta boite de reception et les spams.",
+		);
 	};
 
 	return (

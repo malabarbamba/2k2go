@@ -21,14 +21,30 @@ port = 55437
 vector_port = 55438
 
 [auth]
-site_url = "https://2k2go.github.io"
+site_url = "https://malabarbamba.github.io/2k2go"
 additional_redirect_urls = [
+  "https://malabarbamba.github.io/2k2go/app",
+  "https://malabarbamba.github.io/2k2go/login",
+  "https://malabarbamba.github.io/2k2go/signup",
+  "https://malabarbamba.github.io/2k2go/auth/callback",
+  "https://2k2go.github.io/app",
+  "https://2k2go.github.io/login",
+  "https://2k2go.github.io/signup",
   "https://2k2go.github.io/auth/callback",
+  "https://*.github.io/2k2go/app",
+  "https://*.github.io/2k2go/login",
+  "https://*.github.io/2k2go/signup",
   "https://*.github.io/2k2go/auth/callback",
+  "https://*.github.io/app",
+  "https://*.github.io/login",
+  "https://*.github.io/signup",
   "https://*.github.io/auth/callback",
   "http://localhost:3000/auth/callback",
   "http://127.0.0.1:3000/auth/callback"
 ]
+
+[auth.rate_limit]
+email_sent = 100
 
 [auth.mfa.totp]
 enroll_enabled = true
@@ -39,8 +55,17 @@ enable_confirmations = true
 max_frequency = "1m0s"
 otp_length = 8
 
+[auth.email.smtp]
+enabled = true
+host = "in-v3.mailjet.com"
+port = 587
+user = "env(MAILJET_API_KEY)"
+pass = "env(MAILJET_SECRET_KEY)"
+admin_email = "noreply@arabeurgence.com"
+sender_name = "env(AUTH_EMAIL_FROM_NAME)"
+
 [auth.email.template.confirmation]
-subject = "Confirm your 2K2Go account"
+subject = "2K to go - Confirm your account"
 content_path = "./templates/confirmation.html"
 
 # =============================================================================

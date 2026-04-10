@@ -128,9 +128,8 @@ const APP_V2_DEFAULT_WEEKLY_REMAINING_CARDS =
 const APP_V2_TOTAL_DECK_CARDS = 2000;
 const APP_V2_HOME_METRICS_CACHE_TTL_MS = 5_000;
 const APP_V2_SESSION_VISITOR_STORAGE_KEY = "app_session_visitor_id";
-const APP_V2_ADMIN_UNIQUE_VISITORS_CACHE_KEY =
-	"app:session-unique-visitors-total:v1";
-const APP_V2_ADMIN_UNIQUE_VISITORS_CACHE_TTL_MS = 60_000;
+const APP_V2_ADMIN_OVERVIEW_CACHE_KEY = "app:admin-overview:v1";
+const APP_V2_ADMIN_OVERVIEW_CACHE_TTL_MS = 5 * 60_000;
 const APP_V2_PROFILE_CACHE_TTL_MS = 5 * 60_000;
 const APP_V2_FOUNDATION_REMAINING_CACHE_TTL_MS = 5 * 60_000;
 const APP_V2_ACCOUNT_BANK_SEARCH_LIMIT = 500;
@@ -864,36 +863,38 @@ function writeAppV2FoundationRemainingCache(
 	}
 }
 
-type AppV2AdminUniqueVisitorsCacheSnapshot = {
-	total: number;
+type AppV2AdminOverviewCacheSnapshot = {
+	uniqueVisitorsTotal: number;
+	accountsTotal: number;
 	updatedAt: number;
 };
 
-function readAppV2AdminUniqueVisitorsCache(): AppV2AdminUniqueVisitorsCacheSnapshot | null {
+function readAppV2AdminOverviewCache(): AppV2AdminOverviewCacheSnapshot | null {
 	if (typeof window === "undefined") {
 		return null;
 	}
 
 	try {
-		const rawValue = window.localStorage.getItem(
-			APP_V2_ADMIN_UNIQUE_VISITORS_CACHE_KEY,
-		);
+		const rawValue = window.localStorage.getItem(APP_V2_ADMIN_OVERVIEW_CACHE_KEY);
 		if (!rawValue) {
 			return null;
 		}
 
-		const parsedValue = JSON.parse(
-			rawValue,
-		) as AppV2AdminUniqueVisitorsCacheSnapshot;
+		const parsedValue = JSON.parse(rawValue) as AppV2AdminOverviewCacheSnapshot;
 		if (
-			typeof parsedValue?.total !== "number" ||
+			typeof parsedValue?.uniqueVisitorsTotal !== "number" ||
+			typeof parsedValue?.accountsTotal !== "number" ||
 			typeof parsedValue?.updatedAt !== "number"
 		) {
 			return null;
 		}
 
 		return {
-			total: Math.max(0, Math.floor(parsedValue.total)),
+			uniqueVisitorsTotal: Math.max(
+				0,
+				Math.floor(parsedValue.uniqueVisitorsTotal),
+			),
+			accountsTotal: Math.max(0, Math.floor(parsedValue.accountsTotal)),
 			updatedAt: parsedValue.updatedAt,
 		};
 	} catch {
@@ -901,22 +902,41 @@ function readAppV2AdminUniqueVisitorsCache(): AppV2AdminUniqueVisitorsCacheSnaps
 	}
 }
 
-function writeAppV2AdminUniqueVisitorsCache(total: number): void {
+function writeAppV2AdminOverviewCache(
+	uniqueVisitorsTotal: number,
+	accountsTotal: number,
+): void {
 	if (typeof window === "undefined") {
 		return;
 	}
 
 	try {
 		window.localStorage.setItem(
-			APP_V2_ADMIN_UNIQUE_VISITORS_CACHE_KEY,
+			APP_V2_ADMIN_OVERVIEW_CACHE_KEY,
 			JSON.stringify({
-				total: Math.max(0, Math.floor(total)),
+				uniqueVisitorsTotal: Math.max(0, Math.floor(uniqueVisitorsTotal)),
+				accountsTotal: Math.max(0, Math.floor(accountsTotal)),
 				updatedAt: Date.now(),
 			}),
 		);
 	} catch {
 		// Ignore local cache write failures.
 	}
+}
+
+function parseNonNegativeInteger(value: unknown, fallback = 0): number {
+	const parsedValue =
+		typeof value === "number"
+			? value
+			: typeof value === "string"
+				? Number.parseInt(value, 10)
+				: Number.NaN;
+
+	if (!Number.isFinite(parsedValue)) {
+		return Math.max(0, Math.floor(fallback));
+	}
+
+	return Math.max(0, Math.floor(parsedValue));
 }
 
 function createAppV2SessionVisitorId(): string {
@@ -2162,7 +2182,8 @@ function AppV2ProfilePage({
 function AppV2SettingsPage({ monComptePath }: { monComptePath: string }) {
 	const isEnglish = useIsEnglishApp();
 	const { locale, setLocale } = useAppLocale();
-	const { user } = useAuth();
+	const navigate = useNavigate();
+	const { user, signOut } = useAuth();
 	const { profile, loading, updateName, changeUsername, updateProfile } = useProfile(
 		undefined,
 		user?.id,
@@ -2192,6 +2213,11 @@ function AppV2SettingsPage({ monComptePath }: { monComptePath: string }) {
 		useState(false);
 	const [isSavingProfile, setIsSavingProfile] = useState(false);
 	const [isSaveButtonHovered, setIsSaveButtonHovered] = useState(false);
+	const [isDeleteButtonHovered, setIsDeleteButtonHovered] = useState(false);
+	const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+	const [deleteAccountInlineMessage, setDeleteAccountInlineMessage] = useState<string | null>(
+		null,
+	);
 	const {
 		message: profileInlineMessage,
 		showMessage: showProfileInlineMessage,
@@ -2536,6 +2562,70 @@ function AppV2SettingsPage({ monComptePath }: { monComptePath: string }) {
 		user?.id,
 	]);
 
+	const handleDeleteAccount = useCallback(async () => {
+		if (!user?.id || isDeletingAccount) {
+			return;
+		}
+
+		const shouldDelete = window.confirm(
+			isEnglish
+				? "Are you sure you want to delete your account? This is definitive and permanent, and you will lose all your progression."
+				: "Es-tu sûr de vouloir supprimer ton compte ? C'est définitif et permanent, et tu perdras toute ta progression.",
+		);
+
+		if (!shouldDelete) {
+			return;
+		}
+
+		setIsDeletingAccount(true);
+		setDeleteAccountInlineMessage(null);
+
+		try {
+			const { error: deleteError } = await supabase.rpc("delete_my_account_v1");
+			if (deleteError) {
+				throw deleteError;
+			}
+
+			try {
+				await signOut();
+			} catch (signOutError) {
+				console.error("Account deleted but sign-out failed, retrying with Supabase:", signOutError);
+				const { error: globalSignOutError } = await supabase.auth.signOut({
+					scope: "global",
+				});
+				if (globalSignOutError) {
+					console.error(
+						"Account delete fallback global sign-out failed:",
+						globalSignOutError,
+					);
+				}
+
+				const { error: localSignOutError } = await supabase.auth.signOut({
+					scope: "local",
+				});
+				if (localSignOutError) {
+					console.error(
+						"Account delete fallback local sign-out failed:",
+						localSignOutError,
+					);
+				}
+			}
+
+			navigate(HOME_V2_PATH, { replace: true });
+			window.setTimeout(() => {
+				window.location.assign(HOME_V2_PATH);
+			}, 0);
+		} catch (deleteError) {
+			console.error("Error deleting account:", deleteError);
+			setDeleteAccountInlineMessage(
+				isEnglish
+					? "Unable to delete your account right now."
+					: "Impossible de supprimer ton compte pour le moment.",
+			);
+			setIsDeletingAccount(false);
+		}
+	}, [isDeletingAccount, isEnglish, navigate, signOut, user?.id]);
+
 	if (!user) {
 		return (
 			<p style={{ ...baseTextStyle, marginTop: "14px" }}>
@@ -2879,7 +2969,7 @@ function AppV2SettingsPage({ monComptePath }: { monComptePath: string }) {
 					onClick={() => {
 						void handleSaveProfile();
 					}}
-					disabled={isSavingProfile}
+					disabled={isSavingProfile || isDeletingAccount}
 					style={{
 						...appV2ButtonBaseStyle,
 						backgroundColor: isSaveButtonHovered ? "#e3e3e3" : "#efefef",
@@ -2896,6 +2986,51 @@ function AppV2SettingsPage({ monComptePath }: { monComptePath: string }) {
 				{profileInlineMessage ? (
 					<p style={{ ...baseTextStyle, marginTop: "6px", marginBottom: 0 }}>
 						{profileInlineMessage}
+					</p>
+				) : null}
+			</div>
+
+			<div
+				style={{
+					marginTop: "16px",
+					padding: "10px",
+					backgroundColor: "#f8ecec",
+					border: "1px solid #e2bcbc",
+				}}
+			>
+				<p style={{ ...baseTextStyle, marginTop: 0, marginBottom: "8px" }}>
+					{isEnglish ? "delete my account" : "supprimer mon compte"}
+				</p>
+				<button
+					type="button"
+					onMouseEnter={() => {
+						setIsDeleteButtonHovered(true);
+					}}
+					onMouseLeave={() => {
+						setIsDeleteButtonHovered(false);
+					}}
+					onClick={() => {
+						void handleDeleteAccount();
+					}}
+					disabled={isDeletingAccount || isSavingProfile}
+					style={{
+						...appV2ButtonBaseStyle,
+						color: "#8a1212",
+						border: "1px solid #8a1212",
+						backgroundColor: isDeleteButtonHovered ? "#f0d0d0" : "#f5dbdb",
+					}}
+				>
+					{isDeletingAccount
+						? isEnglish
+							? "deleting..."
+							: "suppression..."
+						: isEnglish
+							? "delete"
+							: "supprimer"}
+				</button>
+				{deleteAccountInlineMessage ? (
+					<p style={{ ...baseTextStyle, marginTop: "6px", marginBottom: 0, color: "#8a1212" }}>
+						{deleteAccountInlineMessage}
 					</p>
 				) : null}
 			</div>
@@ -3155,9 +3290,10 @@ export default function AppPage() {
 	const [weeklyRemainingCount, setWeeklyRemainingCount] = useState(0);
 	const [averageReviewsPerDay, setAverageReviewsPerDay] = useState(0);
 	const [finishInDays, setFinishInDays] = useState<number | null>(null);
-	const [adminUniqueVisitorsTotal, setAdminUniqueVisitorsTotal] = useState<
-		number | null
-	>(() => readAppV2AdminUniqueVisitorsCache()?.total ?? null);
+	const [adminUniqueVisitorsTotal, setAdminUniqueVisitorsTotal] =
+		useState<number>(() => readAppV2AdminOverviewCache()?.uniqueVisitorsTotal ?? 0);
+	const [adminAccountsTotal, setAdminAccountsTotal] =
+		useState<number>(() => readAppV2AdminOverviewCache()?.accountsTotal ?? 0);
 	const [cachedFoundationRemainingCount, setCachedFoundationRemainingCount] =
 		useState<number | null>(() =>
 			readAppV2FoundationRemainingCache(user?.id ?? null),
@@ -3649,12 +3785,14 @@ export default function AppPage() {
 
 	useEffect(() => {
 		if (!user?.id) {
-			setAdminUniqueVisitorsTotal(null);
+			setAdminUniqueVisitorsTotal(0);
+			setAdminAccountsTotal(0);
 			return;
 		}
 
 		if (isAdmin === false) {
-			setAdminUniqueVisitorsTotal(null);
+			setAdminUniqueVisitorsTotal(0);
+			setAdminAccountsTotal(0);
 			return;
 		}
 
@@ -3663,12 +3801,13 @@ export default function AppPage() {
 		}
 
 		let cancelled = false;
-		const cachedSnapshot = readAppV2AdminUniqueVisitorsCache();
+		const cachedSnapshot = readAppV2AdminOverviewCache();
 		if (cachedSnapshot) {
-			setAdminUniqueVisitorsTotal(cachedSnapshot.total);
+			setAdminUniqueVisitorsTotal(cachedSnapshot.uniqueVisitorsTotal);
+			setAdminAccountsTotal(cachedSnapshot.accountsTotal);
 			if (
 				Date.now() - cachedSnapshot.updatedAt <=
-				APP_V2_ADMIN_UNIQUE_VISITORS_CACHE_TTL_MS
+				APP_V2_ADMIN_OVERVIEW_CACHE_TTL_MS
 			) {
 				return () => {
 					cancelled = true;
@@ -3676,16 +3815,27 @@ export default function AppPage() {
 			}
 		}
 
-		const loadAdminUniqueVisitorsTotal = async () => {
-			const { data, error } = await supabase.rpc(
-				"get_app_v2_session_unique_visitors_total",
-			);
+		const loadAdminOverview = async () => {
+			const [uniqueVisitorsResponse, accountsResponse] = await Promise.all([
+				supabase.rpc("get_app_v2_session_unique_visitors_total"),
+				supabase.rpc("get_total_accounts_count_v1"),
+			]);
 
-			if (error) {
+			if (uniqueVisitorsResponse.error) {
 				console.error(
 					"Error loading app-v2 session unique visitors total:",
-					error,
+					uniqueVisitorsResponse.error,
 				);
+			}
+
+			if (accountsResponse.error) {
+				console.error(
+					"Error loading app-v2 accounts total:",
+					accountsResponse.error,
+				);
+			}
+
+			if (uniqueVisitorsResponse.error && accountsResponse.error) {
 				return;
 			}
 
@@ -3693,21 +3843,19 @@ export default function AppPage() {
 				return;
 			}
 
-			const parsedValue =
-				typeof data === "number"
-					? data
-					: typeof data === "string"
-						? Number.parseInt(data, 10)
-						: Number.NaN;
-			const nextValue = Number.isFinite(parsedValue)
-				? Math.max(0, Math.floor(parsedValue))
-				: 0;
+			const nextUniqueVisitorsTotal = uniqueVisitorsResponse.error
+				? (cachedSnapshot?.uniqueVisitorsTotal ?? 0)
+				: parseNonNegativeInteger(uniqueVisitorsResponse.data, 0);
+			const nextAccountsTotal = accountsResponse.error
+				? (cachedSnapshot?.accountsTotal ?? 0)
+				: parseNonNegativeInteger(accountsResponse.data, 0);
 
-			setAdminUniqueVisitorsTotal(nextValue);
-			writeAppV2AdminUniqueVisitorsCache(nextValue);
+			setAdminUniqueVisitorsTotal(nextUniqueVisitorsTotal);
+			setAdminAccountsTotal(nextAccountsTotal);
+			writeAppV2AdminOverviewCache(nextUniqueVisitorsTotal, nextAccountsTotal);
 		};
 
-		void loadAdminUniqueVisitorsTotal();
+		void loadAdminOverview();
 
 		return () => {
 			cancelled = true;
@@ -3913,11 +4061,14 @@ export default function AppPage() {
 										<br />
 										<br />
 										{isEnglish
-											? "total unique users:"
+											? "total unique users (reached /app/session):"
 											: "nombre d'utilisateurs uniques total :"}{" "}
-										{adminUniqueVisitorsTotal === null
-											? "..."
-											: adminUniqueVisitorsTotal}
+										{adminUniqueVisitorsTotal}
+										<br />
+										{isEnglish
+											? "number of accounts:"
+											: "nombre de comptes :"}{" "}
+										{adminAccountsTotal}
 									</>
 								) : null}
 							</div>

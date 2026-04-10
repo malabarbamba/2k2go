@@ -2,6 +2,7 @@ import { useEffect, useState, type ComponentType } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppLocale } from "@/contexts/AppLocaleContext";
 import { readActiveUserId } from "@/lib/authPersistence";
+import foundationsDeckFile from "@/assets/deck-fondations-2k/2K2GO Arabic Foundations.apkg?url";
 
 const LANDING_RAILS_MIN_VIEWPORT_WIDTH = 1025;
 
@@ -148,6 +149,46 @@ export default function HomePage() {
 					gap: "6px",
 				}}
 			>
+				<label>
+					language :{" "}
+					<select
+						value={locale}
+						onChange={(event) => {
+							const nextLocale = event.target.value === "fr" ? "fr" : "en";
+							setLocale(nextLocale);
+						}}
+						style={{
+							font: "inherit",
+							color: "inherit",
+							backgroundColor: "#efefef",
+							border: "1px solid #000000",
+							borderRadius: "3px",
+							padding: "1px 6px",
+						}}
+					>
+						<option value="fr">French</option>
+						<option value="en">English</option>
+					</select>
+				</label>
+				<span aria-hidden="true">&middot;</span>
+				<a
+					href={foundationsDeckFile}
+					download="2K2GO Arabic Foundations.apkg"
+					style={{
+						font: "inherit",
+						color: "#000000",
+						border: "1px solid #000000",
+						borderRadius: "3px",
+						padding: "1px 6px",
+						backgroundColor: "#efefef",
+						textDecoration: "none",
+						display: "inline-flex",
+						alignItems: "center",
+					}}
+				>
+					download deck
+				</a>
+				<span aria-hidden="true">&middot;</span>
 				<a
 					href="https://github.com/malabarbamba/2k2go"
 					target="_blank"
@@ -171,28 +212,6 @@ export default function HomePage() {
 						<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49C3.78 14.2 3.31 12.65 3.31 12.65c-.36-.92-.88-1.16-.88-1.16-.72-.49.05-.48.05-.48.8.06 1.22.82 1.22.82.71 1.22 1.87.87 2.33.67.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.58.82-2.14-.08-.2-.36-1.01.08-2.1 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 4.87c.68 0 1.37.09 2.01.27 1.53-1.03 2.2-.82 2.2-.82.44 1.09.16 1.9.08 2.1.51.56.82 1.27.82 2.14 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.14.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
 					</svg>
 				</a>
-				<span aria-hidden="true">&middot;</span>
-				<label>
-					language :{" "}
-					<select
-						value={locale}
-						onChange={(event) => {
-							const nextLocale = event.target.value === "fr" ? "fr" : "en";
-							setLocale(nextLocale);
-						}}
-						style={{
-							font: "inherit",
-							color: "inherit",
-							backgroundColor: "#efefef",
-							border: "1px solid #000000",
-							borderRadius: "3px",
-							padding: "1px 6px",
-						}}
-					>
-						<option value="fr">French</option>
-						<option value="en">English</option>
-					</select>
-				</label>
 			</div>
 		</main>
 	);

@@ -839,6 +839,10 @@ export type Database = {
 				Args: never;
 				Returns: number;
 			};
+			get_total_accounts_count_v1: {
+				Args: never;
+				Returns: number;
+			};
 			dispatch_preview_session_audio_share_batch: {
 				Args: { p_session_key: string };
 				Returns: {

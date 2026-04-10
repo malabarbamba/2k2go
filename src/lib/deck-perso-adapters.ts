@@ -42,6 +42,7 @@ export type ReviewScope = string;
  */
 export interface VocabCard {
 	id: number | string;
+	schedulerCardId?: string;
 	focus?: string;
 	tags: string[];
 	sentBase: string;
@@ -191,7 +192,10 @@ export function supabaseCardToVocabCard(
 
 	const vocabularyCardId = readOptionalString(record.vocabulary_card_id);
 	const foundationCardId = readOptionalString(record.foundation_card_id);
-	const id = vocabularyCardId ?? foundationCardId ?? `due-${index}`;
+	const schedulerCardId = readOptionalString(
+		(record as { card_id?: unknown }).card_id,
+	);
+	const id = vocabularyCardId ?? foundationCardId ?? schedulerCardId ?? `due-${index}`;
 	const sourceRaw = readOptionalString(record.source)?.toLowerCase();
 	const normalizedSource: "foundation" | "vocabulary" | undefined =
 		sourceRaw === "foundation"
@@ -212,16 +216,27 @@ export function supabaseCardToVocabCard(
 			? "foundation"
 			: normalizedSource;
 	const baseArabic = repairMojibake(
-		record.word_ar ?? record.example_sentence_ar ?? "",
+		record.word_ar ?? (record as { term?: unknown }).term ?? record.example_sentence_ar ?? "",
 	);
-	const rawSentence = repairMojibake(record.example_sentence_ar ?? baseArabic);
+	const rawSentence = repairMojibake(
+		record.example_sentence_ar ??
+			((record as { example_term?: unknown }).example_term as string | null | undefined) ??
+			baseArabic,
+	);
 	const sentenceWithFocus =
 		!rawSentence || rawSentence.includes("<b>") || !baseArabic
 			? rawSentence
 			: rawSentence.replace(baseArabic, `<b>${baseArabic}</b>`);
 	const sentenceAr = sentenceWithFocus || baseArabic;
 	const sentenceFr = repairMojibake(
-		record.example_sentence_fr ?? record.word_fr ?? "",
+		record.example_sentence_fr ??
+			((record as { example_translation?: unknown }).example_translation as
+				| string
+				| null
+				| undefined) ??
+			record.word_fr ??
+			((record as { translation?: unknown }).translation as string | null | undefined) ??
+			"",
 	);
 	const categoryLabel = repairMojibake(record.category ?? "").trim();
 	const normalizedCategory = categoryLabel.toLowerCase();
@@ -324,6 +339,7 @@ export function supabaseCardToVocabCard(
 
 	return {
 		id,
+		schedulerCardId,
 		focus: focusValue,
 		tags: tags.length > 0 ? tags : ["Vocab"],
 		sentBase: stripHarakat(sentenceAr),
@@ -331,7 +347,14 @@ export function supabaseCardToVocabCard(
 		sentFrench: sentenceFr,
 		vocabBase: stripHarakat(baseArabic),
 		vocabFull: baseArabic,
-		vocabDef: repairMojibake(record.word_fr ?? sentenceFr),
+		vocabDef: repairMojibake(
+			record.word_fr ??
+				((record as { translation?: unknown }).translation as
+					| string
+					| null
+					| undefined) ??
+				sentenceFr,
+		),
 		image: imageUrl,
 		vocabAudioUrl,
 		sentenceAudioUrl,
@@ -356,7 +379,9 @@ export function supabaseCardToVocabCard(
 		sourceWordStartSeconds,
 		sourceWordEndSeconds,
 		sourceLinkUrl,
-		nextReviewAt: record.next_review_at,
+		nextReviewAt:
+			record.next_review_at ??
+			((record as { due_at?: unknown }).due_at as string | null | undefined),
 		status: record.status ?? undefined,
 	};
 }
