@@ -1,0 +1,8 @@
+Dans le nom defihcier des icones, il y a un numero pour le maping. Voici le mapping des success pour le profil (instructions sur comment obtenir à traduire en francais) :
+
+
+1*Coup d'envoi - a démarre le parcours type en validant sa premiere action sur le parcours type dans tableau de bord 
+2*Chaud Chipotle - on a review streak for at least 10 days without missing a day
+3*Collecteur - a revues au moins 10 cartes parmis les cartes qu'il a collectes sur vidéos
+4*Cador - a inviter un ami a commencer son parcours de progression, et cet ami s'est connecté au moins 3 jours d'affilé
+5*Ramadan Player - a fait ses revues pendant le ramadan (succes special disponible uniquement pendant le mois de ramadan)

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redirecting...</title>
+    <script>
+      (function () {
+        var pathname = window.location.pathname;
+        var search = window.location.search;
+        var hash = window.location.hash;
+        var segments = pathname.split("/").filter(Boolean);
+        var repoBase = segments.length ? "/" + segments[0] : "";
+        var appPath = "/" + segments.slice(1).join("/");
+        var encodedQuery = search.length > 1 ? "&q=" + encodeURIComponent(search.slice(1)) : "";
+        var redirectTo =
+          repoBase + "/?p=" + encodeURIComponent(appPath || "/") + encodedQuery + hash;
+        window.location.replace(redirectTo);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

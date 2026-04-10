@@ -1,0 +1,66 @@
+project_id = "hgzaecbthqhaskwlvszl"
+
+# Local ports are pinned outside common Windows excluded 5432x ranges.
+[api]
+port = 55431
+
+[db]
+port = 55432
+shadow_port = 55430
+
+[studio]
+port = 55433
+
+[inbucket]
+port = 55434
+smtp_port = 55435
+pop3_port = 55436
+
+[analytics]
+port = 55437
+vector_port = 55438
+
+[auth]
+site_url = "https://2k2go.github.io"
+additional_redirect_urls = [
+  "https://2k2go.github.io/auth/callback",
+  "https://*.github.io/2k2go/auth/callback",
+  "https://*.github.io/auth/callback",
+  "http://localhost:3000/auth/callback",
+  "http://127.0.0.1:3000/auth/callback"
+]
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[auth.email]
+enable_confirmations = true
+max_frequency = "1m0s"
+otp_length = 8
+
+# =============================================================================
+# Active edge functions in this repository
+# verify_jwt = true  => request must carry a valid JWT
+# verify_jwt = false => public/internal endpoint with in-code checks
+
+[functions.preview-youtube-recommendations]
+verify_jwt = false
+
+[functions.resolve-app-locale]
+verify_jwt = false
+
+[functions.scheduler-due-v1]
+verify_jwt = false
+
+[functions.scheduler-review-v1]
+verify_jwt = false
+
+[functions.review-reminder-web-push-v1]
+verify_jwt = true
+
+[functions.review-reminders-config-v1]
+verify_jwt = false
+
+[functions.collected-card-media]
+verify_jwt = false
