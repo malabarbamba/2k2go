@@ -3,11 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { foundation2kDeck } from "@/data/foundation2kDeck";
 import type { ReviewType } from "@/lib/deck-perso-adapters";
-import {
-	fetchDueCardsByReviewTypes,
-	type SearchCardsV2Row,
-	searchVocabularyBank,
-} from "@/services/deckPersoService";
+import { searchAppV2VocabularyBank } from "@/services/appV2VocabularySearchService";
+import { fetchDueCardsByReviewTypes } from "@/services/deckPersoDueReviewService";
+import type { SearchCardsV2Row } from "@/services/deckPersoService";
 
 export interface UseMissionProgressReturn {
 	totalCards: number;
@@ -112,7 +110,7 @@ export const useMissionProgress = (): UseMissionProgressReturn => {
 						DEFAULT_HOME_REVIEW_TYPES,
 						DEFAULT_DUE_LIMIT,
 					),
-					searchVocabularyBank("", FALLBACK_TOTAL_CARDS, ["foundation"]),
+					searchAppV2VocabularyBank("", FALLBACK_TOTAL_CARDS, ["foundation"]),
 				]);
 
 				if (!isCurrentRequest()) {

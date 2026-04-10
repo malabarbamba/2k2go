@@ -5,7 +5,6 @@ import {
 	readImmersionDailyLog,
 } from "@/lib/immersionProgress";
 import { emitProfileInsightsRefresh } from "@/lib/profileInsightsEvents";
-import { searchVocabularyBank } from "@/services/deckPersoService";
 
 const IMMERSION_SYNC_STATE_STORAGE_KEY_PREFIX =
 	"profile.immersion-sync-state.v1";
@@ -433,7 +432,10 @@ export async function fetchWordsAcquiredCount(
 		}
 	}
 
-	const result = await searchVocabularyBank("", 5000, [
+	const { searchAppV2VocabularyBank } = await import(
+		"@/services/appV2VocabularySearchService"
+	);
+	const result = await searchAppV2VocabularyBank("", 5000, [
 		"foundation",
 		"collected",
 		"sent",

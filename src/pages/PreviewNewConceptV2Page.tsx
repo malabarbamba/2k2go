@@ -1,12 +1,15 @@
 import type { FormEvent } from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+	lazy,
+	Suspense,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { VocabGrid } from "@/components/VocabGrid";
-import KeyboardWithPreviewDemo from "@/components/keyboard-with-preview-demo";
-import { CardsReviewV2 } from "@/components/deck-perso-visual-v2/CardsReviewV2";
 import { useAuth } from "@/contexts/AuthContext";
-import { useProfileInsights } from "@/contexts/ProfileInsightsContext";
-import { fetchPreviewYoutubeRecommendations } from "@/features/preview-new-concept/services";
 import type {
 	PreviewReviewCard,
 	PreviewYoutubeRecommendationsResult,
@@ -23,10 +26,6 @@ import {
 	PROFILE_NEW_CARDS_PER_DAY_MIN,
 } from "@/lib/profilePreferences";
 import {
-	loadPreviewConnections,
-	sendPreviewConnectionRequest,
-} from "@/features/preview-new-concept/services";
-import {
 	measureTextLayout,
 	usePretextAutoResize,
 	usePretextContainerWidth,
@@ -34,15 +33,76 @@ import {
 import { ensureAppV2RuntimeProfiler } from "@/features/preview-new-concept/pretextRuntimeProfiler";
 import { usePendingReviewsCount } from "@/hooks/usePendingReviewsCount";
 import type { VocabGridData } from "@/lib/vocabGrid";
-import { updateReviewReminderPreferences } from "@/services/reviewRemindersService";
-import {
-	fetchDueCardsByReviewTypes,
-	searchVocabularyBank,
-	type DeckSourceType,
-	type SearchCardsV2Row,
+import type {
+	DeckSourceType,
+	SearchCardsV2Row,
 } from "@/services/deckPersoService";
 import type { FriendListItem } from "@/services/friendsService";
-import AppV2WhyItWorksPage from "@/pages/AppV2WhyItWorksPage";
+import { fetchWordsAcquiredCount } from "@/services/profileProgressService";
+
+const LazyVocabGrid = lazy(() =>
+	import("@/components/VocabGrid").then((module) => ({
+		default: module.VocabGrid,
+	})),
+);
+const LazyKeyboardWithPreviewDemo = lazy(
+	() => import("@/components/keyboard-with-preview-demo"),
+);
+const LazyCardsReviewV2 = lazy(() =>
+	import("@/components/deck-perso-visual-v2/CardsReviewV2").then((module) => ({
+		default: module.CardsReviewV2,
+	})),
+);
+const LazyAppV2WhyItWorksPage = lazy(
+	() => import("@/pages/AppV2WhyItWorksPage"),
+);
+
+function useAppV2WordsAcquiredCount(userId: string | null | undefined): {
+	wordsAcquiredCount: number;
+	loading: boolean;
+} {
+	const [wordsAcquiredCount, setWordsAcquiredCount] = useState(0);
+	const [loading, setLoading] = useState(Boolean(userId));
+
+	useEffect(() => {
+		let cancelled = false;
+
+		if (!userId) {
+			setWordsAcquiredCount(0);
+			setLoading(false);
+			return () => {
+				cancelled = true;
+			};
+		}
+
+		setLoading(true);
+
+		void (async () => {
+			try {
+				const result = await fetchWordsAcquiredCount(userId);
+				if (cancelled || !result.ok) {
+					return;
+				}
+
+				setWordsAcquiredCount(result.data);
+			} catch (error) {
+				if (!cancelled) {
+					console.error("Error loading app-v2 words acquired count:", error);
+				}
+			} finally {
+				if (!cancelled) {
+					setLoading(false);
+				}
+			}
+		})();
+
+		return () => {
+			cancelled = true;
+		};
+	}, [userId]);
+
+	return { wordsAcquiredCount, loading };
+}
 
 const APP_V2_BASE_PATH = "/app-v2";
 const HOME_V2_PATH = "/home-v2";
@@ -123,6 +183,10 @@ const plainLinkStyle = {
 	color: "#000000",
 	textDecoration: "underline",
 } as const;
+
+function AppV2SectionLoading({ text = "chargement..." }: { text?: string }) {
+	return <p style={{ ...baseTextStyle, marginTop: "14px" }}>{text}</p>;
+}
 
 const appV2MainStyle = {
 	fontFamily: "Arial, sans-serif",
@@ -1067,7 +1131,9 @@ function AppV2KeyboardPage() {
 				}
 			`}</style>
 			<div style={{ marginTop: "10px" }}>
-				<KeyboardWithPreviewDemo compactSpacing plainHtmlMode />
+				<Suspense fallback={<AppV2SectionLoading />}>
+					<LazyKeyboardWithPreviewDemo compactSpacing plainHtmlMode />
+				</Suspense>
 			</div>
 		</div>
 	);
@@ -1076,12 +1142,14 @@ function AppV2KeyboardPage() {
 function AppV2ImmersionVideoPage({
 	hasSession,
 	userId,
+	wordsAcquiredCount,
+	wordsAcquiredCountLoading,
 }: {
 	hasSession: boolean;
 	userId: string | null;
+	wordsAcquiredCount: number;
+	wordsAcquiredCountLoading: boolean;
 }) {
-	const { wordsAcquiredCount, loading: profileInsightsLoading } =
-		useProfileInsights();
 	const [recommendationsLoading, setRecommendationsLoading] = useState(false);
 	const [result, setResult] =
 		useState<PreviewYoutubeRecommendationsResult | null>(null);
@@ -1114,7 +1182,7 @@ function AppV2ImmersionVideoPage({
 		},
 	);
 	const displayedWordsKnownCount =
-		profileInsightsLoading && cachedWordsKnownCount > 0
+		wordsAcquiredCountLoading && cachedWordsKnownCount > 0
 			? cachedWordsKnownCount
 			: wordsAcquiredCount;
 
@@ -1133,7 +1201,7 @@ function AppV2ImmersionVideoPage({
 	}, [wordsKnownCacheKey]);
 
 	useEffect(() => {
-		if (profileInsightsLoading || typeof window === "undefined") {
+		if (wordsAcquiredCountLoading || typeof window === "undefined") {
 			return;
 		}
 
@@ -1146,7 +1214,7 @@ function AppV2ImmersionVideoPage({
 		} catch {
 			// Ignore cache write failures.
 		}
-	}, [profileInsightsLoading, wordsAcquiredCount, wordsKnownCacheKey]);
+	}, [wordsAcquiredCountLoading, wordsAcquiredCount, wordsKnownCacheKey]);
 
 	useEffect(() => {
 		if (!recommendationsCacheKey || typeof window === "undefined") {
@@ -1200,6 +1268,14 @@ function AppV2ImmersionVideoPage({
 				"Regroupement de tous tes mots de vocabulaire appris...",
 			);
 			try {
+				const [
+					{ fetchDueCardsByReviewTypes },
+					{ fetchPreviewYoutubeRecommendations },
+				] = await Promise.all([
+					import("@/services/deckPersoDueReviewService"),
+					import("@/features/preview-new-concept/services"),
+				]);
+
 				const cardsResponse = await fetchDueCardsByReviewTypes([
 					"foundation",
 					"collected",
@@ -1435,6 +1511,9 @@ function AppV2ProfilePage({
 			setBankGridError(null);
 
 			try {
+				const { searchAppV2VocabularyBank } = await import(
+					"@/services/appV2VocabularySearchService"
+				);
 				const allRows: SearchCardsV2Row[] = [];
 				let offset = 0;
 
@@ -1443,7 +1522,7 @@ function AppV2ProfilePage({
 					pageIndex < APP_V2_ACCOUNT_BANK_MAX_FETCH_PAGES;
 					pageIndex += 1
 				) {
-					const result = await searchVocabularyBank(
+					const result = await searchAppV2VocabularyBank(
 						"",
 						APP_V2_ACCOUNT_BANK_SEARCH_LIMIT,
 						APP_V2_ACCOUNT_BANK_SOURCE_TYPES,
@@ -1797,18 +1876,20 @@ function AppV2ProfilePage({
 								chargement du vocabulaire...
 							</p>
 						) : null}
-						<VocabGrid
-							data={bankGridData}
-							loading={false}
-							error={bankGridError}
-							groupings={[]}
-							searchQuery=""
-							categoryFilter={null}
-							maxRows={4}
-							hideUnseenUnits
-							gridOnly
-							gridJustify="center"
-						/>
+						<Suspense fallback={<AppV2SectionLoading />}>
+							<LazyVocabGrid
+								data={bankGridData}
+								loading={false}
+								error={bankGridError}
+								groupings={[]}
+								searchQuery=""
+								categoryFilter={null}
+								maxRows={4}
+								hideUnseenUnits
+								gridOnly
+								gridJustify="center"
+							/>
+						</Suspense>
 					</div>
 				</div>
 			) : null}
@@ -1887,6 +1968,9 @@ function AppV2SettingsPage({ monComptePath }: { monComptePath: string }) {
 
 		setIsSavingProfile(true);
 		try {
+			const { updateReviewReminderPreferences } = await import(
+				"@/services/reviewRemindersService"
+			);
 			const reminderEmailEnabled = reviewReminderEmailEnabled;
 
 			const [nameResult, profileResult, reminderResult] = await Promise.all([
@@ -2219,6 +2303,9 @@ function AppV2ContactsPage({
 		setErrorMessage(null);
 
 		try {
+			const { loadPreviewConnections } = await import(
+				"@/features/preview-new-concept/services"
+			);
 			const result = await loadPreviewConnections();
 			setContacts(result);
 		} catch (error) {
@@ -2239,6 +2326,9 @@ function AppV2ContactsPage({
 			setIsSubmitting(true);
 
 			try {
+				const { sendPreviewConnectionRequest } = await import(
+					"@/features/preview-new-concept/services"
+				);
 				const status = await sendPreviewConnectionRequest(usernameInput);
 
 				switch (status) {
@@ -2390,9 +2480,9 @@ export default function PreviewNewConceptV2Page() {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const { user, signOut } = useAuth();
+	const { wordsAcquiredCount, loading: wordsAcquiredCountLoading } =
+		useAppV2WordsAcquiredCount(user?.id);
 	const { isAdmin } = useIsAdmin();
-	const { wordsAcquiredCount, loading: profileInsightsLoading } =
-		useProfileInsights();
 	const { count: remainingCardsCount } = usePendingReviewsCount({
 		authenticatedDeckScope: "personal_and_foundation",
 	});
@@ -2414,7 +2504,7 @@ export default function PreviewNewConceptV2Page() {
 		? Math.max(0, APP_V2_TOTAL_DECK_CARDS - wordsAcquiredCount)
 		: APP_V2_TOTAL_DECK_CARDS;
 	const displayedTotalFoundationRemainingCount =
-		user && profileInsightsLoading
+		user && wordsAcquiredCountLoading
 			? (cachedFoundationRemainingCount ?? totalFoundationRemainingCount)
 			: totalFoundationRemainingCount;
 	const totalRemainingCardsLabel = String(
@@ -2555,13 +2645,13 @@ export default function PreviewNewConceptV2Page() {
 	}, [user?.id]);
 
 	useEffect(() => {
-		if (!user || profileInsightsLoading) {
+		if (!user || wordsAcquiredCountLoading) {
 			return;
 		}
 
 		setCachedFoundationRemainingCount(totalFoundationRemainingCount);
 		writeAppV2FoundationRemainingCache(user.id, totalFoundationRemainingCount);
-	}, [profileInsightsLoading, totalFoundationRemainingCount, user]);
+	}, [wordsAcquiredCountLoading, totalFoundationRemainingCount, user]);
 
 	useEffect(() => {
 		if (!user?.id) {
@@ -2642,6 +2732,9 @@ export default function PreviewNewConceptV2Page() {
 			let schedulerWeeklyCount = todayRemainingCount;
 			const monthAgo = new Date();
 			monthAgo.setDate(monthAgo.getDate() - 30);
+			const { fetchDueCardsByReviewTypes } = await import(
+				"@/services/deckPersoDueReviewService"
+			);
 
 			const [reviewAverageResult, weeklyDueResult] = await Promise.allSettled([
 				supabase
@@ -2874,14 +2967,16 @@ export default function PreviewNewConceptV2Page() {
 			<main style={appV2MainStyle}>
 				<AppV2ToastSuppressionStyle />
 				<div style={{ height: "100vh" }}>
-					<CardsReviewV2
-						isPreviewMode
-						forceLiveSubmission
-						sessionChromeVariant="plain_html"
-						onBackClick={() => {
-							navigate(APP_V2_BASE_PATH);
-						}}
-					/>
+					<Suspense fallback={<AppV2SectionLoading />}>
+						<LazyCardsReviewV2
+							isPreviewMode
+							forceLiveSubmission
+							sessionChromeVariant="plain_html"
+							onBackClick={() => {
+								navigate(APP_V2_BASE_PATH);
+							}}
+						/>
+					</Suspense>
 				</div>
 			</main>
 		);
@@ -2926,9 +3021,13 @@ export default function PreviewNewConceptV2Page() {
 					<AppV2ImmersionVideoPage
 						hasSession={Boolean(user)}
 						userId={user?.id ?? null}
+						wordsAcquiredCount={wordsAcquiredCount}
+						wordsAcquiredCountLoading={wordsAcquiredCountLoading}
 					/>
 				) : isWhyItWorksPage ? (
-					<AppV2WhyItWorksPage />
+					<Suspense fallback={<AppV2SectionLoading />}>
+						<LazyAppV2WhyItWorksPage />
+					</Suspense>
 				) : isProfilePage ? (
 					<AppV2ProfilePage
 						username={activeProfileUsername}

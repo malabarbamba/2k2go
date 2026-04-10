@@ -1,3 +1,4 @@
+import { lazy, Suspense, type ReactNode } from "react";
 import {
 	BrowserRouter,
 	Navigate,
@@ -6,16 +7,13 @@ import {
 	useLocation,
 	useParams,
 } from "react-router-dom";
-import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import { HeatmapProvider } from "@/contexts/HeatmapContext";
-import { ProfileInsightsProvider } from "@/contexts/ProfileInsightsContext";
-import HomeV2Page from "@/pages/HomeV2Page";
-import LoginV2Page from "@/pages/LoginV2Page";
-import OnboardingV2Page from "@/pages/OnboardingV2Page";
-import PreviewNewConceptV2Page from "@/pages/PreviewNewConceptV2Page";
+
+const HomeV2Page = lazy(() => import("@/pages/HomeV2Page"));
+const LoginV2Page = lazy(() => import("@/pages/LoginV2Page"));
+const OnboardingV2Page = lazy(() => import("@/pages/OnboardingV2Page"));
+const AppV2Shell = lazy(() => import("@/pages/AppV2Shell"));
 
 const APP_V2_DOCS_BASE_PATH = "/app-v2/pourquoi-ca-marche";
 
@@ -71,61 +69,75 @@ function UnknownRouteRedirect() {
 	return <Navigate to="/home-v2" replace />;
 }
 
+function LazyRoute({ children }: { children: ReactNode }) {
+	return <Suspense fallback={<LoadingPage />}>{children}</Suspense>;
+}
+
 export default function App() {
 	return (
-		<ThemeProvider
-			attribute="class"
-			defaultTheme="system"
-			enableSystem
-			enableColorScheme
-			storageKey="theme"
-		>
-			<TooltipProvider>
-				<Toaster richColors />
-				<BrowserRouter>
-					<AuthProvider>
-						<HeatmapProvider>
-							<ProfileInsightsProvider>
-								<Routes>
-									<Route path="/" element={<RootRedirect />} />
-									<Route path="/home-v2" element={<HomeV2Page />} />
-									<Route path="/login-v2" element={<LoginV2Page />} />
-									<Route path="/onboarding-v2" element={<OnboardingV2Page />} />
-									<Route
-										path="/signup-v2"
-										element={<Navigate to="/onboarding-v2" replace />}
-									/>
-									<Route
-										path="/app-v2/home"
-										element={<Navigate to="/home-v2" replace />}
-									/>
-									<Route
-										path="/app-v2/login"
-										element={<Navigate to="/login-v2" replace />}
-									/>
-									<Route
-										path="/app-v2/signup"
-										element={<Navigate to="/onboarding-v2" replace />}
-									/>
-									<Route
-										path="/app-v2/onboarding"
-										element={<Navigate to="/onboarding-v2" replace />}
-									/>
-									<Route
-										path="/app-v2/docs/*"
-										element={<AppV2DocsAliasRoute />}
-									/>
-									<Route
-										path="/app-v2/*"
-										element={<PreviewNewConceptV2Page />}
-									/>
-									<Route path="*" element={<UnknownRouteRedirect />} />
-								</Routes>
-							</ProfileInsightsProvider>
-						</HeatmapProvider>
-					</AuthProvider>
-				</BrowserRouter>
-			</TooltipProvider>
-		</ThemeProvider>
+		<>
+			<Toaster richColors />
+			<BrowserRouter>
+				<AuthProvider>
+					<Routes>
+						<Route path="/" element={<RootRedirect />} />
+						<Route
+							path="/home-v2"
+							element={
+								<LazyRoute>
+									<HomeV2Page />
+								</LazyRoute>
+							}
+						/>
+						<Route
+							path="/login-v2"
+							element={
+								<LazyRoute>
+									<LoginV2Page />
+								</LazyRoute>
+							}
+						/>
+						<Route
+							path="/onboarding-v2"
+							element={
+								<LazyRoute>
+									<OnboardingV2Page />
+								</LazyRoute>
+							}
+						/>
+						<Route
+							path="/signup-v2"
+							element={<Navigate to="/onboarding-v2" replace />}
+						/>
+						<Route
+							path="/app-v2/home"
+							element={<Navigate to="/home-v2" replace />}
+						/>
+						<Route
+							path="/app-v2/login"
+							element={<Navigate to="/login-v2" replace />}
+						/>
+						<Route
+							path="/app-v2/signup"
+							element={<Navigate to="/onboarding-v2" replace />}
+						/>
+						<Route
+							path="/app-v2/onboarding"
+							element={<Navigate to="/onboarding-v2" replace />}
+						/>
+						<Route path="/app-v2/docs/*" element={<AppV2DocsAliasRoute />} />
+						<Route
+							path="/app-v2/*"
+							element={
+								<LazyRoute>
+									<AppV2Shell />
+								</LazyRoute>
+							}
+						/>
+						<Route path="*" element={<UnknownRouteRedirect />} />
+					</Routes>
+				</AuthProvider>
+			</BrowserRouter>
+		</>
 	);
 }

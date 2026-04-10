@@ -39,15 +39,7 @@ import {
 } from "./VocabCardSharedV2";
 import { useAuth } from "@/contexts/AuthContext";
 import { DEMO_CARDS, demoCardToVocabCard } from "@/data/demoReviewData";
-import {
-	createOrReplaceCurrentUserPreviewDiscussionAudioPost,
-	deletePreviewDiscussionAudioPost,
-	dispatchPreviewSessionAudioShareBatch,
-	listPreviewDiscussionAudioPosts,
-	type PreviewDiscussionAudioPost,
-	setPreviewSessionAudioPostShareIntent,
-} from "@/features/preview-new-concept/discussionService";
-import { loadPreviewConnections } from "@/features/preview-new-concept/services";
+import type { PreviewDiscussionAudioPost } from "@/features/preview-new-concept/discussionService";
 import { useMissionProgress } from "@/hooks/useMissionProgress";
 import { useProfile } from "@/hooks/useProfile";
 import type { ReviewType, VocabCard } from "@/lib/deck-perso-adapters";
@@ -62,12 +54,14 @@ import { cn } from "@/lib/utils";
 import { buildAppProfilePath } from "@/routes/routeAuthContract";
 import { useAudio } from "@/services/audioService";
 import {
-	type BinaryReviewRating,
+	hasCollectedDeckInAccountLight,
+	searchAppV2VocabularyBank,
+} from "@/services/appV2VocabularySearchService";
+import {
 	fetchDueCardsByReviewTypes,
-	hasCollectedDeckInAccount,
-	searchVocabularyBank,
 	submitReviewForCard,
-} from "@/services/deckPersoService";
+} from "@/services/deckPersoDueReviewService";
+import type { BinaryReviewRating } from "@/services/deckPersoService";
 import type { FriendListItem } from "@/services/friendsService";
 import {
 	type ReviewFilter,
@@ -626,7 +620,7 @@ export const CardsReviewV2 = ({
 			const availabilityByFilter = await Promise.all(
 				REVIEW_FILTER_DEFINITIONS.map(async (filterDefinition) => {
 					if (filterDefinition.reviewType === "collected") {
-						const collectedDeckResult = await hasCollectedDeckInAccount();
+						const collectedDeckResult = await hasCollectedDeckInAccountLight();
 
 						if (collectedDeckResult.ok) {
 							return {
@@ -637,7 +631,7 @@ export const CardsReviewV2 = ({
 						}
 					}
 
-					const result = await searchVocabularyBank(
+					const result = await searchAppV2VocabularyBank(
 						"",
 						MAX_DECK_AVAILABILITY_SEARCH,
 						[filterDefinition.reviewType],
@@ -1347,6 +1341,9 @@ export const CardsReviewV2 = ({
 		setIsSessionConnectionsLoading(true);
 		setSessionConnectionsError(null);
 		try {
+			const { loadPreviewConnections } = await import(
+				"@/features/preview-new-concept/services"
+			);
 			const connections = await loadPreviewConnections();
 			setSessionConnections(connections);
 			return connections;
@@ -1377,6 +1374,9 @@ export const CardsReviewV2 = ({
 			hasSessionShareFlushRef.current = true;
 
 			try {
+				const { dispatchPreviewSessionAudioShareBatch } = await import(
+					"@/features/preview-new-concept/discussionService"
+				);
 				const dispatchResult = await dispatchPreviewSessionAudioShareBatch(
 					sessionShareKeyRef.current,
 				);
@@ -1478,6 +1478,9 @@ export const CardsReviewV2 = ({
 			cardAudioFetchRequestIdRef.current = requestId;
 			setIsCardAudioLoading(true);
 			try {
+				const { listPreviewDiscussionAudioPosts } = await import(
+					"@/features/preview-new-concept/discussionService"
+				);
 				const audioPosts = await listPreviewDiscussionAudioPosts(activeCard);
 				const ownAudioPost =
 					audioPosts.find((audioPost) => audioPost.userId === user.id) ?? null;
@@ -1605,6 +1608,8 @@ export const CardsReviewV2 = ({
 				void (async () => {
 					setIsCardAudioSaving(true);
 					try {
+						const { createOrReplaceCurrentUserPreviewDiscussionAudioPost } =
+							await import("@/features/preview-new-concept/discussionService");
 						const savedAudioPost =
 							await createOrReplaceCurrentUserPreviewDiscussionAudioPost({
 								audioFile,
@@ -1720,6 +1725,9 @@ export const CardsReviewV2 = ({
 		setIsCardAudioSaving(true);
 		invalidateCardAudioFetches();
 		try {
+			const { deletePreviewDiscussionAudioPost } = await import(
+				"@/features/preview-new-concept/discussionService"
+			);
 			await deletePreviewDiscussionAudioPost(currentCardAudioPost.id);
 			setCurrentCardAudioPostInCache(null);
 			stopCardAudioPlayback();
@@ -1746,6 +1754,9 @@ export const CardsReviewV2 = ({
 		setIsCardAudioShareUpdating(true);
 		invalidateCardAudioFetches();
 		try {
+			const { setPreviewSessionAudioPostShareIntent } = await import(
+				"@/features/preview-new-concept/discussionService"
+			);
 			const shouldSelect = !currentCardAudioPost.shareSelected;
 			const updatedPost = await setPreviewSessionAudioPostShareIntent({
 				audioPostId: currentCardAudioPost.id,
@@ -1783,6 +1794,9 @@ export const CardsReviewV2 = ({
 		setIsContactAudioPostsLoading(true);
 
 		try {
+			const { listPreviewDiscussionAudioPosts } = await import(
+				"@/features/preview-new-concept/discussionService"
+			);
 			const [connections, audioPosts] = await Promise.all([
 				sessionConnections.length > 0
 					? Promise.resolve(sessionConnections)

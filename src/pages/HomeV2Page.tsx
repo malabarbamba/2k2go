@@ -1,10 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import {
-	AUDIO_FILES,
-	CardBack,
-	theme,
-} from "@/components/deck-perso-visual-v2/VocabCardSharedV2";
+import HomeRailCardBack from "@/components/home-v2/HomeRailCardBack";
 import { useAuth } from "@/contexts/AuthContext";
 import { foundation2kDeck } from "@/data/foundation2kDeck";
 import type { VocabCard } from "@/lib/deck-perso-adapters";
@@ -487,36 +483,17 @@ export default function HomeV2Page() {
 													position: "relative",
 													width: "100%",
 													height: "100%",
-													background: theme.backgroundWrap,
-													border: `1px solid ${theme.borderWrap}`,
-													boxShadow: "0 10px 26px -16px rgba(0,0,0,0.28)",
-													borderRadius: "36px",
-													overflow: "hidden",
 												}}
 											>
-												<CardBack
+												<HomeRailCardBack
 													card={card}
-													isFlipped
-													showVowels
-													onToggleVowels={() => {}}
-													onFlip={() => {}}
-													audioUrls={AUDIO_FILES}
-													isLoadingAudio={false}
-													flipKey={index}
-													showImage
-													imageLoading="eager"
-													onVocabAudioMouseMove={() => {}}
-													onVocabAudioMouseLeave={() => {}}
-													onSentenceAudioMouseMove={() => {}}
-													onSentenceAudioMouseLeave={() => {}}
-													variant="shorts"
-													layoutMetrics={railBackLayoutMetrics}
-													showSourceChip={false}
-													imageSize="review"
-													hideShortsUtilityControls
-													hideShortsActionZone
-													muteFlipAudio={false}
-													audioMuted={false}
+													scale={railBackLayoutMetrics.scale}
+													lineHeightScale={
+														railBackLayoutMetrics.lineHeightScale
+													}
+													paddingScale={railBackLayoutMetrics.paddingScale}
+													frenchScale={railBackLayoutMetrics.frenchScale}
+													arabicScale={railBackLayoutMetrics.arabicScale}
 												/>
 											</div>
 										</div>
