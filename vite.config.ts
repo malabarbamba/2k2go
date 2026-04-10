@@ -12,9 +12,17 @@ const normalizeBasePath = (value: string): string => {
 	return trimmed ? `/${trimmed}/` : "/";
 };
 
-const repoName = process.env.GITHUB_REPOSITORY?.split("/")[1];
+const [repoOwner, repoName] = process.env.GITHUB_REPOSITORY?.split("/") ?? [];
+const isUserOrOrgPagesRepo =
+	Boolean(repoOwner) &&
+	Boolean(repoName) &&
+	repoName.toLowerCase() === `${repoOwner.toLowerCase()}.github.io`;
 const defaultGithubPagesBase =
-	process.env.GITHUB_ACTIONS === "true" && repoName ? `/${repoName}/` : "/";
+	process.env.GITHUB_ACTIONS === "true" && repoName
+		? isUserOrOrgPagesRepo
+			? "/"
+			: `/${repoName}/`
+		: "/";
 const base = normalizeBasePath(
 	process.env.VITE_BASE_PATH ?? defaultGithubPagesBase,
 );
