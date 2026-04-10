@@ -16,7 +16,6 @@ const {
 	DUE_SUNSET_GUARD_BLOCKED_ERROR_MESSAGE,
 	CLIENT_UNAVAILABLE_ERROR,
 	SHADOW_DIFF_REASON_CODES,
-	SCOPE_MAP,
 	resolveClient,
 	resolveCardKey,
 	resolveAccountKey,
@@ -81,24 +80,30 @@ export async function fetchDueCardsByReviewTypes(
 			const rowsByReviewType: Record<string, unknown[]> = {};
 			const dueRowsByReviewType = new Map<ReviewType, GetDueCardsV2Row[]>();
 
-			const requests = reviewTypes.map((type) => {
-				const scope = SCOPE_MAP[type];
-				return getDueCardsV2(client, {
-					p_deck_scope: scope,
-					p_limit: limitPerScope,
-				});
+			const response = await getDueCardsV2(client, {
+				p_limit: Math.max(1, limitPerScope * Math.max(reviewTypes.length, 1)),
 			});
-			const responses = await Promise.all(requests);
+			if (response.error) {
+				throw response.error;
+			}
 
-			responses.forEach((response, index) => {
-				const reviewType = reviewTypes[index];
-				if (response.error) {
-					throw response.error;
+			const rows = Array.isArray(response.data) ? response.data : [];
+			reviewTypes.forEach((reviewType) => {
+				dueRowsByReviewType.set(reviewType, []);
+				rowsByReviewType[reviewType] = [];
+			});
+
+			rows.forEach((row) => {
+				const card = supabaseCardToVocabCard(row, 0);
+				const reviewType = mapCardToReviewType(card);
+				if (!reviewType || !selectedTypes.has(reviewType)) {
+					return;
 				}
 
-				const rows = Array.isArray(response.data) ? response.data : [];
-				rowsByReviewType[reviewType] = rows.map((row) => toJsonCompatible(row));
-				dueRowsByReviewType.set(reviewType, rows);
+				const existingRows = dueRowsByReviewType.get(reviewType) ?? [];
+				existingRows.push(row);
+				dueRowsByReviewType.set(reviewType, existingRows);
+				rowsByReviewType[reviewType].push(toJsonCompatible(row));
 			});
 
 			const vocabularyRowsById = await fetchDueVocabularyRowsById(

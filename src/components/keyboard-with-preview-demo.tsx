@@ -5,6 +5,7 @@ import {
 	type KeyboardMode,
 	type KeyboardOutputMode,
 } from "@/components/ui/keyboard";
+import { useIsEnglishApp } from "@/contexts/AppLocaleContext";
 import { cn } from "@/lib/utils";
 
 const baseTextButtonStyle = {
@@ -38,6 +39,7 @@ export default function KeyboardWithPreviewDemo({
 	compactSpacing?: boolean;
 	plainHtmlMode?: boolean;
 }) {
+	const isEnglish = useIsEnglishApp();
 	const [mode, setMode] = useState<KeyboardMode>("simplified");
 	const [outputMode, setOutputMode] = useState<KeyboardOutputMode>("arabic");
 
@@ -80,7 +82,7 @@ export default function KeyboardWithPreviewDemo({
 								: undefined
 						}
 					>
-						Écrire en phonétique
+						{isEnglish ? "write in latin letters" : "écrire en lettres latines"}
 					</button>
 					<button
 						type="button"
@@ -96,7 +98,7 @@ export default function KeyboardWithPreviewDemo({
 								: undefined
 						}
 					>
-						Écrire en arabe
+						{isEnglish ? "write in arabic" : "écrire en arabe"}
 					</button>
 				</div>
 				<div className="flex items-center gap-2">
@@ -114,7 +116,7 @@ export default function KeyboardWithPreviewDemo({
 								: undefined
 						}
 					>
-						Clavier pédagogique
+						{isEnglish ? "learning keyboard" : "clavier pédagogique"}
 					</button>
 					<button
 						type="button"
@@ -128,7 +130,7 @@ export default function KeyboardWithPreviewDemo({
 							plainHtmlMode ? getHtmlButtonStyle(mode === "normal") : undefined
 						}
 					>
-						Clavier normal
+						{isEnglish ? "standard keyboard" : "clavier standard"}
 					</button>
 				</div>
 			</div>

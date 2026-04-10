@@ -21,8 +21,6 @@ const PREVIEW_DISCUSSION_AUDIO_POST_SELECT_COLUMNS =
 	"id, user_id, vocabulary_card_id, foundation_card_id, audio_storage_path, recording_duration_ms, share_selected, share_session_key, share_marked_at, share_dispatched_at, created_at, updated_at";
 const PREVIEW_DISCUSSION_AUDIO_REPLY_SELECT_COLUMNS =
 	"id, audio_post_id, user_id, body_text, audio_storage_path, audio_duration_ms, created_at, updated_at";
-const PREVIEW_DISCUSSION_PROFILE_SELECT_COLUMNS =
-	"user_id, username, first_name, last_name, avatar_url";
 
 type PreviewDiscussionTextMessageRow = Tables<"preview_session_text_messages">;
 type PreviewDiscussionTextMessageInsert =
@@ -39,10 +37,12 @@ type PreviewDiscussionAudioReplyInsert =
 	TablesInsert<"preview_session_audio_replies">;
 type PreviewDiscussionAudioReplyUpdate =
 	TablesUpdate<"preview_session_audio_replies">;
-type PreviewDiscussionProfileRow = Pick<
-	Tables<"profiles">,
-	"avatar_url" | "first_name" | "last_name" | "user_id" | "username"
->;
+type PreviewDiscussionProfileRow = {
+	avatar_url: string | null;
+	display_name: string | null;
+	user_id: string;
+	username: string | null;
+};
 
 type ErrorLike = {
 	code?: string | null;
@@ -529,29 +529,37 @@ const buildFallbackPreviewDiscussionAuthor = (
 const mapPreviewDiscussionProfileRowToAuthor = (
 	row: PreviewDiscussionProfileRow,
 	currentUserId: string | null,
-): PreviewDiscussionAuthor => ({
-	avatarUrl: row.avatar_url,
-	displayName: getPreviewDiscussionDisplayName({
-		firstName: row.first_name,
-		lastName: row.last_name,
+): PreviewDiscussionAuthor => {
+	const displayName = row.display_name?.trim() ?? "";
+	const [firstNameRaw, ...lastNameParts] =
+		displayName.length > 0 ? displayName.split(/\s+/) : [];
+	const firstName = firstNameRaw?.trim() ?? null;
+	const lastName = lastNameParts.join(" ").trim() || null;
+
+	return {
+		avatarUrl: row.avatar_url,
+		displayName: getPreviewDiscussionDisplayName({
+			firstName,
+			lastName,
+			username: row.username,
+		}),
+		firstName,
+		initials: getPreviewDiscussionInitials({
+			firstName,
+			lastName,
+			username: row.username,
+		}),
+		isCurrentUser: currentUserId === row.user_id,
+		lastName,
+		primaryName: getPreviewDiscussionPrimaryName({
+			firstName,
+			lastName,
+			username: row.username,
+		}),
+		userId: row.user_id,
 		username: row.username,
-	}),
-	firstName: row.first_name,
-	initials: getPreviewDiscussionInitials({
-		firstName: row.first_name,
-		lastName: row.last_name,
-		username: row.username,
-	}),
-	isCurrentUser: currentUserId === row.user_id,
-	lastName: row.last_name,
-	primaryName: getPreviewDiscussionPrimaryName({
-		firstName: row.first_name,
-		lastName: row.last_name,
-		username: row.username,
-	}),
-	userId: row.user_id,
-	username: row.username,
-});
+	};
+};
 
 const fetchPreviewDiscussionAuthorsByUserId = async (
 	userIds: string[],
@@ -563,17 +571,21 @@ const fetchPreviewDiscussionAuthorsByUserId = async (
 		return authorsByUserId;
 	}
 
-	const { data, error } = await supabase
-		.from("profiles")
-		.select(PREVIEW_DISCUSSION_PROFILE_SELECT_COLUMNS)
-		.in("user_id", normalizedUserIds);
+	const { data, error } = await (supabase as unknown as {
+		rpc: (
+			fn: string,
+			args?: Record<string, unknown>,
+		) => Promise<{ data: unknown; error: PostgrestError | null }>;
+	}).rpc("list_profiles_by_user_ids_v1", {
+		p_user_ids: normalizedUserIds,
+	});
 
 	if (error) {
 		console.error("Unable to load preview discussion authors:", error);
 		return authorsByUserId;
 	}
 
-	const rows = (data ?? []) as PreviewDiscussionProfileRow[];
+	const rows = Array.isArray(data) ? (data as PreviewDiscussionProfileRow[]) : [];
 	rows.forEach((row) => {
 		authorsByUserId.set(
 			row.user_id,

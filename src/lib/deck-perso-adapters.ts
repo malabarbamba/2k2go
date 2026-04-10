@@ -442,10 +442,12 @@ export function getSupabaseLoose(): SupabaseClient<Database> | null {
 
 	const SUPABASE_URL =
 		normalizeOptionalString(runtimeConfig?.SUPABASE_URL) ??
-		normalizeOptionalString(import.meta.env.VITE_SUPABASE_URL);
+		normalizeOptionalString(import.meta.env.VITE_SUPABASE_URL) ??
+		normalizeOptionalString(import.meta.env.SUPABASE_URL);
 	const rawSupabasePublishableKey =
-		runtimeConfig?.SUPABASE_PUBLISHABLE_KEY ??
-		import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+		normalizeOptionalString(runtimeConfig?.SUPABASE_PUBLISHABLE_KEY) ??
+		normalizeOptionalString(import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) ??
+		normalizeOptionalString(import.meta.env.SUPABASE_KEY);
 
 	const normalizedSupabasePublishableKey =
 		normalizeOptionalString(rawSupabasePublishableKey);

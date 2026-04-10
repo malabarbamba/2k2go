@@ -168,13 +168,10 @@ export const useObjectives = (
 				const supabaseLoose = supabase as unknown as LooseSupabaseClient;
 				const today = new Date();
 				today.setHours(0, 0, 0, 0);
-				const tomorrow = new Date(today);
-				tomorrow.setDate(tomorrow.getDate() + 1);
 				const todayStr = today.toISOString().split("T")[0];
 
 				const [
 					activityResult,
-					reviewedTodayResult,
 					runtimePendingReviewCount,
 					dueResult,
 					foundationResult,
@@ -188,34 +185,18 @@ export const useObjectives = (
 						data: { reviews_count?: number | null } | null;
 						error: { message?: string } | null;
 					}>,
-					supabaseLoose
-						.from("user_card_reviews")
-						.select("id", { count: "exact", head: true })
-						.eq("user_id", userId)
-						.gte("reviewed_at", today.toISOString())
-						.lt("reviewed_at", tomorrow.toISOString()) as unknown as Promise<{
-						count: number | null;
-						error: { message?: string } | null;
-					}>,
 					countPendingReviewsFromRuntimeQueue(),
 					fetchDueReviewCount("personal_and_foundation"),
 					searchVocabularyBank("", FOUNDATION_OBJECTIVE_TARGET, ["foundation"]),
 				]);
 
 				const { data: activityData, error: activityError } = activityResult;
-				const { count: reviewedTodayCountRaw, error: reviewedTodayError } =
-					reviewedTodayResult;
 
 				const activityReviewCount = Math.max(
 					0,
 					Number(activityData?.reviews_count ?? 0),
 				);
-				const reviewedTodayCount = Math.max(
-					0,
-					typeof reviewedTodayCountRaw === "number"
-						? reviewedTodayCountRaw
-						: activityReviewCount,
-				);
+				const reviewedTodayCount = activityReviewCount;
 				const dueReviewCount =
 					typeof runtimePendingReviewCount === "number"
 						? Math.max(0, runtimePendingReviewCount)
@@ -242,7 +223,6 @@ export const useObjectives = (
 
 				const objectiveErrors = [
 					activityError?.message,
-					reviewedTodayError?.message,
 					dueResult.ok ? null : dueResult.error.message,
 					foundationResult.ok ? null : foundationResult.error.message,
 				].filter((value): value is string => typeof value === "string");

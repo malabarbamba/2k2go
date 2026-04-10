@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:tatsumoto-ren.github.io)",
+      "mcp__web-search-prime__web_search_prime",
+      "WebFetch(domain:www.reddit.com)",
+      "WebFetch(domain:old.reddit.com)",
+      "WebFetch(domain:nohello.net)",
+      "WebFetch(domain:getjama.com)",
+      "WebFetch(domain:marhabtainarabic.com)",
+      "WebFetch(domain:forum.nocramming.com)",
+      "WebFetch(domain:www.sabrina.dev)",
+      "WebFetch(domain:www.littleflamecreative.com)"
+    ]
+  }
+}

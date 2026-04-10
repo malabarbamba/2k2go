@@ -5,6 +5,7 @@ coverage/
 .env
 .env.*
 !.env.example
+public/runtime-config.local.json
 
 .DS_Store
 npm-debug.log*

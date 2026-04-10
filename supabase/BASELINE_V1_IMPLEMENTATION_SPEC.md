@@ -460,3 +460,106 @@ Recommended migration file order (new project, clean baseline):
 - [ ] Remove temporary compatibility wrappers.
 - [ ] Archive then drop deprecated objects.
 - [ ] Update architecture docs and contributor docs with new model.
+
+## 11) Full Old-Table Inventory Mapping (table-by-table)
+
+Legend for action:
+
+- `transform`: migrate data into new canonical model
+- `derive`: replace by view/read model
+- `drop`: do not migrate into baseline V1
+
+| Old table | New target | Action |
+|---|---|---|
+| `admin_2fa_codes` | none | drop |
+| `admin_action_audit_log` | none | drop |
+| `alphabet_quiz_attempts` | `learning.user_card_events` (`assessment_submitted`) | transform |
+| `alphabet_quiz_word_bank` | `catalog.collections` + `catalog.collection_items` | transform |
+| `alphabet_task_overrides` | `catalog.collection_items.item_metadata` | transform |
+| `analytics_events` | none | drop |
+| `analytics_ingestion_health` | none | drop |
+| `app_v2_session_unique_visitors` | none | drop |
+| `click_events` | none | drop |
+| `cohorts` | none | drop |
+| `community_user_vocabulary_cards_v1` | `public.cards_v1`/shared collection read model | derive |
+| `deck_download_rate_limits` | none | drop |
+| `deck_downloads` | none | drop |
+| `development_plan_items` | none | drop |
+| `edge_rate_limits` | `ops.edge_rate_limits` | transform |
+| `foundation_deck` | `catalog.cards` + `catalog.collections` + `catalog.collection_items` + `catalog.card_origins` | transform |
+| `friend_requests` | `social.relationships` | transform |
+| `friend_streak_nudge_guards` | `social.relationships.metadata` | transform |
+| `friendships` | `social.relationships` | transform |
+| `fsrs_optimizer_trigger_leases` | none | drop |
+| `gdpr_cleanup_runs` | none | drop |
+| `gdpr_deletion_log` | none | drop |
+| `gdpr_export_requests` | none | drop |
+| `home_hero_cta_variants` | none | drop |
+| `lexicon_entries` | none (future optional module) | drop |
+| `page_views` | none | drop |
+| `preview_session_audio_posts` | `social.threads` + `social.messages` + `social.message_assets` | transform |
+| `preview_session_audio_replies` | `social.threads` + `social.messages` + `social.message_assets` | transform |
+| `preview_session_audio_share_dispatches` | none | drop |
+| `preview_session_text_messages` | `social.threads` + `social.messages` | transform |
+| `pro_capacity` | none | drop |
+| `pro_requests` | none | drop |
+| `pro_waitlist` | none | drop |
+| `profile_follows` | none | drop |
+| `profiles` | `account.profiles` | transform |
+| `published_videos_with_cards` | `public.videos_v1` | derive |
+| `ramadan_periods` | none | drop |
+| `review_preview_onboarding_sessions` | `learning.review_sessions` (`session_kind='preview'`) | transform |
+| `review_reminder_delivery_attempts` | none | drop |
+| `review_reminder_dispatch_runs` | none | drop |
+| `review_session_leases` | `learning.review_sessions` (`session_kind='review'`) | transform |
+| `scheduler_shadow_diff_events` | none | drop |
+| `scheduler_shadow_diff_flags` | none | drop |
+| `short_comments` | none | drop |
+| `short_reactions` | none | drop |
+| `signup_otp_codes` | none | drop |
+| `subtitle_word_occurrences` | none (future optional module) | drop |
+| `suggestions` | none | drop |
+| `user_accomplishment_states` | `progress.user_milestones` | transform |
+| `user_accomplishments` | `progress.user_milestones` | transform |
+| `user_activity_log` | `learning.user_card_events` + `progress.daily_activity_rollups` | transform |
+| `user_card_reviews` | `learning.user_card_events` (`reviewed`) | transform |
+| `user_card_state` | `learning.user_cards` | transform |
+| `user_cards` | `catalog.cards` + `catalog.card_origins` + user private collections | transform |
+| `user_daily_activity` | `progress.daily_activity_rollups` | transform |
+| `user_daily_immersion_recommendations` | `catalog.daily_video_recommendations` | transform |
+| `user_dashboard_progress` | `public.progress_summary_v1` | derive |
+| `user_due_count_cache` | none | drop |
+| `user_foundation_daily_seed` | none | drop |
+| `user_fsrs_active_weights` | `learning.scheduler_profiles` | transform |
+| `user_fsrs_optimizer_jobs` | none | drop |
+| `user_fsrs_optimizer_schedules` | none | drop |
+| `user_fsrs_weight_versions` | none | drop |
+| `user_hidden_shared_decks` | `catalog.user_collection_state` | transform |
+| `user_learning_path_progress` | `progress.learning_path_progress` | transform |
+| `user_learning_progress` | `public.progress_summary_v1` | derive |
+| `user_notifications` | `social.notifications` | transform |
+| `user_objectives` | none | drop |
+| `user_personal_immersion_videos` | `catalog.user_saved_videos` | transform |
+| `user_professors` | none | drop |
+| `user_review_calendar_feeds` | `reminder.calendar_feeds` | transform |
+| `user_review_reminder_preferences` | `reminder.preferences` | transform |
+| `user_review_web_push_subscriptions` | `reminder.push_subscriptions` | transform |
+| `user_reviews` | `learning.user_card_events` (`reviewed`) | transform |
+| `user_roles` | `account.user_roles` | transform |
+| `user_shared_deck_recipients` | `social.collection_access` | transform |
+| `user_shared_decks` | `catalog.collections` | transform |
+| `user_stats` | `public.progress_summary_v1` | derive |
+| `user_stats_full` | `public.progress_summary_v1` | derive |
+| `user_type_audit_log` | none | drop |
+| `user_vocabulary_card_media` | `media.user_card_media` | transform |
+| `user_vocabulary_cards` | `catalog.cards` + `catalog.card_origins` + user import collections | transform |
+| `user_vocabulary_progress` | `learning.user_cards` | transform |
+| `video_subtitle_payloads` | `catalog.video_subtitle_tracks` | transform |
+| `videos` | `catalog.videos` | transform |
+| `videos_list` | `public.videos_v1` | derive |
+| `visitor_sessions` | none | drop |
+| `vocabulary_card_videos` | `catalog.card_video_links` | transform |
+| `vocabulary_cards` | `catalog.cards` + `catalog.card_origins` | transform |
+| `vocabulary_themes` | `catalog.cards.theme_key` + metadata | transform |
+| `word_import_signal_daily` | none | drop |
+| `word_import_signals` | none | drop |

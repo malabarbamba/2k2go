@@ -108,10 +108,24 @@ export async function searchCardsV2(
 ): Promise<SearchCardsV2Response> {
 	const providedArgs =
 		args && typeof args === "object" ? (args as Record<string, unknown>) : {};
-	const normalizedArgs =
-		"p_source_types" in providedArgs
-			? providedArgs
-			: { ...providedArgs, p_source_types: null };
+	const normalizedArgs = {
+		p_query:
+			typeof providedArgs.p_query === "string"
+				? providedArgs.p_query
+				: typeof providedArgs.p_q === "string"
+					? providedArgs.p_q
+					: null,
+		p_collection_id:
+			typeof providedArgs.p_collection_id === "string"
+				? providedArgs.p_collection_id
+				: null,
+		p_limit:
+			typeof providedArgs.p_limit === "number" ? providedArgs.p_limit : 50,
+		p_offset:
+			typeof providedArgs.p_offset === "number" ? providedArgs.p_offset : 0,
+		p_source_types:
+			"p_source_types" in providedArgs ? providedArgs.p_source_types : null,
+	};
 
 	const { data, error } = await (supabase as any).rpc(
 		"search_cards_v2",
@@ -154,7 +168,19 @@ export async function getDueCountV2(
 	supabase: AppSupabaseClient,
 	args: GetDueCountV2Args,
 ): Promise<GetDueCountV2Response> {
-	const { data, error } = await (supabase as any).rpc("get_due_count_v2", args);
+	const providedArgs =
+		args && typeof args === "object" ? (args as Record<string, unknown>) : {};
+	const normalizedArgs = {
+		p_collection_id:
+			typeof providedArgs.p_collection_id === "string"
+				? providedArgs.p_collection_id
+				: null,
+	};
+
+	const { data, error } = await (supabase as any).rpc(
+		"get_due_count_v2",
+		normalizedArgs,
+	);
 	return {
 		data,
 		error,
@@ -165,7 +191,21 @@ export async function getDueCardsV2(
 	supabase: AppSupabaseClient,
 	args: GetDueCardsV2Args,
 ): Promise<GetDueCardsV2Response> {
-	const { data, error } = await (supabase as any).rpc("get_due_cards_v2", args);
+	const providedArgs =
+		args && typeof args === "object" ? (args as Record<string, unknown>) : {};
+	const normalizedArgs = {
+		p_limit:
+			typeof providedArgs.p_limit === "number" ? providedArgs.p_limit : 50,
+		p_collection_id:
+			typeof providedArgs.p_collection_id === "string"
+				? providedArgs.p_collection_id
+				: null,
+	};
+
+	const { data, error } = await (supabase as any).rpc(
+		"get_due_cards_v2",
+		normalizedArgs,
+	);
 	return {
 		data: data ?? null,
 		error,

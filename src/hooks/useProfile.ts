@@ -56,6 +56,8 @@ export interface UserProfile {
 	admin_override_expires_at?: string | null;
 	created_at: string;
 	updated_at: string;
+	username_change_count?: number;
+	username_changed_at?: string | null;
 }
 
 interface UseProfileReturn {
@@ -65,12 +67,14 @@ interface UseProfileReturn {
 	isOwnProfile: boolean;
 	refetch: () => void;
 	updateName: (firstName: string, lastName: string) => Promise<void>;
+	changeUsername: (nextUsername: string) => Promise<void>;
 	updateProfile: (data: {
 		bio?: string;
 		motto?: string;
 		location?: string;
 		fsrs_target_retention?: number;
 		new_cards_per_day?: number;
+		avatar_url?: string;
 	}) => Promise<void>;
 }
 
@@ -83,6 +87,81 @@ export const useProfile = (
 	const [profile, setProfile] = useState<UserProfile | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+
+	const mapCanonicalProfileToUserProfile = useCallback(
+		(
+			profileRow: {
+				user_id: string;
+				username: string | null;
+				display_name: string | null;
+				avatar_url: string | null;
+				bio: string | null;
+				email_notifications_enabled?: boolean | null;
+				timezone?: string | null;
+				created_at: string;
+				updated_at: string;
+				username_change_count?: number;
+				username_changed_at?: string | null;
+			},
+			schedulerRow?: {
+				desired_retention: number;
+				max_daily_new: number;
+				timezone: string;
+			} | null,
+		): UserProfile => {
+			const displayName = profileRow.display_name?.trim() ?? "";
+			const [firstName, ...rest] = displayName.length > 0 ? displayName.split(/\s+/) : [];
+			const lastName = rest.join(" ").trim();
+
+			return {
+				id: profileRow.user_id,
+				user_id: profileRow.user_id,
+				username: profileRow.username,
+				first_name: firstName ?? null,
+				last_name: lastName.length > 0 ? lastName : null,
+				avatar_url: profileRow.avatar_url,
+				bio: profileRow.bio,
+				motto: null,
+				location: null,
+				followers_count: 0,
+				following_count: 0,
+				is_public: true,
+				notifications_email:
+					typeof profileRow.email_notifications_enabled === "boolean"
+						? profileRow.email_notifications_enabled
+						: null,
+				email: null,
+				fsrs_target_retention: schedulerRow?.desired_retention ?? 0.9,
+				new_cards_per_day: schedulerRow?.max_daily_new ?? 20,
+				scheduler_timezone:
+					normalizeSchedulerTimezone(schedulerRow?.timezone) ||
+					normalizeSchedulerTimezone(profileRow.timezone) ||
+					"UTC",
+				scheduler_day_cutoff_hour: 4,
+				plan: null,
+				pro_status: null,
+				admin_override_pro: null,
+				admin_override_expires_at: null,
+				created_at: profileRow.created_at,
+				updated_at: profileRow.updated_at,
+				username_change_count: profileRow.username_change_count ?? 0,
+				username_changed_at: profileRow.username_changed_at ?? null,
+			};
+		},
+		[],
+	);
+
+	const normalizeSingleRpcRow = useCallback(
+		<T extends object>(value: unknown): T | null => {
+			if (Array.isArray(value)) {
+				const firstRow = value[0];
+				return firstRow && typeof firstRow === "object" ? (firstRow as T) : null;
+			}
+
+			return value && typeof value === "object" ? (value as T) : null;
+		},
+		[],
+	);
 
 	const fetchProfile = useCallback(async () => {
 		// Need at least one identifier
@@ -97,16 +176,54 @@ export const useProfile = (
 			setLoading(true);
 			setError(null);
 
-			let query = supabase.from("profiles").select("*");
+			const authenticatedUserId = user?.id;
+			const targetUserId = userId?.trim() || null;
+			const isOwnProfileRequest =
+				typeof authenticatedUserId === "string" &&
+				targetUserId === authenticatedUserId;
 
-			// Query by username or userId
-			if (userId) {
-				query = query.eq("user_id", userId);
-			} else if (normalizedUsername) {
-				query = query.ilike("username", normalizedUsername);
+			if (isOwnProfileRequest) {
+				const [profileRpcResult, schedulerResult] = await Promise.all([
+					supabase.rpc("get_my_profile_v1"),
+					supabase
+						.from("scheduler_profiles")
+						.select("desired_retention,max_daily_new,timezone")
+						.eq("user_id", authenticatedUserId)
+						.maybeSingle(),
+				]);
+
+				if (profileRpcResult.error) {
+					setError(profileRpcResult.error.message);
+					setProfile(null);
+					return;
+				}
+
+				if (schedulerResult.error) {
+					console.error("Error fetching scheduler profile:", schedulerResult.error);
+				}
+
+				if (!profileRpcResult.data) {
+					setError(null);
+					setProfile(null);
+					return;
+				}
+
+				const nextProfile = mapCanonicalProfileToUserProfile(
+					profileRpcResult.data,
+					schedulerResult.data,
+				);
+				setProfile(nextProfile);
+				setError(null);
+				return;
 			}
 
-			const { data, error: fetchError } = await query.maybeSingle();
+			const { data, error: fetchError } = userId
+				? await supabase.rpc("get_profile_by_user_id_v1", {
+						p_target_user_id: userId,
+					})
+				: await supabase.rpc("get_profile_by_username_v1", {
+						p_username: normalizedUsername,
+					});
 
 			if (fetchError) {
 				console.error("Error fetching profile:", fetchError);
@@ -114,7 +231,20 @@ export const useProfile = (
 				setProfile(null);
 			} else {
 				// Gracefully handle not found - return null profile, no throw
-				const nextProfile = data as UserProfile | null;
+				const profileRow = normalizeSingleRpcRow<{
+					user_id: string;
+					username: string | null;
+					display_name: string | null;
+					avatar_url: string | null;
+					bio: string | null;
+					created_at: string;
+					updated_at: string;
+					username_change_count?: number;
+					username_changed_at?: string | null;
+				}>(data);
+				const nextProfile = profileRow
+					? mapCanonicalProfileToUserProfile(profileRow, null)
+					: null;
 				setProfile(nextProfile);
 				setError(null);
 
@@ -187,7 +317,7 @@ export const useProfile = (
 		} finally {
 			setLoading(false);
 		}
-	}, [normalizedUsername, userId, user?.id]);
+	}, [mapCanonicalProfileToUserProfile, normalizeSingleRpcRow, normalizedUsername, userId, user?.id]);
 
 	useEffect(() => {
 		if (!authLoading) {
@@ -264,14 +394,13 @@ export const useProfile = (
 
 			const updatedAt = new Date().toISOString();
 
-			const { error: updateError } = await supabase
-				.from("profiles")
-				.update({
-					first_name: firstName,
-					last_name: lastName,
-					updated_at: updatedAt,
-				})
-				.eq("user_id", user.id);
+			const displayName = [firstName.trim(), lastName.trim()]
+				.filter((value) => value.length > 0)
+				.join(" ");
+
+			const { error: updateError } = await supabase.rpc("upsert_my_profile_v1", {
+				p_display_name: displayName.length > 0 ? displayName : null,
+			});
 
 			if (updateError) {
 				throw updateError;
@@ -310,6 +439,7 @@ export const useProfile = (
 			location?: string;
 			fsrs_target_retention?: number;
 			new_cards_per_day?: number;
+			avatar_url?: string;
 		}) => {
 			if (!user?.id) {
 				throw new Error("User not authenticated");
@@ -323,6 +453,7 @@ export const useProfile = (
 				location?: string;
 				fsrs_target_retention?: number;
 				new_cards_per_day?: number;
+				avatar_url?: string;
 			} = {};
 
 			if (typeof data.bio === "string") {
@@ -354,16 +485,53 @@ export const useProfile = (
 				);
 			}
 
-			const { error: updateError } = await supabase
-				.from("profiles")
-				.update({
-					...normalizedData,
-					updated_at: updatedAt,
-				})
-				.eq("user_id", user.id);
+			if (typeof data.avatar_url === "string") {
+				const normalizedAvatarUrl = data.avatar_url.trim();
+				if (normalizedAvatarUrl.length > 0) {
+					normalizedData.avatar_url = normalizedAvatarUrl;
+				}
+			}
 
-			if (updateError) {
-				throw updateError;
+			const { error: profileUpdateError } = await supabase.rpc(
+				"upsert_my_profile_v1",
+				{
+					p_bio: normalizedData.bio,
+					p_avatar_url: normalizedData.avatar_url,
+				},
+			);
+
+			if (profileUpdateError) {
+				throw profileUpdateError;
+			}
+
+			if (
+				typeof normalizedData.fsrs_target_retention === "number" ||
+				typeof normalizedData.new_cards_per_day === "number"
+			) {
+				const { error: schedulerUpdateError } = await supabase
+					.from("profiles")
+					.update({
+						fsrs_target_retention:
+							normalizedData.fsrs_target_retention ??
+							profile?.fsrs_target_retention ??
+							0.9,
+						new_cards_per_day:
+							normalizedData.new_cards_per_day ?? profile?.new_cards_per_day ?? 20,
+						updated_at: updatedAt,
+					})
+					.eq("user_id", user.id);
+
+				if (schedulerUpdateError) {
+					throw schedulerUpdateError;
+				}
+			}
+
+			if (typeof normalizedData.location === "string") {
+				console.warn("Profile location is not persisted in baseline v1 schema.");
+			}
+
+			if (typeof normalizedData.motto === "string") {
+				console.warn("Profile motto is not persisted in baseline v1 schema.");
 			}
 
 			// Update local state directly without refetching
@@ -386,7 +554,58 @@ export const useProfile = (
 				},
 			});
 		},
-		[profile?.username, user?.id],
+		[
+			profile?.fsrs_target_retention,
+			profile?.new_cards_per_day,
+			profile?.username,
+			user?.id,
+		],
+	);
+
+	const changeUsername = useCallback(
+		async (nextUsername: string) => {
+			if (!user?.id) {
+				throw new Error("User not authenticated");
+			}
+
+			const candidate = nextUsername.trim().toLowerCase();
+			const { data, error: changeError } = await supabase.rpc(
+				"change_my_username_v1",
+				{
+					p_username: candidate,
+				},
+			);
+
+			if (changeError) {
+				throw changeError;
+			}
+
+			if (!data) {
+				return;
+			}
+
+			setProfile((prev) =>
+				prev
+					? {
+							...prev,
+							username: data.username,
+							updated_at: data.updated_at,
+							username_change_count: data.username_change_count ?? 1,
+							username_changed_at: data.username_changed_at ?? new Date().toISOString(),
+						}
+					: prev,
+			);
+
+			dispatchProfileUpdated({
+				userId: user.id,
+				username: data.username,
+				patch: {
+					username: data.username,
+					updated_at: data.updated_at,
+				},
+			});
+		},
+		[user?.id],
 	);
 
 	return {
@@ -396,6 +615,7 @@ export const useProfile = (
 		isOwnProfile,
 		refetch: fetchProfile,
 		updateName,
+		changeUsername,
 		updateProfile,
 	};
 };

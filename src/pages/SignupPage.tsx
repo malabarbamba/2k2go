@@ -68,13 +68,18 @@ export default function SignupPage() {
 			return;
 		}
 
-		setMessage(
-			isEnglish
-				? "Account created. You can sign in now."
-				: "Compte créé. Tu peux te connecter.",
-		);
+		if (!result.emailConfirmationSent) {
+			setMessage(
+				isEnglish
+					? "Unable to confirm that the activation email was sent. Try again in a moment."
+					: "Impossible de confirmer l'envoi de l'email d'activation. Réessaie dans un instant.",
+			);
+			setIsSubmitting(false);
+			return;
+		}
+
 		setIsSubmitting(false);
-		navigate("/login", { replace: true });
+		navigate("/login?signup=confirm-email-sent", { replace: true });
 	};
 
 	return (

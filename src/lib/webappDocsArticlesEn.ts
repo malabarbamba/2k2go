@@ -25,10 +25,10 @@ const WEBAPP_DOCS_ARTICLES_BY_SLUG_EN: Record<string, WebappDocsArticle> = {
 		subtitle: "The progression framework",
 		content: `# Welcome
 
-This guide gives you a complete framework for learning to understand standard Arabic by ear without relying on classroom-style teaching or permanent translation. Whether you are starting from zero or returning after repeated failures, the goal here is simple: build a system that survives real life.
+This guide gives you a complete framework for learning to understand standard Arabic by ear. No classroom teaching, no permanent translation. Whether you're starting from zero or coming back after failing multiple times, the goal is simple: build a system that survives real life.
 
 > **The principle in one sentence**
-> Listen to real Arabic every day + consolidate useful vocabulary with [spaced repetition →](/comprendre/la-repetition-espacee) = comprehension that builds itself, with [9 minutes of daily reviews →](/demarrer/faire-ses-revues).
+> Listen to real Arabic every day + consolidate useful vocabulary with [spaced repetition](/start/reviews) = comprehension that builds itself, with 9 minutes of daily reviews.
 
 ---
 
@@ -36,45 +36,33 @@ This guide gives you a complete framework for learning to understand standard Ar
 
 | Your situation | Start here | Why |
 |---|---|---|
-| Complete beginner | [The Arabic alphabet →](/bases/lalphabet-arabe) | Letter recognition is the first concrete step |
-| Fragile foundations, need structure | [The standard path →](/comprendre/le-parcours-type) | It gives you the full map from zero to autonomy |
-| You already understand the method | [Do your reviews →](/demarrer/faire-ses-revues) | You can launch the daily routine immediately |
-
----
-
-## What you will actually build
-
-The first useful progress in Arabic is not knowing facts *about* the language. It is recognizing words and patterns quickly and without effort. That recognition grows through two mechanisms working together:
-
-- **Exposure**: real standard Arabic audio and video so the ear adapts to rhythm, sound, and recurring structures.
-- **Consolidation**: review cards that bring back useful words at the right time, just before forgetting.
-
-When both are active, volume accumulates while mental load stays manageable.
+| Complete beginner | [Who is it for](/introduction/who-is-it-for) | Understand the method before diving in |
+| Ready to commit | [The Arabic Roadmap](/understand/arabic-roadmap) | The full map from zero to autonomy |
+| You know the method | [How to Do Your Reviews](/start/reviews) | Launch the daily routine immediately |
 
 ---
 
 ## Next reading
 
-- [The active immersion system →](/comprendre/le-systeme-dimmersion-active)
-- [Do your reviews →](/demarrer/faire-ses-revues)
-- [The standard path →](/comprendre/le-parcours-type)
+- [Who is it for](/introduction/who-is-it-for)
+- [The Arabic Roadmap](/understand/arabic-roadmap)
 `,
 	},
-	"/annexes/glossaire": {
-		slug: "/annexes/glossaire",
+	"/appendix/glossary": {
+		slug: "/appendix/glossary",
 		title: "Glossary",
 		subtitle: "Definitions of the terms used",
 		content: `# Glossary
 
-This glossary defines the technical terms used in the documentation. Each definition is framed in the context of learning Arabic through active immersion.
+Quick reference for the terms used in this guide. Each definition is framed around learning Arabic through active immersion.
 
 ---
 
 ## Key terms
 
-- **Active immersion**: focused work on short authentic content with extraction of reusable vocabulary.
+- **Active immersion**: focused work on short authentic content, where you extract reusable vocabulary.
 - **Passive immersion**: replaying already-worked content in the background for extra exposure.
-- **Single-target card**: a review card that isolates one useful word inside a real sentence.
+- **One-target sentence**: a review card that isolates one useful word inside a real sentence.
 - **FSRS**: the scheduling algorithm that predicts the best review moment for each card.
 - **Lexical coverage**: the percentage of words in a text or audio stream that you already know.
 
@@ -82,16 +70,24 @@ This glossary defines the technical terms used in the documentation. Each defini
 
 ## Next reading
 
-- [Scientific sources →](/annexes/sources-scientifiques)
+- [Scientific sources](/appendix/sources)
 `,
 	},
-	"/annexes/sources-scientifiques": {
-		slug: "/annexes/sources-scientifiques",
+	"/appendix/sources": {
+		slug: "/appendix/sources",
 		title: "Scientific sources",
 		subtitle: "References that support the system",
 		content: `# Scientific sources
 
-The active immersion system is based on established principles from applied linguistics and cognitive science. This page groups the references that support its main components: exposure, spaced repetition, lexical coverage, and Arabic-specific constraints.
+This system isn't built from motivational slogans or gut feelings. Every component, the exposure, the cards, the review timing, aligns with decades of research on how memory and language acquisition actually work.
+
+---
+
+## Where this method comes from
+
+I want to be upfront about this. The method behind 2k2go is derived almost entirely from **AJATT** (All Japanese All The Time), a language learning approach created by Khatzumoto, and from **Tatsumoto Ren's** adaptation of it. You can find the original at [tatsumoto-ren.github.io](https://tatsumoto-ren.github.io/blog/table-of-contents.html).
+
+These two approaches have changed language learning for hundreds of thousands of people. I used them for Arabic, proved they worked for me, and built 2k2go around them. That's the honest story.
 
 ---
 
@@ -110,32 +106,38 @@ The active immersion system is based on established principles from applied ling
 
 ---
 
-## Memory and review scheduling
+## Arabic-specific research
 
-Spaced repetition research matters because memory weakens predictably. A well-timed review strengthens recall with less time than constant repetition.
+- Masrai, A. (2016). *How Different Is Arabic from Other Languages?* Journal of Applied Linguistics and Language Research. The 2,000 most frequent words in Arabic cover about 80% of word occurrences in standard texts. That's the research behind the Foundations 2000 deck and the whole premise of [The Arabic Roadmap](/understand/arabic-roadmap). Full paper: [scispace.com](https://scispace.com/pdf/how-different-is-arabic-from-other-languages-the-u36eqdnwnc.pdf)
+
+- Ferguson (1959): the formal study of Arabic diglossia, the coexistence of Modern Standard Arabic (high variety) with regional dialects (low variety). This is why [The Three Arabics](/understand/the-three-arabics) matter so much.
 
 ---
 
-## Why this matters
+## Memory and review scheduling
 
-This system is not built from motivational slogans. Its pieces are chosen because they line up with what research says about durable vocabulary acquisition.
+Spaced repetition research matters because memory weakens predictably. A well-timed review strengthens recall with less effort than constant repetition.
+
+- Ebbinghaus (1885): the forgetting curve, how memory decays at a predictable rate.
+- Roediger & Karpicke (2006): retrieval practice strengthens memory more than passive review.
+- Karpicke & Roediger (2008): active retrieval is the key factor in long-term retention.
 `,
 	},
-	"/bases/grammaire-essentielle": {
-		slug: "/bases/grammaire-essentielle",
+	"/foundations/grammar": {
+		slug: "/foundations/grammar",
 		title: "Essential grammar",
 		subtitle: "Minimal grammar, at the right moment",
 		content: `# Essential grammar
 
-Forget endless conjugation tables and blank-filling exercises. In this system, grammar is not a prerequisite. It is an **accelerator**. Ten well-chosen minutes of grammar can save hours of confusion during immersion.
+Forget the conjugation tables and the fill-in-the-blank exercises. In this system, grammar isn't a prerequisite. It's an accelerator. Ten well-chosen minutes of grammar can save hours of confusion during immersion.
 
 ---
 
 ## The real role of grammar
 
-Useful grammar acts like a map. It helps you label what you keep seeing in real sentences: a definite article, a connector, a missing verb, a pattern of agreement.
+Useful grammar works like a map. It helps you label what you keep seeing in real sentences: a definite article, a connector, a missing verb, a pattern of agreement.
 
-The goal is not to memorize everything at once. The goal is to make immersion more understandable so the brain can do the real work through repeated recognition.
+You're not trying to memorize everything at once. You're trying to make immersion more understandable so your brain can do the real work through repeated recognition.
 
 ---
 
@@ -152,11 +154,11 @@ The goal is not to memorize everything at once. The goal is to make immersion mo
 
 ## When grammar is worth checking
 
-Look up grammar when the same structure blocks you several times in immersion. Read the minimum necessary, then return to real content so the pattern can settle in context.
+Look up grammar when the same structure blocks you several times in immersion. Read the minimum necessary, then go back to real content so the pattern can settle in context.
 `,
 	},
-	"/bases/lalphabet-arabe": {
-		slug: "/bases/lalphabet-arabe",
+	"/foundations/alphabet": {
+		slug: "/foundations/alphabet",
 		title: "Learn the Arabic alphabet in 2 days",
 		subtitle: "A fast method to move from letters to real words",
 		content: `# Learn the Arabic alphabet in 2 days
@@ -191,22 +193,22 @@ Learning by family is faster than memorizing isolated shapes.
 
 ## The main exception
 
-Six letters do not connect to the following letter: **ا د ذ ر ز و**. When they appear, the connection stops and the next letter restarts.
+Six letters don't connect to the following letter: **ا د ذ ر ز و**. When they appear, the connection stops and the next letter restarts.
 
 ---
 
 ## The goal
 
-Do not aim for perfect calligraphy. Aim for fast recognition. Once letters stop slowing you down, real vocabulary work can begin.
+Don't aim for perfect calligraphy. Aim for fast recognition. Once letters stop slowing you down, real vocabulary work can begin.
 `,
 	},
-	"/bases/lecture-et-voyelles": {
-		slug: "/bases/lecture-et-voyelles",
+	"/foundations/reading-vowels": {
+		slug: "/foundations/reading-vowels",
 		title: "Reading and vowels",
 		subtitle: "Read without vowels, progressively",
 		content: `# Reading and vowels
 
-Arabic often omits short vowels in everyday writing. That is the feature that unsettles beginners the most, but it becomes manageable with a progressive approach.
+Arabic often omits short vowels in everyday writing. That's the feature that unsettles beginners the most, but it becomes manageable with a progressive approach.
 
 ---
 
@@ -217,7 +219,7 @@ Arabic often omits short vowels in everyday writing. That is the feature that un
 | Long vowels | ا ، و ، ي | Always visible |
 | Short vowels | fatha, kasra, damma | Usually omitted |
 
-Pedagogical and religious texts often keep short vowels. Everyday Arabic usually does not.
+Pedagogical and religious texts often keep short vowels. Everyday Arabic usually doesn't.
 
 ---
 
@@ -227,7 +229,7 @@ Pedagogical and religious texts often keep short vowels. Everyday Arabic usually
 2. **Partially vocalized texts**: some vowels are present, others are inferred.
 3. **Unvocalized texts**: the norm in modern Arabic.
 
-As vocabulary grows, recognition becomes visual and contextual, so missing vowels stop feeling like missing information.
+As vocabulary grows, recognition becomes visual and contextual. Missing vowels stop feeling like missing information.
 
 ---
 
@@ -236,50 +238,74 @@ As vocabulary grows, recognition becomes visual and contextual, so missing vowel
 Use vocalized material at the beginning, then let immersion gradually teach your brain to predict the unmarked forms.
 `,
 	},
-	"/comprendre/arabe-standard-arabe-classique-dialectes": {
-		slug: "/comprendre/arabe-standard-arabe-classique-dialectes",
-		title: "Standard Arabic, Classical Arabic, dialects",
-		subtitle: "Choosing the right base",
-		content: `# Standard Arabic, Classical Arabic, dialects
+	"/understand/the-three-arabics": {
+		slug: "/understand/the-three-arabics",
+		title: "The Three Arabics",
+		subtitle: "Which Arabic should you actually learn?",
+		content: `# The Three Arabics
 
-Before learning Arabic, you need to answer one question most systems avoid: *which Arabic?* The answer changes years of effort.
+**Which Arabic should I learn?**
+
+Modern Standard Arabic (MSA). It's the one that works everywhere: news, education, formal writing, all 22 Arab countries. Everything else comes after. Here's the quick breakdown.
 
 ---
 
-## Three varieties
+## Three varieties, three very different purposes
 
-| Variety | Main use | Reach |
+| Variety | Main use | Geographic reach |
 |---|---|---|
-| Modern Standard Arabic | Media, education, formal speech, writing | Shared across the Arab world |
-| Classical Arabic | Religious texts, classical literature | Literary, not everyday |
-| Dialects | Daily conversation | Region-limited |
+| **Modern Standard Arabic** | Media, education, formal speech, writing | All Arab countries |
+| **Classical Arabic** | Religious texts, classical literature | Literary, not everyday |
+| **Dialects** (Egyptian, Moroccan, Gulf...) | Daily conversation | One region only |
+
+These aren't just accents of the same language. A dialect spoken in Morocco is not understood in Saudi Arabia. And Classical Arabic is not what people use at work or on the news.
 
 ---
 
-## Why start with standard Arabic
+## Why MSA is the right starting point
 
-Standard Arabic gives you the widest return:
+**It's universal.** One person who knows MSA can follow the news, read a newspaper, have a formal conversation, and understand content from any Arab country. No other variety gives you that.
 
-- access to media and formal content across countries
-- a bridge toward dialects later
-- partial continuity with classical Arabic
+**It bridges into dialects.** Dialects evolved out of Arabic. Once you have a solid MSA base, a dialect becomes a set of local variations to add, not a whole new language to learn from scratch. The reverse doesn't work: learning Moroccan Darija doesn't give you a path into Gulf Arabic or MSA.
 
-Starting with a dialect narrows your initial reach. Starting with standard Arabic keeps the broadest door open.
+**It opens religious and classical content.** MSA is close enough to Classical Arabic that a strong foundation makes religious texts accessible. The gap is real, but it's bridgeable. Not like learning a completely different language.
+
+---
+
+## The dialect trap
+
+A lot of learners start with a dialect because it feels more "real" or useful for a specific trip or family connection. That's understandable. But you end up investing years into a variety understood by one region, with almost no overlap into other parts of the Arab world.
+
+If your goal is long-term Arabic comprehension, not just one country's dialect, MSA is the door. Dialects are rooms inside the house.
+
+---
+
+## The recommended order
+
+1. **MSA first**: build broad comprehension
+2. **Local dialect**: add it when you have a specific regional need
+3. **Classical Arabic**: for religious or literary depth, if that's relevant to you
+
+---
+
+## Next reading
+
+- [The Arabic Roadmap](/understand/arabic-roadmap)
 `,
 	},
-	"/comprendre/immersion-massive": {
-		slug: "/comprendre/immersion-massive",
+	"/understand/massive-immersion": {
+		slug: "/understand/massive-immersion",
 		title: "Massive immersion",
 		subtitle: "The exposure volume you need",
 		content: `# Massive immersion
 
-Exposure volume is what separates “knowing some words” from “understanding by ear.” The brain needs repeated contact with the language to build fast recognition.
+Exposure volume is what separates "knowing some words" from "understanding by ear." Your brain needs repeated contact with the language to build fast recognition.
 
 ---
 
 ## Why volume matters
 
-Words become stable when they are met many times across varied contexts.
+Words become stable when you meet them many times across varied contexts.
 
 | Number of encounters | Effect |
 |---|---|
@@ -290,23 +316,20 @@ Words become stable when they are met many times across varied contexts.
 
 ---
 
-## Massive does not mean exhausting
+## Massive doesn't mean exhausting
 
-Massive immersion does not mean spending all day in front of a screen. It means multiplying contact points through a mix of:
-
-- [active immersion →](/immersion/immersion-active)
-- [passive immersion →](/immersion/immersion-passive)
+Massive immersion doesn't mean spending all day in front of a screen. It means multiplying contact points through a mix of active and passive immersion.
 
 Short, repeatable sessions beat rare heroic efforts.
 `,
 	},
-	"/comprendre/la-repetition-espacee": {
-		slug: "/comprendre/la-repetition-espacee",
+	"/understand/spaced-repetition": {
+		slug: "/understand/spaced-repetition",
 		title: "Spaced repetition",
 		subtitle: "Review less, retain more",
 		content: `# Spaced repetition
 
-Spaced repetition is the mechanism that lets you retain thousands of Arabic words with limited daily time. The principle is simple: review a word just before you would forget it.
+Spaced repetition is the mechanism that lets you retain thousands of Arabic words with limited daily time. The principle is simple: review a word just before you'd forget it.
 
 ---
 
@@ -333,47 +356,111 @@ Without review, most words fade. Reviewing too early wastes time. Reviewing too 
 The algorithm does the scheduling so you can focus on honest answers and consistent daily work.
 `,
 	},
-	"/comprendre/le-parcours-type": {
-		slug: "/comprendre/le-parcours-type",
-		title: "Everything you need to do to finally speak Arabic",
+	"/understand/arabic-roadmap": {
+		slug: "/understand/arabic-roadmap",
+		title: "The Arabic Roadmap",
 		subtitle: "From zero to comprehension, phase by phase",
-		content: `# Everything you need to do to finally speak Arabic
+		content: `# The Arabic Roadmap
 
-This page gives you the full map from zero to autonomous comprehension of standard Arabic. It is not a rigid timetable. It is a logical sequence where each phase prepares the next one.
+**What do I actually do, step by step?**
 
----
-
-## Phase 0: build the environment
-
-Start by placing Arabic into your daily environment: podcasts, news clips, educational videos, short excerpts. At first, the goal is not immediate understanding. It is familiarity.
+Four phases. Build Arabic into your daily environment first. Then lay foundations over about a month: alphabet, 2,000 core words, grammar basics, daily reviews. Then let content carry you. Then reach autonomy. Here's the full map.
 
 ---
 
-## Phase 1: foundations
+## Phase 0: Build the environment
 
-Build five pillars together:
+Before a single flashcard, before any grammar, you do one thing: make Arabic part of your daily life.
 
-1. spaced repetition
-2. the Foundations 2000 deck
-3. active immersion
-4. passive immersion
-5. minimal grammar support
+Start playing Arabic content in the background. YouTube news clips, podcasts, educational videos, whatever. Don't worry about understanding. The goal right now is familiarity. Your ear needs to get used to the sounds, the rhythm, the flow. This is passive exposure, and it costs almost no effort.
 
----
+Cut distractions where you can. Your attention is a limited resource. The less it's scattered, the faster acquisition goes.
 
-## Phase 2: accumulation
-
-Recognition grows. More words feel familiar. Content becomes less opaque. Your deck personalizes itself around what you actually consume.
+What you get at the end of Phase 0: Arabic stops sounding alien. You're ready for Phase 1.
 
 ---
 
-## Phase 3: autonomy
+## Phase 1: The foundations (about 1 month)
 
-At this point, immersion becomes the main engine. Cards still consolidate, but exposure now carries most of the weight.
+This is where the real system kicks in. Five things happen at the same time.
+
+**1. Learn the Arabic alphabet (days 1 to 3)**
+
+28 letters, each with 4 forms depending on position. Don't aim for perfect calligraphy. Aim for fast recognition. Many letters share the same base shape and only differ by dots, which makes them easier to group. With a dedicated alphabet deck and focused effort, most learners reach functional recognition in 2 to 3 days.
+
+**2. Start the Foundations 2000 deck**
+
+Research shows that the 2,000 most frequent words in Arabic cover about 80% of what you'll encounter in standard texts (Masrai, 2016). That's the threshold where immersion stops feeling like pure noise and starts making partial sense. The Foundations deck is pre-built with those 2,000 words, and you review them daily using FSRS.
+
+**3. Read a grammar guide (15 to 30 minutes per day)**
+
+Grammar here is not a prerequisite. It's a decoder. You're not trying to master everything. You're trying to understand enough structure that immersion starts to make sense faster.
+
+Two free PDFs that cover what you need:
+- [Al-Hakkak grammar guide (PDF)](/downloads/grammaire/arabe-quelques-reperes-grammaticaux-al-hakkak.pdf): progressive, clear, well-organized
+- [Medina Book 2 grammar guide (PDF)](/downloads/grammaire/regles-grammaire-deuxieme-livre-medine.pdf): classic, structured reference
+
+One thing to keep in mind: these guides may contain language learning advice that conflicts with this method. Use their grammar explanations, ignore their learning strategy recommendations.
+
+**4. Launch your daily 9-minute review session**
+
+Every day. No exceptions. This is the non-negotiable part of the system. The FSRS algorithm schedules each card at the moment you're about to forget it. Nine minutes is not a marketing number. It's what consistent daily reviews actually take at a steady card load. See [How to Do Your Reviews](/start/reviews) for the full grading approach.
+
+**5. Build your personal deck from immersion**
+
+Every time you watch or listen to Arabic content, extract 1 to 3 words you want to keep. Turn them into cards. This deck grows with you and reflects the exact vocabulary you actually encounter. It's yours, not a pre-made list.
+
+---
+
+## Phase 2: Growth (about 3 months)
+
+Once the foundations are solid, the system accelerates on its own.
+
+**Switch to Arabic subtitles.** This is a big shift. When you stop reading French or English subtitles and start reading Arabic ones, the language stops being filtered through translation. It's harder at first. Then it becomes the biggest accelerator you have.
+
+**Diversify your content.** News, documentaries, religious content, business talks, comedy. Each new domain brings its own vocabulary patterns, and the overlap between domains is what builds general fluency. Don't stick to one type of content forever.
+
+**Go monolingual gradually.** At first, your cards have French or English translations. As your vocabulary grows, start defining words in Arabic directly. This transition kills the mental translation habit: the automatic step of converting Arabic into your native language before understanding it.
+
+**Let speech emerge.** Don't force output early. Speaking ability develops from listening comprehension. When you've built a strong recognition base, words and structures start surfacing naturally when you try to speak. Imitation exercises (repeating phrases after native speakers) help calibrate pronunciation.
+
+---
+
+## Phase 3: Mastery (ongoing)
+
+At this point, you understand most standard Arabic content. The work changes character.
+
+**Stop filtering by frequency.** Earlier phases focused on frequent words. Now you learn every unknown word you encounter.
+
+**Target your weak areas.** Some domains are harder than others. Go after the content that still trips you up.
+
+**Read Arabic to think in Arabic.** History, culture, literature. The language becomes a tool for thought, not just a filter.
+
+**Keep going.** The system doesn't stop. It evolves with you.
+
+---
+
+## Overview
+
+| Phase | Goal | Rough duration |
+|---|---|---|
+| Phase 0 | Build daily immersion environment | 1 to 3 days |
+| Phase 1 | Alphabet + Foundations 2000 + grammar basics + review routine | About 1 month |
+| Phase 2 | Arabic subtitles, content diversification, monolingual transition | About 3 months |
+| Phase 3 | Mastery, culture, advanced registers | Ongoing |
+
+Durations depend on time invested and consistency. The system adapts to your pace.
+
+---
+
+## Next reading
+
+- [The One-Target Sentence](/start/one-target-sentence)
+- [How to Do Your Reviews](/start/reviews)
 `,
 	},
-	"/comprendre/le-systeme-dimmersion-active": {
-		slug: "/comprendre/le-systeme-dimmersion-active",
+	"/understand/active-immersion-system": {
+		slug: "/understand/active-immersion-system",
 		title: "The active immersion system",
 		subtitle: "Exposure, consolidation, repetition",
 		content: `# The active immersion system
@@ -384,7 +471,7 @@ This is the core mechanism of 2k2go: listen to real Arabic every day, extract us
 
 ## Why immersion works
 
-The brain acquires language by processing understandable messages repeatedly. That is why real exposure matters more than rule memorization alone.
+Your brain acquires language by processing understandable messages repeatedly. That's why real exposure matters more than rule memorization alone.
 
 ---
 
@@ -403,54 +490,99 @@ The brain acquires language by processing understandable messages repeatedly. Th
 You listen, notice, extract, review, then meet the same material again in new contexts. That loop is what transforms knowledge into fast recognition.
 `,
 	},
-	"/demarrer/carte-a-cible-unique": {
-		slug: "/demarrer/carte-a-cible-unique",
-		title: "Single-target card",
-		subtitle: "Review faster without losing context",
-		content: `# Single-target card
+	"/start/one-target-sentence": {
+		slug: "/start/one-target-sentence",
+		title: "The One-Target Sentence",
+		subtitle: "One word per card, with context",
+		content: `# The One-Target Sentence
 
-The single-target card is the core card format used in 2k2go. Instead of testing an entire sentence, it isolates one target word inside its natural context.
+**Why do my flashcards stop working after a few weeks?**
+
+You're probably testing too much at once, or testing words in isolation. One sentence, one target word. That's the format that actually builds durable recognition. Here's why.
 
 ---
 
-## How it works
+## The problem with standard flashcards
 
-| Element | Front | Back |
+Most people learn vocabulary by memorizing word-to-translation pairs. That works for a test, then falls apart in real use.
+
+Words without context have no anchors. Your brain stores them in a vacuum. Isolated words don't prepare you for actual audio or text, where words show up inside sentences. And testing too many things at once (whole sentence, meaning, grammar, pronunciation) makes each review cognitively exhausting.
+
+The result: reviews pile up, become a chore, and you stop doing them.
+
+---
+
+## The one-target format
+
+Instead of testing an isolated word or an entire sentence, you highlight **one target word** inside a real, authentic sentence. Everything else in the sentence you ideally already know (or can tolerate not knowing yet).
+
+| Element | Front of card | Back of card |
 |---|---|---|
-| Main content | sentence with one highlighted target word | definition or translation of the target word |
-| Evaluation | only the target word matters | optional image or native audio |
-| Other words | ideally already known | sentence translation optional |
+| Sentence | Real Arabic sentence with target word highlighted | Same sentence |
+| Your job | Recognize the highlighted word immediately | See definition or translation of target word |
+| Grading | Only the target word matters | Optional: image, native audio |
+
+The grading rule is binary. **Pass** = instant recognition. **Fail** = any hesitation, any slow recall, any uncertainty.
 
 ---
 
-## Why this format is efficient
+## Why context changes everything
 
-- less mental fatigue
-- preserved context
-- faster card creation
-- faster reviews
+Your brain doesn't memorize words in lists. It memorizes words in situations. The sentence provides the situation. When you later hear that word in real Arabic content, the surrounding context activates the memory, not just the word-to-translation mapping.
 
-The grading rule is simple: if the target word is recognized immediately, pass. If not, fail.
+This is why cards made from content you actually consumed perform better than pre-made decks. You remember not just the word but the moment you heard it.
+
+---
+
+## How spaced repetition schedules your reviews
+
+The underlying system that schedules your cards is called **FSRS**. You don't need to understand it deeply, but the core idea is worth knowing.
+
+Every card has three invisible properties:
+- **Stability**: how anchored the word is. A word you've reviewed many times over months is very stable.
+- **Difficulty**: how hard this particular word is for *you* specifically.
+- **Recall probability**: a real-time estimate of whether you'd remember it right now.
+
+FSRS uses these to predict exactly when each card is about to slip below your retention threshold, and schedules a review right then. Easy cards stretch out to weeks or months between reviews. Hard cards come back more often. The system calibrates itself to your memory automatically.
+
+The result: 9 minutes of reviews per day covers far more vocabulary than you'd expect, because most cards are only shown when they actually need reinforcement.
+
+---
+
+## What not to do
+
+**Don't test full sentences.** If you have to recall a whole sentence to know if you passed, you're grading the wrong thing.
+
+**Don't add too many new cards at once.** Adding 20+ new cards per day creates a review debt that compounds and becomes unmanageable within a week.
+
+**Don't translate word-by-word during review.** If you're translating the whole sentence to find the target word, you're skipping the recognition test.
+
+---
+
+## Next reading
+
+- [How to Do Your Reviews](/start/reviews)
+- [The Arabic Roadmap](/understand/arabic-roadmap)
 `,
 	},
-	"/demarrer/deck-de-fondations-2k": {
-		slug: "/demarrer/deck-de-fondations-2k",
+	"/start/foundations-2000": {
+		slug: "/start/foundations-2000",
 		title: "Foundations 2000",
 		subtitle: "The 2000 most frequent words",
 		content: `# Foundations 2000
 
-Mastering the 2000 most frequent words in standard Arabic gives you roughly 80% coverage of ordinary texts. That coverage is the threshold that makes immersion productive instead of frustrating.
+Mastering the 2,000 most frequent words in standard Arabic gives you roughly 80% coverage of ordinary texts. That coverage is the threshold that makes immersion productive instead of frustrating.
 
 ---
 
-## Why 2000 words matters
+## Why 2,000 words matter
 
 | Number of words | Approximate coverage |
 |---|---|
-| 1000 | around 70% |
-| 2000 | around 80% |
-| 3000 | around 85% |
-| 5000 | around 90% |
+| 1,000 | around 70% |
+| 2,000 | around 80% |
+| 3,000 | around 85% |
+| 5,000 | around 90% |
 
 ---
 
@@ -464,36 +596,80 @@ The Foundations deck supports daily reviews. It does **not** replace your person
 The ideal pattern is simple: first meet a word in the Foundations deck, then hear it again in real content.
 `,
 	},
-	"/demarrer/faire-ses-revues": {
-		slug: "/demarrer/faire-ses-revues",
-		title: "Do your reviews",
-		subtitle: "Grading, routine, and card management",
-		content: `# Do your reviews
+	"/start/reviews": {
+		slug: "/start/reviews",
+		title: "How to Do Your Reviews",
+		subtitle: "Grading honestly, building a routine that lasts",
+		content: `# How to Do Your Reviews
 
-The daily 9-minute review block is the non-negotiable pillar of the system. This is where vocabulary met in immersion becomes durable recognition.
+**How do I know if I'm reviewing correctly?**
 
----
-
-## The grading rule
-
-You have two possible answers: **Fail** or **Pass**.
-
-A card counts as passed only if the target word is recognized immediately, without flipping first and without extended hesitation. If recognition is slow, it is a fail.
+One rule: if you hesitated even slightly, it's a fail. Honest grading is what keeps the entire system calibrated. It's the difference between people who build real comprehension and people who collect cards they can't actually use.
 
 ---
 
-## Why honest grading matters
+## The only grading rule
 
-FSRS adjusts intervals from your answers. If you grade too generously, intervals stretch too fast and words collapse. Honest grading keeps the system calibrated.
+You have two answers: **Fail** or **Pass**.
+
+A card counts as passed if and only if you recognized the target word **immediately**. Before flipping, without extended thought, without going "I think it was...". If recognition was slow, even if you got it right, that's a fail. Grade it as such.
+
+This sounds strict. It is. Here's why it matters.
 
 ---
 
-## The practical routine
+## Why honest grading is non-negotiable
 
-- review every day
-- keep the session short enough to survive busy days
-- avoid overloading new cards if the pile becomes heavy
-- use immersion to keep cards connected to real language
+The FSRS algorithm builds a model of your memory for each card. When you pass a card, it extends the interval before showing you that card again. When you fail, it shortens it.
+
+If you grade generously (passing cards you hesitated on) the algorithm thinks those words are more stable than they really are. It stretches their intervals too far. Weeks later, you've "forgotten" words you thought you knew, reviews pile up, and the whole system feels broken.
+
+Honest grading isn't about being hard on yourself. It's about feeding the algorithm accurate data so it can do its job.
+
+---
+
+## The 9-minute routine
+
+Nine minutes is the typical time for daily reviews when you have a steady card load and a consistent routine. It's not a marketing number. It's what FSRS actually produces when you maintain a card load of a few hundred active words.
+
+The format:
+1. Open reviews
+2. For each card: see the front, decide immediately (pass or fail), flip to check
+3. Stop when the queue is empty
+
+That's it. Every day. The consistency is the mechanism.
+
+---
+
+## What to do when the pile gets heavy
+
+If you miss several days, the review queue grows. Don't try to catch up by cramming. Don't skip more days.
+
+Instead:
+- **Stop adding new cards temporarily.** Wait until the queue is back to a manageable size.
+- **Review at the normal pace.** Don't extend sessions to compensate. Just maintain the daily habit.
+- **Be patient.** It takes a few days of normal reviewing to drain a backlog, not one heroic session.
+
+The goal is to rebuild continuity. Continuity is what makes the system work. Crammed sessions don't replace it.
+
+---
+
+## Common mistakes
+
+**Grading too generously.** "I kind of knew it" is a fail. "I would have gotten it in a second" is a fail.
+
+**Skipping reviews on busy days.** A 4-minute review on a busy day beats a 0-minute review. Keep the streak alive, even if the session is minimal.
+
+**Adding too many new cards.** More than 10 to 15 new cards per day creates a review debt that builds up fast. Start slow.
+
+**Treating reviews as a chore to finish.** Reviews aren't homework. They're the moment where words that would have faded are rescued. That's a useful thing to do.
+
+---
+
+## Next reading
+
+- [The One-Target Sentence](/start/one-target-sentence)
+- [The Arabic Roadmap](/understand/arabic-roadmap)
 `,
 	},
 	[WEBAPP_DOCS_FAQ_EN_SLUG]: {
@@ -508,8 +684,8 @@ FSRS adjusts intervals from your answers. If you grade too generously, intervals
 		subtitle: WEBAPP_DOCS_FALSE_IDEAS_EN_SUBTITLE,
 		content: WEBAPP_DOCS_FALSE_IDEAS_EN_CONTENT,
 	},
-	"/immersion/immersion-active": {
-		slug: "/immersion/immersion-active",
+	"/immersion/active": {
+		slug: "/immersion/active",
 		title: "Active immersion",
 		subtitle: "Extract vocabulary from real content",
 		content: `# Active immersion
@@ -542,8 +718,8 @@ Use short excerpts, ideally 2 to 4 minutes, with roughly 60% global comprehensio
 - trying to harvest too much from a single clip
 `,
 	},
-	"/immersion/immersion-passive": {
-		slug: "/immersion/immersion-passive",
+	"/immersion/passive": {
+		slug: "/immersion/passive",
 		title: "Passive immersion",
 		subtitle: "Reinforce with almost no concentration cost",
 		content: `# Passive immersion
@@ -554,7 +730,7 @@ Passive immersion is free exposure time: replaying already-worked material in th
 
 ## The rule
 
-Only use material that was already processed in [active immersion →](/immersion/immersion-active). Unknown background audio is just noise. Familiar material creates reinforcement.
+Only use material that was already processed in active immersion. Unknown background audio is just noise. Familiar material creates reinforcement.
 
 ---
 
@@ -575,38 +751,68 @@ Only use material that was already processed in [active immersion →](/immersio
 3. passive immersion as a bonus multiplier
 `,
 	},
-	"/introduction/a-qui-sadresse-2k2go": {
-		slug: "/introduction/a-qui-sadresse-2k2go",
-		title: "Who 2k2go is for",
-		subtitle: "Profiles, expectations, prerequisites",
-		content: `# Who 2k2go is for
+	"/introduction/who-is-it-for": {
+		slug: "/introduction/who-is-it-for",
+		title: "Who is it for",
+		subtitle: "And where this method actually comes from",
+		content: `# Who is it for
 
-If you are reading this, you have probably already tried to learn Arabic and seen little durable result. Evening classes, apps, tutors, and grammar work often build fragments of knowledge without building real comprehension.
+**Is this method right for me?**
 
----
-
-## This system is for you if
-
-- you want to control your own learning speed
-- you can commit a short but regular daily block
-- you accept early exposure even before full understanding
-
-The motivation can be professional, religious, cultural, or family-based. Standard Arabic gives the broadest base.
+If you've tried to learn Arabic before and it didn't stick, yes. If you want something based on how your brain actually acquires language, not how textbooks present it, yes. Here's the honest version of what this is and where it came from.
 
 ---
 
-## Typical learner profiles
+## Where this came from
 
-| Profile | Situation | What the system brings |
+I failed at Arabic multiple times. Evening classes, grammar books, apps with streaks. I spent years feeling like I was learning without actually getting anywhere. The vocabulary I "knew" evaporated as soon as I heard real speech.
+
+The change came when I found **AJATT** (All Japanese All The Time), a language learning method created by Khatzumoto, and later refined by **Tatsumoto Ren** in his open-source immersion guide. You can find the original at [tatsumoto-ren.github.io](https://tatsumoto-ren.github.io/blog/table-of-contents.html). Between them, these two approaches have changed language learning for hundreds of thousands of people. They've fundamentally changed how people think about acquiring a language. Their work is the source of this method, and I'm not going to pretend otherwise.
+
+What I did: I used it for Arabic. I proved it worked for myself. Then I talked with teachers and more advanced learners, showed them the approach, and watched them adopt it. Some used it on its own, some mixed it with courses they were already taking. It's compatible either way. That's where 2k2go comes from. It's that method, built for Arabic, with a dedicated tool to support the daily review habit.
+
+---
+
+## What the method actually is
+
+Two things working together:
+
+1. **Daily exposure to real Arabic.** Authentic audio and video, not textbook sentences. Your brain needs real language to build real recognition.
+2. **9 minutes of daily spaced review.** A system that brings words back at the right time, just before you'd forget them. Not flashcard cramming. A calibrated algorithm that manages the schedule for you.
+
+That's the whole system. Everything in this guide is either explaining those two things or helping you do them consistently.
+
+---
+
+## Who this is actually for
+
+| Profile | Situation | What changes with this method |
 |---|---|---|
-| Restart after failure | tried before without durable results | a mechanism stronger than raw motivation |
-| Complete beginner | starts from zero | a structured path from letters to comprehension |
-| Theoretical learner | knows rules but cannot follow audio | the shift from knowledge to recognition |
-| Life project | migration, work, family | a shared standard Arabic base |
+| Restart after failure | tried classes or apps without lasting results | a mechanism stronger than raw motivation |
+| Complete beginner | starting from zero | a clear path from alphabet to comprehension |
+| Theoretical learner | knows rules but can't follow audio | the shift from abstract knowledge to live recognition |
+| Long-term goal | religious, professional, family, or cultural | a standard Arabic base that transfers everywhere |
+
+The motivation can be anything: work, family, religion, culture, or just genuine interest. The method doesn't change based on why you're learning.
+
+---
+
+## What you need to commit to
+
+A short daily block. Nine minutes for reviews, a few times a week for immersion. Early exposure even when you don't understand everything. That discomfort is part of the process. And honest self-assessment, because the grading system only works if you're truthful about what you actually know.
+
+That's the real prerequisite. Not talent, not prior exposure to Arabic, not perfect memory. Just regularity.
+
+---
+
+## Next reading
+
+- [The Three Arabics](/understand/the-three-arabics)
+- [The Arabic Roadmap](/understand/arabic-roadmap)
 `,
 	},
-	"/introduction/lorigine-du-systeme": {
-		slug: "/introduction/lorigine-du-systeme",
+	"/introduction/origin": {
+		slug: "/introduction/origin",
 		title: "The origin of the system",
 		subtitle: "From Japan to Arabic",
 		content: `# The origin of the system
@@ -623,7 +829,7 @@ The starting point was familiar: weekend classes, slow progress, fragmented less
 
 ## The turning point
 
-The real change came from seeing another language learned differently: more exposure, more direct contact, more systems thinking, less dependence on classroom pacing.
+The real change came from seeing another language learned differently. More exposure, more direct contact, more systems thinking, less dependence on classroom pacing.
 
 ---
 
@@ -636,7 +842,7 @@ The final method kept only what clearly worked:
 - targeted card review
 - a routine small enough to survive daily life
 
-That is the origin of 2k2go: not theory first, but a method extracted from real failure and real correction.
+That's the origin of 2k2go: not theory first, but a method extracted from real failure and real correction.
 `,
 	},
 };

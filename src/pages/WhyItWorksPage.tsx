@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode, useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppLocale } from "@/contexts/AppLocaleContext";
 import {
 	layoutPreparedText,
@@ -630,6 +630,7 @@ export default function WhyItWorksPage() {
 	const isEnglish = locale === "en";
 	const navCategories = useMemo(() => getWebappDocsNavCategories(locale), [locale]);
 	const location = useLocation();
+	const navigate = useNavigate();
 	const [layoutRef, layoutWidth] = usePretextContainerWidth<HTMLDivElement>();
 	const activeSlug = useMemo(
 		() => resolveDocsSlugFromPath(location.pathname),
@@ -711,6 +712,26 @@ export default function WhyItWorksPage() {
 
 	return (
 		<div style={{ textAlign: "left", marginTop: "14px" }}>
+			<button
+				type="button"
+				onClick={() => {
+					navigate(-1);
+				}}
+				aria-label={isEnglish ? "Go back" : "Revenir en arriere"}
+				style={{
+					...LINK_STYLE,
+					position: "fixed",
+					top: 0,
+					left: 0,
+					padding: "8px 10px",
+					zIndex: 40,
+					background: "none",
+					border: 0,
+					cursor: "pointer",
+				}}
+			>
+				{isEnglish ? "\u2190 back" : "\u2190 retour"}
+			</button>
 			<style>{`
 				@media (max-width: 900px) {
 					.appv2-why-layout {
@@ -727,7 +748,7 @@ export default function WhyItWorksPage() {
 				}
 			`}</style>
 			<p style={BASE_TEXT_STYLE}>
-				{isEnglish ? "why does it work?" : "pourquoi ça marche ?"}
+				{isEnglish ? "why does this work?" : "pourquoi ça marche ?"}
 			</p>
 			<div
 				ref={layoutRef}

@@ -1,6 +1,6 @@
 import type { FormEvent } from "react";
-import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAppLocale } from "@/contexts/AppLocaleContext";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -27,6 +27,7 @@ const plainLinkStyle = {
 export default function LoginPage() {
 	const { user, loading, signIn } = useAuth();
 	const { locale } = useAppLocale();
+	const location = useLocation();
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -34,6 +35,26 @@ export default function LoginPage() {
 	const [isSubmitHovered, setIsSubmitHovered] = useState(false);
 	const [message, setMessage] = useState<string | null>(null);
 	const isEnglish = locale === "en";
+	const [signupSuccessMessageVisible, setSignupSuccessMessageVisible] =
+		useState(false);
+
+	useEffect(() => {
+		const params = new URLSearchParams(location.search);
+		if (params.get("signup") !== "confirm-email-sent") {
+			setSignupSuccessMessageVisible(false);
+			return;
+		}
+
+		setSignupSuccessMessageVisible(true);
+		const timeoutHandle = window.setTimeout(() => {
+			setSignupSuccessMessageVisible(false);
+			navigate("/login", { replace: true });
+		}, 5000);
+
+		return () => {
+			window.clearTimeout(timeoutHandle);
+		};
+	}, [location.search, navigate]);
 
 	if (!loading && user) {
 		return <Navigate to="/app" replace />;
@@ -72,6 +93,18 @@ export default function LoginPage() {
 			<div
 				style={{ maxWidth: "520px", margin: "80px auto 0", padding: "0 16px" }}
 			>
+				{signupSuccessMessageVisible ? (
+					<p
+						style={{
+							...baseTextStyle,
+							color: "#16753c",
+							marginTop: 0,
+							marginBottom: "10px",
+						}}
+					>
+						success! one-click login link has been sent to your email.
+					</p>
+				) : null}
 				<form onSubmit={handleSubmit}>
 					<p style={baseTextStyle}>
 						email

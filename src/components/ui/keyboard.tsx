@@ -18,12 +18,8 @@ import {
 	useState,
 } from "react";
 import { toast } from "sonner";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useAuth } from "@/contexts/AuthContext";
+import { useIsEnglishApp } from "@/contexts/AppLocaleContext";
 import { CLAVIER_ARABE_LAYOUTS } from "@/data/clavierArabe/keyboardLayouts";
 import type { ClavierArabeKey } from "@/data/clavierArabe/types";
 import {
@@ -1845,35 +1841,29 @@ const KeyboardProvider = ({
 };
 
 const PreviewIconAction = ({
-	title,
+	label,
 	dataTestId,
 	onClick,
 	disabled,
 	children,
 }: {
-	title: string;
+	label: string;
 	dataTestId: string;
 	onClick: () => void;
 	disabled?: boolean;
 	children: React.ReactNode;
 }) => (
-	<Tooltip>
-		<TooltipTrigger asChild>
-			<button
-				type="button"
-				onClick={onClick}
-				data-testid={dataTestId}
-				className={PREVIEW_ICON_BUTTON_CLASS}
-				title={title}
-				disabled={disabled}
-			>
-				{children}
-			</button>
-		</TooltipTrigger>
-		<TooltipContent side="bottom" sideOffset={8} className="text-center">
-			{title}
-		</TooltipContent>
-	</Tooltip>
+	<button
+		type="button"
+		onClick={onClick}
+		data-testid={dataTestId}
+		className={PREVIEW_ICON_BUTTON_CLASS}
+		aria-label={label}
+		title={label}
+		disabled={disabled}
+	>
+		{children}
+	</button>
 );
 
 const KeystrokePreview = ({
@@ -1881,6 +1871,7 @@ const KeystrokePreview = ({
 }: {
 	compactSpacing?: boolean;
 }) => {
+	const isEnglish = useIsEnglishApp();
 	const {
 		typedPreview,
 		outputMode,
@@ -2322,6 +2313,17 @@ const KeystrokePreview = ({
 		: null;
 	const InlineAcceptIcon =
 		outputMode === "arabic" ? IconArrowLeft : IconArrowRight;
+	const previewInputAriaLabel = isEnglish
+		? "Arabic keyboard input area"
+		: "Zone de saisie clavier arabe";
+	const inlineAcceptLabel = isEnglish
+		? "Accept autocomplete"
+		: "Valider l'autocomplétion";
+	const copyTextLabel = isEnglish ? "Copy text" : "Copier le texte";
+	const clearTextLabel = isEnglish ? "Clear text" : "Supprimer le texte";
+	const convertToArabicLabel = isEnglish
+		? "Convert Latin letters to Arabic"
+		: "Convertir lettres latines -> arabe";
 
 	return (
 		<div
@@ -2337,7 +2339,7 @@ const KeystrokePreview = ({
 				<button
 					type="button"
 					data-testid="keyboard-preview-text"
-					aria-label="Zone de saisie clavier arabe"
+					aria-label={previewInputAriaLabel}
 					aria-busy={isPreviewInputLocked}
 					disabled={isPreviewInputLocked}
 					tabIndex={isPreviewInputLocked ? -1 : 0}
@@ -2411,8 +2413,7 @@ const KeystrokePreview = ({
 					<button
 						type="button"
 						data-testid="keyboard-inline-accept"
-						aria-label="Valider l'autocomplétion"
-						title="Valider l'autocomplétion"
+						aria-label={inlineAcceptLabel}
 						onMouseDown={(event) => {
 							event.preventDefault();
 							acceptInlineCompletion();
@@ -2431,25 +2432,25 @@ const KeystrokePreview = ({
 				)}
 			>
 				<PreviewIconAction
-					title="Copier le texte"
+					label={copyTextLabel}
 					dataTestId="keyboard-copy-action"
 					onClick={handleCopy}
 					disabled={!hasTypedText || isPreviewInputLocked}
 				>
 					<IconCopy className="h-3.5 w-3.5" />
-					<span className="sr-only">Copier le texte</span>
+					<span className="sr-only">{copyTextLabel}</span>
 				</PreviewIconAction>
 				<PreviewIconAction
-					title="Supprimer le texte"
+					label={clearTextLabel}
 					dataTestId="keyboard-clear-action"
 					onClick={handleClear}
 					disabled={!hasTypedText || isPreviewInputLocked}
 				>
 					<IconEraser className="h-3.5 w-3.5" />
-					<span className="sr-only">Supprimer le texte</span>
+					<span className="sr-only">{clearTextLabel}</span>
 				</PreviewIconAction>
 				<PreviewIconAction
-					title="Convertir phonétique → arabe"
+					label={convertToArabicLabel}
 					dataTestId="keyboard-translate-action"
 					onClick={handleTranslate}
 					disabled={
@@ -2461,7 +2462,7 @@ const KeystrokePreview = ({
 					}
 				>
 					<IconLanguage className="h-3.5 w-3.5" />
-					<span className="sr-only">Convertir phonétique → arabe</span>
+					<span className="sr-only">{convertToArabicLabel}</span>
 				</PreviewIconAction>
 			</div>
 			{compactSpacing ? (
@@ -2477,7 +2478,7 @@ const KeystrokePreview = ({
 						data-testid="keyboard-copy-feedback"
 						className="text-[10px] leading-none text-stone-300"
 					>
-						Copié avec succès
+						{isEnglish ? "Copied successfully" : "Copié avec succès"}
 					</p>
 				) : null
 			) : (
@@ -2485,7 +2486,12 @@ const KeystrokePreview = ({
 					data-testid="keyboard-copy-feedback"
 					className="h-4 text-[11px] text-stone-300"
 				>
-					{previewStatusMessage ?? (isCopied ? "Copié avec succès" : "")}
+					{previewStatusMessage ??
+						(isCopied
+							? isEnglish
+								? "Copied successfully"
+								: "Copié avec succès"
+							: "")}
 				</p>
 			)}
 		</div>

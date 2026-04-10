@@ -1326,10 +1326,17 @@ async function fetchNotificationTargetUsernameByUserId(
 		return new Map<string, string>();
 	}
 
-	const { data, error } = await supabase
-		.from("profiles")
-		.select("user_id, username")
-		.in("user_id", normalizedUserIds);
+	const { data, error } = await (supabase as unknown as {
+		rpc: (
+			fn: string,
+			args?: Record<string, unknown>,
+		) => Promise<{
+			data: Array<{ user_id?: unknown; username?: unknown }> | null;
+			error: { message?: string } | null;
+		}>;
+	}).rpc("list_profiles_by_user_ids_v1", {
+		p_user_ids: normalizedUserIds,
+	});
 
 	if (error) {
 		console.error(

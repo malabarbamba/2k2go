@@ -198,13 +198,13 @@ const CARD_SOURCE_CHIP_LABELS: Record<
 	CardSourceChipLabel
 > = {
 	foundation: {
-		label: "Fondations 2000",
+		label: "Foundations 2000",
 	},
 	collected: {
-		label: "Collectée",
+		label: "Collected",
 	},
 	sent: {
-		label: "Envoyée par mon prof",
+		label: "Sent by my teacher",
 	},
 	alphabet: {
 		label: "Deck Alphabet",
@@ -545,17 +545,29 @@ type WindowWithSupabaseAudioConfig = Window & {
 	};
 };
 
+const normalizeOptionalString = (value: unknown): string | undefined => {
+	if (typeof value !== "string") {
+		return undefined;
+	}
+
+	const trimmedValue = value.trim();
+	return trimmedValue.length > 0 ? trimmedValue : undefined;
+};
+
 const runtimeSupabaseUrl =
 	typeof window === "undefined"
 		? undefined
-		: (window as WindowWithSupabaseAudioConfig).__SUPABASE_CONFIG__
-				?.SUPABASE_URL;
+		: normalizeOptionalString(
+				(window as WindowWithSupabaseAudioConfig).__SUPABASE_CONFIG__
+					?.SUPABASE_URL,
+			);
 
-const normalizedSupabaseAudioBase = (
-	runtimeSupabaseUrl ?? import.meta.env.VITE_SUPABASE_URL ?? import.meta.env.SUPABASE_URL ?? ""
-)
-	.trim()
-	.replace(/\/+$/, "");
+const envSupabaseUrl =
+	normalizeOptionalString(import.meta.env.VITE_SUPABASE_URL) ??
+	normalizeOptionalString(import.meta.env.SUPABASE_URL);
+
+const normalizedSupabaseAudioBase =
+	(runtimeSupabaseUrl ?? envSupabaseUrl ?? "").replace(/\/+$/, "");
 
 const STORAGE_BASE_URL = `${normalizedSupabaseAudioBase}/storage/v1/object/public/arabic-audio/cards`;
 
@@ -1055,7 +1067,7 @@ const AudioButton = ({
 			})}
 			onClick={playAudio}
 			onMouseMove={onMouseMove}
-			aria-label="Écouter"
+			aria-label="Listen"
 			aria-pressed={isPlaying}
 			disabled={isLoading || !audioUrl || isMuted}
 		>
@@ -1152,13 +1164,13 @@ export const CardFront = ({
 					height: `${iconButtonSize}px`,
 				}),
 			}}
-			aria-label="Afficher les voyelles"
+			aria-label="Show vowels"
 		>
 			<VowelsIcon size={iconSize} />
 		</button>
 	);
 	const shortsVowelsControl = (
-		<DelayedTooltipControl label="Afficher les voyelles">
+		<DelayedTooltipControl label="Show vowels">
 			{shortsVowelsButton}
 		</DelayedTooltipControl>
 	);
@@ -1177,7 +1189,7 @@ export const CardFront = ({
 			}}
 			className="flex items-center justify-center"
 			style={createHtmlButtonStyle({ hovered: isShortsFlipHovered })}
-			aria-label="Retourner la carte"
+			aria-label="Flip card"
 		>
 			{trimmedShortsFlipLabel}
 		</button>
@@ -1280,7 +1292,7 @@ export const CardFront = ({
 							style={createHtmlButtonStyle({ hovered: isDefaultVowelsHovered })}
 						>
 							<VowelsIcon size={14} />
-							Afficher voyelles
+							Show vowels
 						</button>
 						<button
 							type="button"
@@ -1298,7 +1310,7 @@ export const CardFront = ({
 							style={createHtmlButtonStyle({ hovered: isDefaultFlipHovered })}
 						>
 							<FlipCardIcon size={14} />
-							Retourner la carte
+							Flip card
 						</button>
 					</div>
 				) : !hideShortsUtilityControls || hasResolvedShortsExtraControl ? (
@@ -1720,13 +1732,13 @@ export const CardBack = ({
 					height: `${iconButtonSize}px`,
 				}),
 			}}
-			aria-label="Afficher les voyelles"
+			aria-label="Show vowels"
 		>
 			<VowelsIcon size={iconSize} />
 		</button>
 	);
 	const shortsVowelsControl = (
-		<DelayedTooltipControl label="Afficher les voyelles">
+		<DelayedTooltipControl label="Show vowels">
 			{shortsVowelsButton}
 		</DelayedTooltipControl>
 	);
@@ -1745,7 +1757,7 @@ export const CardBack = ({
 			}}
 			className="flex items-center justify-center"
 			style={createHtmlButtonStyle({ hovered: isShortsFlipHovered })}
-			aria-label="Retourner la carte"
+			aria-label="Flip card"
 		>
 			{trimmedShortsFlipLabel}
 		</button>
@@ -2998,7 +3010,7 @@ export const CardBack = ({
 								e.stopPropagation();
 								onFail?.();
 							}}
-							aria-label="Échouer la carte"
+							aria-label="Fail card"
 							data-tutorial="review-fail-button"
 							className="relative z-0 flex-1 transition-all duration-250 ease-out"
 							style={{
@@ -3031,7 +3043,7 @@ export const CardBack = ({
 								e.stopPropagation();
 								onPass?.();
 							}}
-							aria-label="Valider la carte"
+							aria-label="Pass card"
 							data-tutorial="review-pass-button"
 							className="relative z-0 flex-1 transition-all duration-250 ease-out"
 							style={{

@@ -14,6 +14,11 @@ const normalizedBaseUrl = import.meta.env.BASE_URL.endsWith("/")
 const basePrefix =
 	normalizedBaseUrl === "/" ? "" : normalizedBaseUrl.replace(/\/+$/, "");
 
+const runtimeConfigPaths = [
+	`${normalizedBaseUrl}runtime-config.local.json`,
+	`${normalizedBaseUrl}runtime-config.json`,
+];
+
 const redirectPathParams = new URLSearchParams(window.location.search);
 const redirectedPath = redirectPathParams.get("p");
 
@@ -28,16 +33,21 @@ if (redirectedPath) {
 }
 
 void (async () => {
-	try {
-		const response = await fetch(`${normalizedBaseUrl}runtime-config.json`);
-		if (response.ok) {
+	for (const runtimeConfigPath of runtimeConfigPaths) {
+		try {
+			const response = await fetch(runtimeConfigPath);
+			if (!response.ok) {
+				continue;
+			}
+
 			const config = await response.json();
 			if (config && typeof config === "object") {
 				window.__SUPABASE_CONFIG__ = config;
+				break;
 			}
+		} catch {
+			// Fall back to the next runtime config source, then Vite env vars.
 		}
-	} catch {
-		// Fall back to Vite env vars if runtime config is unavailable.
 	}
 
 	await import("./main.tsx");

@@ -69,9 +69,9 @@ import {
 } from "@/components/deck-perso-visual/ReviewFilterDropdown";
 
 const REVIEW_FILTER_DEFINITIONS = [
-	{ id: 1, label: "Fondations 2000", reviewType: "foundation" },
-	{ id: 2, label: "Cartes collectées", reviewType: "collected" },
-	{ id: 3, label: "Cartes de mon Prof", reviewType: "sent" },
+	{ id: 1, label: "Foundations 2000", reviewType: "foundation" },
+	{ id: 2, label: "Collected cards", reviewType: "collected" },
+	{ id: 3, label: "Cards from my teacher", reviewType: "sent" },
 ] as const;
 
 // Default filters - counts will be updated dynamically
@@ -544,7 +544,7 @@ export const CardsReview = ({
 	const dueCardsCacheScope = isGuestLocalReviewMode
 		? "guest_local"
 		: `auth:${user?.id ?? "guest"}`;
-	const sessionPeerLabel = usePlainHtmlSessionChrome ? "contact" : "camarade";
+	const sessionPeerLabel = "contact";
 	const hasPreviewCards = Array.isArray(previewCards);
 	const shouldUseSessionDueCardsCache =
 		!IS_VITEST_RUNTIME &&
@@ -1325,7 +1325,7 @@ export const CardsReview = ({
 			} catch {
 				contactAudioPlayerRef.current = null;
 				setActiveContactAudioPostId(null);
-				toast.error("Impossible de lire cet audio.");
+				toast.error("Unable to play this audio.");
 			}
 		},
 		[activeContactAudioPostId, isFlipAudioMuted, stopContactAudioPlayback],
@@ -1352,9 +1352,7 @@ export const CardsReview = ({
 				"Unable to load preview connections for card audio:",
 				error,
 			);
-			setSessionConnectionsError(
-				"Impossible de charger tes contacts pour le moment.",
-			);
+			setSessionConnectionsError("Unable to load your contacts right now.");
 			return [] as FriendListItem[];
 		} finally {
 			setIsSessionConnectionsLoading(false);
@@ -1387,23 +1385,23 @@ export const CardsReview = ({
 
 				if (dispatchResult.notifiedFriendCount > 0) {
 					toast.success(
-						`Partage envoyé : ${dispatchResult.sharedAudioCount} audio${dispatchResult.sharedAudioCount > 1 ? "s" : ""} à ${dispatchResult.notifiedFriendCount} ${sessionPeerLabel}${dispatchResult.notifiedFriendCount > 1 ? "s" : ""}.`,
+						`Share sent: ${dispatchResult.sharedAudioCount} audio clip${dispatchResult.sharedAudioCount > 1 ? "s" : ""} to ${dispatchResult.notifiedFriendCount} ${sessionPeerLabel}${dispatchResult.notifiedFriendCount > 1 ? "s" : ""}.`,
 					);
 					return;
 				}
 
 				toast.success(
-					`Partage prêt : ${dispatchResult.sharedAudioCount} audio${dispatchResult.sharedAudioCount > 1 ? "s" : ""} enregistré${dispatchResult.sharedAudioCount > 1 ? "s" : ""} pour cette session.`,
+					`Share ready: ${dispatchResult.sharedAudioCount} audio clip${dispatchResult.sharedAudioCount > 1 ? "s" : ""} saved for this session.`,
 				);
 			} catch (error) {
 				hasSessionShareFlushRef.current = false;
 				console.error("Unable to flush session audio shares:", error);
 				if (!quiet) {
-					toast.error("Impossible d'envoyer le partage de session.");
+					toast.error("Unable to send the session share.");
 				}
 			}
 		},
-		[isSessionLayout, sessionPeerLabel, usePlainHtmlSessionChrome, user?.id],
+		[isSessionLayout, usePlainHtmlSessionChrome, user?.id],
 	);
 
 	const handleSessionBackClick = useCallback(() => {
@@ -1533,12 +1531,12 @@ export const CardsReview = ({
 		}
 
 		if (!navigator.mediaDevices?.getUserMedia) {
-			toast.error("Ton navigateur ne permet pas l'enregistrement audio.");
+			toast.error("Your browser does not support audio recording.");
 			return;
 		}
 
 		if (typeof MediaRecorder === "undefined") {
-			toast.error("L'enregistreur audio n'est pas disponible ici.");
+			toast.error("Audio recording is not available here.");
 			return;
 		}
 
@@ -1579,7 +1577,7 @@ export const CardsReview = ({
 				setIsCardAudioRecording(false);
 				stopCardAudioTimers();
 				stopCardAudioRecorderStream();
-				toast.error("Impossible de finaliser l'enregistrement.");
+				toast.error("Unable to finish recording.");
 			};
 
 			recorder.onstop = () => {
@@ -1618,10 +1616,10 @@ export const CardsReview = ({
 							});
 						setCurrentCardAudioPostInCache(savedAudioPost);
 						hasSessionShareFlushRef.current = false;
-						toast.success("Audio enregistré.");
+						toast.success("Audio saved.");
 					} catch (error) {
 						console.error("Unable to save card recording:", error);
-						toast.error("Impossible d'enregistrer cet audio.");
+						toast.error("Unable to save this audio.");
 					} finally {
 						setIsCardAudioSaving(false);
 						setCardAudioRecordingSeconds(0);
@@ -1651,7 +1649,7 @@ export const CardsReview = ({
 			stopCardAudioTimers();
 			stopCardAudioRecorderStream();
 			setIsCardAudioRecording(false);
-			toast.error("Impossible de démarrer l'enregistrement.");
+			toast.error("Unable to start recording.");
 		}
 	}, [
 		cardData,
@@ -1698,7 +1696,7 @@ export const CardsReview = ({
 		} catch {
 			cardAudioPlayerRef.current = null;
 			setIsCardAudioPlaying(false);
-			toast.error("Impossible de lire cet audio.");
+			toast.error("Unable to play this audio.");
 		}
 	}, [
 		currentCardAudioPost?.audioUrl,
@@ -1732,10 +1730,10 @@ export const CardsReview = ({
 			setCurrentCardAudioPostInCache(null);
 			stopCardAudioPlayback();
 			hasSessionShareFlushRef.current = false;
-			toast.success("Audio supprimé.");
+			toast.success("Audio deleted.");
 		} catch (error) {
 			console.error("Unable to delete current card audio:", error);
-			toast.error("Impossible de supprimer cet audio.");
+			toast.error("Unable to delete this audio.");
 		} finally {
 			setIsCardAudioSaving(false);
 		}
@@ -1767,12 +1765,12 @@ export const CardsReview = ({
 			hasSessionShareFlushRef.current = false;
 			toast.success(
 				shouldSelect
-					? "Audio ajouté au partage de fin de session."
-					: "Audio retiré du partage de fin de session.",
+					? "Audio added to end-of-session sharing."
+					: "Audio removed from end-of-session sharing.",
 			);
 		} catch (error) {
 			console.error("Unable to update audio share selection:", error);
-			toast.error("Impossible de mettre à jour le partage de cet audio.");
+			toast.error("Unable to update sharing for this audio.");
 		} finally {
 			setIsCardAudioShareUpdating(false);
 		}
@@ -1817,9 +1815,7 @@ export const CardsReview = ({
 		} catch (error) {
 			console.error("Unable to load contact audios for current card:", error);
 			setContactAudioPosts([]);
-			setContactAudioPostsError(
-				"Impossible de charger les audios des contacts pour cette carte.",
-			);
+			setContactAudioPostsError("Unable to load contact audio for this card.");
 		} finally {
 			setIsContactAudioPostsLoading(false);
 		}
@@ -2401,7 +2397,7 @@ export const CardsReview = ({
 
 		const target = event.target as HTMLElement | null;
 		const actionButton = target?.closest(
-			'button[aria-label="Échouer la carte"], button[aria-label="Valider la carte"]',
+			'button[aria-label="Fail card"], button[aria-label="Pass card"]',
 		);
 
 		if (!actionButton) {
@@ -2451,7 +2447,7 @@ export const CardsReview = ({
 			>
 				{usePlainHtmlSessionChrome ? (
 					<>
-						<span>toutes mes cartes</span>
+						<span>all my cards</span>
 						<span aria-hidden="true" style={{ marginLeft: "4px" }}>
 							▾
 						</span>
@@ -2464,10 +2460,10 @@ export const CardsReview = ({
 							viewBox="0 0 16 16"
 							fill="none"
 							className="text-muted-foreground"
-							aria-label="Filtre"
+							aria-label="Filter"
 							role="img"
 						>
-							<title>Filtre</title>
+							<title>Filter</title>
 							<rect
 								x="2"
 								y="2"
@@ -2497,7 +2493,7 @@ export const CardsReview = ({
 							/>
 						</svg>
 						<span className="text-sm text-card-foreground">
-							Toutes mes revues
+							All my reviews
 						</span>
 						<ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
 					</>
@@ -2520,7 +2516,7 @@ export const CardsReview = ({
 		: currentCardAudioPost?.shareSelected === true &&
 			currentCardAudioPost.shareSessionKey === sessionShareKeyRef.current;
 	const sessionFrontAudioTooltipLabel =
-		"Enregistrer un audio. Une trace de ta progression pour le futur.";
+		"Record audio. A voice trace of your progress for later.";
 
 	const renderSessionFrontAudioControl = ({
 		iconButtonSize,
@@ -2583,7 +2579,7 @@ export const CardsReview = ({
 				style={
 					usePlainHtmlSessionChrome ? htmlIconButtonStyle : iconButtonStyle
 				}
-				aria-label="Enregistrer un audio"
+				aria-label="Record audio"
 				disabled={isCardAudioSaving || isFlipAudioMuted}
 			>
 				{isCardAudioSaving ? (
@@ -2617,7 +2613,7 @@ export const CardsReview = ({
 									}
 								: iconButtonStyle
 						}
-						aria-label="Arrêter l'enregistrement"
+						aria-label="Stop recording"
 						disabled={isCardAudioSaving || isFlipAudioMuted}
 					>
 						<Square size={iconSize} />
@@ -2636,7 +2632,7 @@ export const CardsReview = ({
 						style={
 							usePlainHtmlSessionChrome ? htmlIconButtonStyle : iconButtonStyle
 						}
-						aria-label={isCardAudioPlaying ? "Pause" : "Écouter l'audio"}
+						aria-label={isCardAudioPlaying ? "Pause" : "Play audio"}
 						disabled={isCardAudioSaving || isFlipAudioMuted}
 					>
 						{isCardAudioPlaying ? (
@@ -2720,7 +2716,7 @@ export const CardsReview = ({
 									style={resolveHtmlMenuItemStyle("contacts")}
 								>
 									<Eye size={14} />
-									<span>voir les audios de mes contacts sur cette carte</span>
+									<span>see my contacts' audio on this card</span>
 								</button>
 								{hasCurrentCardAudio ? (
 									<button
@@ -2744,7 +2740,7 @@ export const CardsReview = ({
 										}}
 									>
 										<Share2 size={14} />
-										<span>partager à un contact</span>
+										<span>share with a contact</span>
 									</button>
 								) : null}
 								{hasCurrentCardAudio ? (
@@ -2764,7 +2760,7 @@ export const CardsReview = ({
 										style={resolveHtmlMenuItemStyle("rerecord")}
 									>
 										<RotateCcw size={14} />
-										<span>réenregistrer</span>
+										<span>record again</span>
 									</button>
 								) : null}
 								{hasCurrentCardAudio ? (
@@ -2786,7 +2782,7 @@ export const CardsReview = ({
 										}}
 									>
 										<Trash2 size={14} />
-										<span>supprimer</span>
+										<span>delete</span>
 									</button>
 								) : null}
 							</div>
@@ -2823,7 +2819,7 @@ export const CardsReview = ({
 								}}
 							>
 								<RotateCcw className="h-3.5 w-3.5" />
-								<span>Réenregistrer</span>
+								<span>Record again</span>
 							</DropdownMenuItem>
 							<DropdownMenuItem
 								className="cursor-pointer text-red-500 focus:text-red-500"
@@ -2832,7 +2828,7 @@ export const CardsReview = ({
 								}}
 							>
 								<Trash2 className="h-3.5 w-3.5" />
-								<span>Supprimer</span>
+								<span>Delete</span>
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
@@ -2907,7 +2903,7 @@ export const CardsReview = ({
 					style={resolveButtonStyle("vowels")}
 					disabled={isDisabled}
 				>
-					afficher les voyelles
+					show vowels
 				</button>
 				<button
 					type="button"
@@ -2925,7 +2921,7 @@ export const CardsReview = ({
 					style={resolveButtonStyle("flip")}
 					disabled={isDisabled}
 				>
-					retourner
+					flip
 				</button>
 			</div>
 		);
@@ -3000,7 +2996,7 @@ export const CardsReview = ({
 					style={resolveDecisionStyle("pass")}
 					disabled={isDisabled}
 				>
-					validé
+					pass
 				</button>
 			</div>
 		);
@@ -3123,7 +3119,7 @@ export const CardsReview = ({
 												margin: 0,
 											}}
 										>
-											revue terminee pour aujourd'hui
+											review complete for today
 										</p>
 									) : (
 										<div className="flex flex-col items-center">
@@ -3132,18 +3128,18 @@ export const CardsReview = ({
 												strokeWidth={2.5}
 											/>
 											<p className="mt-4 text-xl font-bold text-white">
-												Revues terminées
+												Reviews completed
 											</p>
 											<p className="mt-2 text-sm text-white/60">
-												{masteredCards} mots maîtrisés sur {totalCards}
+												{masteredCards} mastered words out of {totalCards}
 											</p>
 											<p className="mt-4 text-base text-white/80 leading-relaxed max-w-[280px]">
-												Ton effort porte ses fruits. Continue ton immersion pour
-												ancrer ces mots.
+												Your effort is paying off. Keep immersing to lock in
+												these words.
 											</p>
 											<p className="mt-2 text-xs text-white/40 max-w-[260px]">
-												Tu collecteras 1 à 3 nouvelles cartes pendant ton
-												immersion active.
+												You will collect 1 to 3 new cards during active
+												immersion.
 											</p>
 
 											<div className="mt-6 flex flex-row gap-2 w-full max-w-[280px]">
@@ -3152,7 +3148,7 @@ export const CardsReview = ({
 													className="flex-1 px-3 py-2 bg-emerald-500 hover:bg-emerald-400 text-white text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1"
 													type="button"
 												>
-													Continuer l&apos;immersion
+													Continue immersion
 													<ArrowRight className="h-3 w-3" />
 												</button>
 												<button
@@ -3160,7 +3156,7 @@ export const CardsReview = ({
 													className="flex-1 rounded-lg border border-border/80 bg-transparent px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 													type="button"
 												>
-													Ma progression
+													My progress
 												</button>
 												{showReminderNudgeCta ? (
 													<button
@@ -3168,7 +3164,7 @@ export const CardsReview = ({
 														className="flex-1 rounded-lg border border-border/80 bg-transparent px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 														type="button"
 													>
-														Activer rappels
+														Enable reminders
 													</button>
 												) : null}
 											</div>
@@ -3186,11 +3182,10 @@ export const CardsReview = ({
 								>
 									<div className="flex flex-col items-center">
 										<p className="text-lg font-semibold text-white">
-											Aucune revue pour ce filtre
+											No reviews for this filter
 										</p>
 										<p className="mt-2 max-w-[270px] text-sm text-white/70">
-											Réactive une catégorie dans "Toutes mes revues" pour
-											continuer.
+											Re-enable a category in "All my reviews" to continue.
 										</p>
 									</div>
 								</div>
@@ -3294,7 +3289,7 @@ export const CardsReview = ({
 								transitionDuration: `${dueFeedbackTransitionMs}ms`,
 							}}
 						>
-							La carte qui vient de partir réapparaîtra dans {dueTimingFeedback}
+							This card will come back in {dueTimingFeedback}
 							.
 						</div>
 					</div>
@@ -3312,7 +3307,7 @@ export const CardsReview = ({
 
 		return (
 			<div className="mt-5 flex flex-col items-center pt-1 sm:mt-4">
-				<span className="sr-only">{remainingCount} revues</span>
+				<span className="sr-only">{remainingCount} reviews</span>
 				<div
 					className={
 						usePlainHtmlSessionChrome
@@ -3329,7 +3324,7 @@ export const CardsReview = ({
 								? "flex items-center justify-center bg-transparent"
 								: "flex h-5 w-5 items-center justify-center rounded bg-sky-500/55 text-white transition-opacity hover:opacity-90"
 						}
-						title="Bleu : nouvelles cartes"
+						title="Blue: new cards"
 						style={{
 							fontFamily: usePlainHtmlSessionChrome
 								? "Arial, sans-serif"
@@ -3352,7 +3347,7 @@ export const CardsReview = ({
 								? "flex items-center justify-center bg-transparent"
 								: "flex h-5 w-5 items-center justify-center rounded bg-rose-500/55 text-white transition-opacity hover:opacity-90"
 						}
-						title="Rouge : cartes en cours d'acquisition"
+						title="Red: cards in learning"
 						style={{
 							fontFamily: usePlainHtmlSessionChrome
 								? "Arial, sans-serif"
@@ -3375,7 +3370,7 @@ export const CardsReview = ({
 								? "flex items-center justify-center bg-transparent"
 								: "flex h-5 w-5 items-center justify-center rounded bg-emerald-500/55 text-white transition-opacity hover:opacity-90"
 						}
-						title="Vert : cartes a reviser"
+						title="Green: cards to review"
 						style={{
 							fontFamily: usePlainHtmlSessionChrome
 								? "Arial, sans-serif"
@@ -3393,7 +3388,7 @@ export const CardsReview = ({
 				</div>
 
 				<a
-					href="/app/why-it-works/demarrer/faire-ses-revues"
+					href="/app/why-it-works"
 					data-tutorial="review-docs-link"
 					className={
 						usePlainHtmlSessionChrome
@@ -3411,7 +3406,7 @@ export const CardsReview = ({
 							: undefined
 					}
 				>
-					Comment faire ses revues ?
+					how do I do my reviews?
 				</a>
 			</div>
 		);
@@ -3448,8 +3443,8 @@ export const CardsReview = ({
 			{isGuest && !isPreviewMode && (
 				<div className="fixed top-0 left-0 right-0 z-50 bg-amber-500/90 text-amber-950 text-center py-1.5 text-sm font-medium">
 					{isGuestLocalReviewMode
-						? "Mode invité - tes revues restent sur cet appareil"
-						: "Mode démo - Connecte-toi pour sauvegarder tes revues"}
+						? "Guest mode - your reviews stay on this device"
+						: "Demo mode - Sign in to save your reviews"}
 				</div>
 			)}
 
@@ -3485,7 +3480,7 @@ export const CardsReview = ({
 										cursor: "pointer",
 									}}
 								>
-									← retour
+									← back
 								</button>
 							</div>
 						) : (
@@ -3496,7 +3491,7 @@ export const CardsReview = ({
 									className="inline-flex items-center gap-2 rounded-lg border border-border/80 bg-card px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
 								>
 									<ChevronLeft className="h-4 w-4" />
-									Retour
+									Back
 								</button>
 							</div>
 						)
@@ -3514,7 +3509,7 @@ export const CardsReview = ({
 								className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 text-sm rounded-lg transition-colors"
 							>
 								<RefreshCw className="w-3.5 h-3.5" />
-								Réessayer
+								Retry
 							</button>
 						</div>
 					)}
@@ -3553,7 +3548,7 @@ export const CardsReview = ({
 								: undefined
 						}
 					>
-						Audios de mes contacts
+						My contacts' audio
 					</DialogTitle>
 					<div
 						className="space-y-2 pt-1"
@@ -3569,17 +3564,16 @@ export const CardsReview = ({
 						}
 					>
 						{isContactAudioPostsLoading ? (
-							<p>Chargement des audios...</p>
+							<p>Loading audio...</p>
 						) : contactAudioPostsError ? (
 							<p>{contactAudioPostsError}</p>
 						) : contactAudioPosts.length === 0 ? (
 							<>
 								<p>
-									Aucun de tes contacts n'a enregistré un audio sur cette carte
-									pour le moment.
+									None of your contacts has recorded audio on this card yet.
 								</p>
 								<p>
-									Sois le premier a laisser une trace audio sur cette carte.
+									Be the first to leave an audio trace on this card.
 								</p>
 							</>
 						) : (
@@ -3618,7 +3612,7 @@ export const CardsReview = ({
 													opacity: isFlipAudioMuted ? 0.55 : 1,
 												}}
 											>
-												{isPlaying ? "pause" : "écouter"}
+												{isPlaying ? "pause" : "listen"}
 											</button>
 										</div>
 									);
@@ -3657,7 +3651,7 @@ export const CardsReview = ({
 								: undefined
 						}
 					>
-						Partager a un contact
+						Share with a contact
 					</DialogTitle>
 					<div
 						className="space-y-2 pt-1"
@@ -3673,13 +3667,13 @@ export const CardsReview = ({
 						}
 					>
 						{!hasCurrentCardAudio ? (
-							<p>Enregistre un audio sur cette carte avant de le partager.</p>
+							<p>Record audio on this card before sharing it.</p>
 						) : isSessionConnectionsLoading ? (
-							<p>Chargement de tes contacts...</p>
+							<p>Loading your contacts...</p>
 						) : sessionConnectionsError ? (
 							<p>{sessionConnectionsError}</p>
 						) : sessionConnections.length === 0 ? (
-							<p>Tu n'as pas encore de contacts a qui partager cet audio.</p>
+							<p>You do not have any contacts to share this audio with yet.</p>
 						) : (
 							<div className="space-y-2">
 								{sessionConnections.map((friend) => {
@@ -3709,7 +3703,7 @@ export const CardsReview = ({
 													padding: "1px 8px",
 												}}
 											>
-												{isSelected ? "retirer du partage" : "partager"}
+												{isSelected ? "remove from sharing" : "share"}
 											</button>
 										</div>
 									);
@@ -3754,7 +3748,7 @@ export const CardsReview = ({
 								: undefined
 						}
 					>
-						Lecture des compteurs
+						Counter guide
 					</DialogTitle>
 					<div
 						className={
@@ -3773,14 +3767,13 @@ export const CardsReview = ({
 								: undefined
 						}
 					>
-						<p>Ces chiffres montrent le nombre de cartes restantes par type.</p>
+						<p>These numbers show how many cards remain by type.</p>
 						<p>
-							<span className="text-sky-500">Bleu</span> : nouvelles cartes.
+							<span className="text-sky-500">Blue</span> : new cards.
 							<br />
-							<span className="text-rose-500">Rouge</span> : cartes en cours
-							d&apos;acquisition.
+							<span className="text-rose-500">Red</span> : cards in learning.
 							<br />
-							<span className="text-emerald-500">Vert</span> : cartes a reviser.
+							<span className="text-emerald-500">Green</span> : cards to review.
 						</p>
 					</div>
 				</DialogContent>

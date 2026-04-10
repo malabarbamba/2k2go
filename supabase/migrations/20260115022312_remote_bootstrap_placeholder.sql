@@ -1,0 +1,2 @@
+-- Placeholder migration to mirror remote history entry 20260115022312.
+-- Original SQL was created remotely before this repository baseline.

@@ -15,6 +15,7 @@ const PREVIEW_APP_FIRST_SEGMENTS = new Set([
 	"decks",
 	"docs",
 	"done",
+	"video-immersion-ai",
 	"video-immersion",
 	"end",
 	"immersion-video",

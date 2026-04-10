@@ -109,20 +109,19 @@ const runtimeConfig =
 		? undefined
 		: (window as WindowWithSupabaseConfig).__SUPABASE_CONFIG__;
 
-const ENV_SUPABASE_URL = normalizeSupabaseUrl(
-	viteEnv.VITE_SUPABASE_URL ?? viteEnv.SUPABASE_URL,
-);
+const ENV_SUPABASE_URL =
+	normalizeSupabaseUrl(viteEnv.VITE_SUPABASE_URL) ??
+	normalizeSupabaseUrl(viteEnv.SUPABASE_URL);
 
-const RAW_ENV_SUPABASE_PUBLISHABLE_KEY = normalizeOptionalString(
-	viteEnv.VITE_SUPABASE_PUBLISHABLE_KEY ?? viteEnv.SUPABASE_KEY,
-);
+const RAW_ENV_SUPABASE_PUBLISHABLE_KEY =
+	normalizeOptionalString(viteEnv.VITE_SUPABASE_PUBLISHABLE_KEY) ??
+	normalizeOptionalString(viteEnv.SUPABASE_KEY);
 const ENV_SUPABASE_PUBLISHABLE_KEY = normalizeSupabasePublishableKey(
 	RAW_ENV_SUPABASE_PUBLISHABLE_KEY,
 );
 
-const SUPABASE_URL = normalizeSupabaseUrl(
-	runtimeConfig?.SUPABASE_URL ?? ENV_SUPABASE_URL,
-);
+const RUNTIME_SUPABASE_URL = normalizeSupabaseUrl(runtimeConfig?.SUPABASE_URL);
+const SUPABASE_URL = RUNTIME_SUPABASE_URL ?? ENV_SUPABASE_URL;
 const RAW_RUNTIME_SUPABASE_PUBLISHABLE_KEY = normalizeOptionalString(
 	runtimeConfig?.SUPABASE_PUBLISHABLE_KEY,
 );

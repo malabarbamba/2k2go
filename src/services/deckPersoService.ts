@@ -242,20 +242,12 @@ const RECENT_REVIEW_TTL_MS = 15000;
 const REVIEW_QUEUE_STORAGE_KEY = "deck_perso_review_submit_queue_v1";
 const MAX_REVIEW_REPLAY_ATTEMPTS = 5;
 const REVIEW_RETRY_BACKOFF_MS = [1000, 3000, 10000, 30000, 60000] as const;
-const SHADOW_DIFF_FLAG_CACHE_TTL_MS = 60000;
-const SCHEDULER_SHADOW_DIFF_FLAGS_TABLE = "scheduler_shadow_diff_flags";
 const SCHEDULER_SHADOW_DIFF_EVENTS_TABLE = "scheduler_shadow_diff_events";
 const ACTIVE_FSRS_WEIGHTS_TABLE = "user_fsrs_active_weights";
 const inFlightReviewKeys = new Set<string>();
 let cachedClientReviewIds: Record<string, string> | null = null;
 let isReplayOnlineListenerAttached = false;
 let replayInProgress: Promise<ReviewReplayResult> | null = null;
-let cachedSchedulerShadowDiffFlag: {
-	userId: string;
-	enabled: boolean;
-	expiresAt: number;
-} | null = null;
-
 interface QueuedReviewItem {
 	accountKey: string;
 	cardKey: string;
@@ -1124,71 +1116,14 @@ async function resolveSchedulerShadowDiffContext(
 
 	try {
 		const { data, error } = await client.auth.getUser();
-		const userId = data.user?.id ?? null;
-		if (error || !userId) {
+		if (error) {
 			return { userId: null, enabled: false };
 		}
 
-		const nowMs = Date.now();
-		if (
-			cachedSchedulerShadowDiffFlag &&
-			cachedSchedulerShadowDiffFlag.userId === userId &&
-			cachedSchedulerShadowDiffFlag.expiresAt > nowMs
-		) {
-			return {
-				userId,
-				enabled: cachedSchedulerShadowDiffFlag.enabled,
-			};
-		}
-
-		const fromMethod = (
-			client as unknown as {
-				from?: (table: string) => {
-					select: (columns: string) => {
-						eq: (
-							column: string,
-							value: string,
-						) => {
-							maybeSingle: () => Promise<{
-								data: { enabled?: unknown } | null;
-								error: unknown;
-							}>;
-						};
-					};
-				};
-			}
-		).from;
-		const from =
-			typeof fromMethod === "function" ? fromMethod.bind(client) : null;
-
-		if (!from) {
-			cachedSchedulerShadowDiffFlag = {
-				userId,
-				enabled: false,
-				expiresAt: nowMs + SHADOW_DIFF_FLAG_CACHE_TTL_MS,
-			};
-			return { userId, enabled: false };
-		}
-
-		const { data: flagRow, error: flagError } = await from(
-			SCHEDULER_SHADOW_DIFF_FLAGS_TABLE,
-		)
-			.select("enabled")
-			.eq("user_id", userId)
-			.maybeSingle();
-
-		const enabled =
-			!flagError &&
-			!!flagRow &&
-			(flagRow.enabled === true || flagRow.enabled === 1);
-
-		cachedSchedulerShadowDiffFlag = {
-			userId,
-			enabled,
-			expiresAt: nowMs + SHADOW_DIFF_FLAG_CACHE_TTL_MS,
+		return {
+			userId: data.user?.id ?? null,
+			enabled: false,
 		};
-
-		return { userId, enabled };
 	} catch {
 		return { userId: null, enabled: false };
 	}
@@ -2443,9 +2378,9 @@ const searchAlphabetCards = async (
 	client: AppSupabaseClient,
 ): Promise<ServiceResult<AlphabetSearchCardState[]>> => {
 	const categorySearch = await searchCardsV2(client, {
-		p_q: ALPHABET_SEARCH_QUERY,
+		p_query: ALPHABET_SEARCH_QUERY,
 		p_limit: ALPHABET_SEARCH_LIMIT,
-		p_category: ALPHABET_CATEGORY,
+		p_source_types: ["alphabet"],
 	});
 
 	if (!categorySearch.error) {
@@ -2456,7 +2391,7 @@ const searchAlphabetCards = async (
 	}
 
 	const preferredSourceSearch = await searchCardsV2(client, {
-		p_q: ALPHABET_SEARCH_QUERY,
+		p_query: ALPHABET_SEARCH_QUERY,
 		p_limit: ALPHABET_SEARCH_LIMIT,
 		p_source_types: ["alphabet"],
 	});
@@ -2469,7 +2404,7 @@ const searchAlphabetCards = async (
 	}
 
 	const broadSearch = await searchCardsV2(client, {
-		p_q: ALPHABET_SEARCH_QUERY,
+		p_query: ALPHABET_SEARCH_QUERY,
 		p_limit: ALPHABET_SEARCH_LIMIT,
 	});
 
@@ -3764,7 +3699,7 @@ export async function hasCollectedDeckInAccount(): Promise<
 }
 
 export async function fetchDueReviewCount(
-	deckScope: string = "personal_and_foundation",
+	_deckScope: string = "personal_and_foundation",
 ): Promise<ServiceResult<number>> {
 	const client = resolveClient();
 	if (!client) {
@@ -3773,7 +3708,7 @@ export async function fetchDueReviewCount(
 
 	try {
 		const { data, error } = await getDueCountV2(client, {
-			p_deck_scope: deckScope,
+			p_collection_id: null,
 		});
 		if (error) {
 			return { ok: false, error: fromPostgrestError(error) };
@@ -3797,7 +3732,7 @@ export async function searchVocabularyBank(
 
 	try {
 		const { data, error } = await searchCardsV2(client, {
-			p_q: query,
+			p_query: query,
 			p_limit: limit,
 			p_offset: offset,
 			p_source_types: sourceTypes,

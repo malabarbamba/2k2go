@@ -1,5 +1,5 @@
 import { useEffect, useState, type ComponentType } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppLocale } from "@/contexts/AppLocaleContext";
 import { readActiveUserId } from "@/lib/authPersistence";
 
@@ -20,18 +20,26 @@ const prefetchPrimaryAppRoute = (): void => {
 
 export default function HomePage() {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const { locale, setLocale } = useAppLocale();
 	const [RailsComponent, setRailsComponent] = useState<ComponentType | null>(null);
 	const [isCtaHovered, setIsCtaHovered] = useState(false);
 	const isEnglish = locale === "en";
 
 	useEffect(() => {
+		const searchParams = new URLSearchParams(location.search);
+		const shouldStayOnLandingPage = searchParams.get("from") === "app";
+
+		if (shouldStayOnLandingPage) {
+			return;
+		}
+
 		if (!hasPersistedAuthState()) {
 			return;
 		}
 
 		navigate("/app", { replace: true });
-	}, [navigate]);
+	}, [location.search, navigate]);
 
 	useEffect(() => {
 		if (typeof window === "undefined") {

@@ -39,6 +39,10 @@ enable_confirmations = true
 max_frequency = "1m0s"
 otp_length = 8
 
+[auth.email.template.confirmation]
+subject = "Confirm your 2K2Go account"
+content_path = "./templates/confirmation.html"
+
 # =============================================================================
 # Active edge functions in this repository
 # verify_jwt = true  => request must carry a valid JWT
@@ -57,7 +61,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.review-reminder-web-push-v1]
-verify_jwt = true
+verify_jwt = false
 
 [functions.review-reminders-config-v1]
 verify_jwt = false

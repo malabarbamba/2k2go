@@ -12,12 +12,12 @@ describe("searchCardsV2", () => {
 		const rpc = vi.fn().mockResolvedValue({ data: [], error: null });
 		const supabase = { rpc } as unknown as SupabaseClient<Database>;
 
-		await searchCardsV2(supabase, { p_q: "salam", p_limit: 20 });
+		await searchCardsV2(supabase, { p_query: "salam", p_limit: 20 });
 
 		expect(rpc).toHaveBeenCalledWith(
 			"search_cards_v2",
 			expect.objectContaining({
-				p_q: "salam",
+				p_query: "salam",
 				p_limit: 20,
 				p_source_types: null,
 			}),
@@ -29,7 +29,7 @@ describe("searchCardsV2", () => {
 		const supabase = { rpc } as unknown as SupabaseClient<Database>;
 
 		await searchCardsV2(supabase, {
-			p_q: "salam",
+			p_query: "salam",
 			p_limit: 20,
 			p_source_types: ["foundation"],
 		});
@@ -37,10 +37,36 @@ describe("searchCardsV2", () => {
 		expect(rpc).toHaveBeenCalledWith(
 			"search_cards_v2",
 			expect.objectContaining({
-				p_q: "salam",
+				p_query: "salam",
 				p_limit: 20,
 				p_source_types: ["foundation"],
 			}),
+		);
+	});
+
+	it("maps legacy p_q argument to p_query", async () => {
+		const rpc = vi.fn().mockResolvedValue({ data: [], error: null });
+		const supabase = { rpc } as unknown as SupabaseClient<Database>;
+
+		await searchCardsV2(supabase, { p_q: "legacy" });
+
+		expect(rpc).toHaveBeenCalledWith(
+			"search_cards_v2",
+			expect.objectContaining({
+				p_query: "legacy",
+			}),
+		);
+	});
+
+	it("does not forward unsupported p_category argument", async () => {
+		const rpc = vi.fn().mockResolvedValue({ data: [], error: null });
+		const supabase = { rpc } as unknown as SupabaseClient<Database>;
+
+		await searchCardsV2(supabase, { p_query: "abc", p_category: "alphabet" });
+
+		expect(rpc).toHaveBeenCalledWith(
+			"search_cards_v2",
+			expect.not.objectContaining({ p_category: "alphabet" }),
 		);
 	});
 });

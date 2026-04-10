@@ -31,55 +31,23 @@ const WEBAPP_DOCS_NAV_CATEGORIES_EN: readonly WebappDocsCategory[] = [
 		label: "Introduction",
 		iconKey: "introduction",
 		articles: [
-			{ label: "Welcome", slug: "/" },
-			{ label: "The origin of the system", slug: "/introduction/lorigine-du-systeme" },
-			{ label: "Who 2k2go is for", slug: "/introduction/a-qui-sadresse-2k2go" },
+			{ label: "Who is it for", slug: "/introduction/who-is-it-for" },
+			{ label: "The Three Arabics", slug: "/understand/the-three-arabics" },
 		],
 	},
 	{
 		id: "comprendre",
-		label: "Understand",
+		label: "The Method",
 		iconKey: "comprendre",
 		articles: [
-			{ label: "The active immersion system", slug: "/comprendre/le-systeme-dimmersion-active" },
-			{ label: "Standard Arabic, Classical Arabic, dialects", slug: "/comprendre/arabe-standard-arabe-classique-dialectes" },
-			{ label: "The standard path", slug: "/comprendre/le-parcours-type" },
-			{ label: "Massive immersion", slug: "/comprendre/immersion-massive" },
-			{ label: "Spaced repetition", slug: "/comprendre/la-repetition-espacee" },
-		],
-	},
-	{
-		id: "demarrer",
-		label: "Start",
-		iconKey: "demarrer",
-		articles: [
-			{ label: "Do your reviews", slug: "/demarrer/faire-ses-revues" },
-			{ label: "Single-target card", slug: "/demarrer/carte-a-cible-unique" },
-			{ label: "Foundations 2000", slug: "/demarrer/deck-de-fondations-2k" },
-		],
-	},
-	{
-		id: "immersion",
-		label: "Immersion",
-		iconKey: "immersion",
-		articles: [
-			{ label: "Active immersion", slug: "/immersion/immersion-active" },
-			{ label: "Passive immersion", slug: "/immersion/immersion-passive" },
-		],
-	},
-	{
-		id: "bases",
-		label: "Foundations",
-		iconKey: "bases",
-		articles: [
-			{ label: "The Arabic alphabet", slug: "/bases/lalphabet-arabe" },
-			{ label: "Reading and vowels", slug: "/bases/lecture-et-voyelles" },
-			{ label: "Essential grammar", slug: "/bases/grammaire-essentielle" },
+			{ label: "The Arabic Roadmap", slug: "/understand/arabic-roadmap" },
+			{ label: "The One-Target Sentence", slug: "/start/one-target-sentence" },
+			{ label: "How to Do Your Reviews", slug: "/start/reviews" },
 		],
 	},
 	{
 		id: "fausses-idees",
-		label: "Bad habits",
+		label: "Bad Habits",
 		iconKey: "fausses-idees",
 		articles: WEBAPP_DOCS_FALSE_IDEAS_EN_NAV_ARTICLES,
 	},
@@ -94,8 +62,8 @@ const WEBAPP_DOCS_NAV_CATEGORIES_EN: readonly WebappDocsCategory[] = [
 		label: "Appendices",
 		iconKey: "annexes",
 		articles: [
-			{ label: "Glossary", slug: "/annexes/glossaire" },
-			{ label: "Scientific sources", slug: "/annexes/sources-scientifiques" },
+			{ label: "Glossary", slug: "/appendix/glossary" },
+			{ label: "Scientific sources", slug: "/appendix/sources" },
 		],
 	},
 ] as const;

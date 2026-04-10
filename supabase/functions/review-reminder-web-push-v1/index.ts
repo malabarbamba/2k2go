@@ -6,7 +6,6 @@ import {
 import { jsonResponse, optionsResponse } from "../_shared/httpSecurity.ts";
 import {
 	getReviewReminderWebPushPublicConfig,
-	type ReviewReminderWebPushSubscriptionRow,
 } from "../_shared/reviewReminders.ts";
 
 const CORS_OPTIONS = { methods: "GET, POST, DELETE, OPTIONS" };
@@ -14,6 +13,25 @@ const UUID_PATTERN =
 	/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 type JsonRecord = Record<string, unknown>;
+
+type ReviewReminderWebPushSubscriptionRow = {
+	id: string;
+	user_id: string;
+	endpoint: string;
+	p256dh: string;
+	auth: string;
+	expiration_time: string | null;
+	user_agent: string | null;
+	device_label: string | null;
+	enabled: boolean;
+	last_sent_at: string | null;
+	last_error_at: string | null;
+	last_error_status: number | null;
+	last_error_message: string | null;
+	failure_count: number;
+	created_at: string;
+	updated_at: string;
+};
 
 type ValidatedSubscriptionInput = {
 	endpoint: string;
@@ -151,13 +169,12 @@ serve(async (req) => {
 	const vapidPublicKey = webPushConfig.publicKey;
 
 	if (req.method === "GET") {
-		const listResult = await supabaseAdmin
-			.from("user_review_web_push_subscriptions")
-			.select(
-				"id,user_id,endpoint,p256dh,auth,expiration_time,user_agent,device_label,enabled,last_sent_at,last_error_at,last_error_status,last_error_message,failure_count,created_at,updated_at",
-			)
-			.eq("user_id", userId)
-			.order("created_at", { ascending: true });
+		const listResult = await supabaseAdmin.rpc(
+			"list_review_reminder_push_subscriptions_v1",
+			{
+				p_user_id: userId,
+			},
+		);
 
 		if (listResult.error) {
 			console.error("Failed to list web push subscriptions", {
@@ -235,14 +252,14 @@ serve(async (req) => {
 			);
 		}
 
-		let deleteQuery = supabaseAdmin
-			.from("user_review_web_push_subscriptions")
-			.delete()
-			.eq("user_id", userId);
-		deleteQuery = id
-			? deleteQuery.eq("id", id)
-			: deleteQuery.eq("endpoint", endpoint ?? "");
-		const deleteResult = await deleteQuery.select("id");
+		const deleteResult = await supabaseAdmin.rpc(
+			"delete_review_reminder_push_subscription_v1",
+			{
+				p_user_id: userId,
+				p_id: id ?? null,
+				p_endpoint: id ? null : endpoint ?? null,
+			},
+		);
 
 		if (deleteResult.error) {
 			console.error("Failed to delete web push subscription", {
@@ -260,11 +277,19 @@ serve(async (req) => {
 			);
 		}
 
+
+		const removedCount =
+			typeof deleteResult.data === "number"
+				? deleteResult.data
+				: typeof deleteResult.data === "string"
+					? Number.parseInt(deleteResult.data, 10)
+					: 0;
+
 		return jsonResponse(
 			req,
 			{
-				removed: Array.isArray(deleteResult.data)
-					? deleteResult.data.length
+				removed: Number.isFinite(removedCount)
+					? Math.max(0, removedCount)
 					: 0,
 				vapid_enabled: vapidConfigured,
 				vapid_public_key: vapidPublicKey,
@@ -279,34 +304,17 @@ serve(async (req) => {
 		return jsonResponse(req, validationResult.responseBody, 400, CORS_OPTIONS);
 	}
 
-	await supabaseAdmin.rpc("ensure_user_review_reminder_preferences_v1", {
-		p_user_id: userId,
-	});
-
 	const subscription = validationResult.value;
-	const upsertResult = await supabaseAdmin
-		.from("user_review_web_push_subscriptions")
-		.upsert(
-			{
-				user_id: userId,
-				endpoint: subscription.endpoint,
-				p256dh: subscription.p256dh,
-				auth: subscription.auth,
-				expiration_time: subscription.expirationTime,
-				user_agent: subscription.userAgent,
-				device_label: subscription.deviceLabel,
-				enabled: true,
-				failure_count: 0,
-				last_error_at: null,
-				last_error_status: null,
-				last_error_message: null,
-			},
-			{ onConflict: "endpoint" },
-		)
-		.select(
-			"id,user_id,endpoint,p256dh,auth,expiration_time,user_agent,device_label,enabled,last_sent_at,last_error_at,last_error_status,last_error_message,failure_count,created_at,updated_at",
-		)
-		.single();
+	const upsertResult = await supabaseAdmin.rpc(
+		"upsert_review_reminder_push_subscription_v1",
+		{
+			p_user_id: userId,
+			p_endpoint: subscription.endpoint,
+			p_p256dh: subscription.p256dh,
+			p_auth: subscription.auth,
+			p_user_agent: subscription.userAgent,
+		},
+	);
 
 	if (upsertResult.error) {
 		console.error("Failed to upsert web push subscription", {
@@ -324,15 +332,31 @@ serve(async (req) => {
 		);
 	}
 
+
+	const normalizedRows = parseSubscriptions(
+		Array.isArray(upsertResult.data)
+			? (upsertResult.data as ReviewReminderWebPushSubscriptionRow[])
+			: ([upsertResult.data] as ReviewReminderWebPushSubscriptionRow[]),
+	);
+	const subscriptionRow = normalizedRows[0] ?? null;
+	if (!subscriptionRow) {
+		return jsonResponse(
+			req,
+			{
+				error: "Invalid subscription payload",
+				code: "SUBSCRIPTION_PAYLOAD_INVALID",
+			},
+			500,
+			CORS_OPTIONS,
+		);
+	}
+
 	return jsonResponse(
 		req,
 		{
 			vapid_enabled: vapidConfigured,
 			vapid_public_key: vapidPublicKey,
-			subscription:
-				parseSubscriptions([
-					upsertResult.data as ReviewReminderWebPushSubscriptionRow,
-				])[0] ?? upsertResult.data,
+			subscription: subscriptionRow,
 		},
 		200,
 		CORS_OPTIONS,

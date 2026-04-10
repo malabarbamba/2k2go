@@ -57,7 +57,7 @@ export async function searchAppVocabularyBank(
 ): Promise<ServiceResult<SearchCardsV2Row[]>> {
 	try {
 		const { data, error } = await searchCardsV2(supabase, {
-			p_q: query,
+			p_query: query,
 			p_limit: limit,
 			p_offset: offset,
 			p_source_types: sourceTypes,

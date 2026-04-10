@@ -53,7 +53,7 @@ const WEBAPP_DOCS_FAQ_EN_SECTIONS = [
 			{
 				question: "What is the minimum effective routine?",
 				answer:
-					"[9 minutes of cards →](/demarrer/faire-ses-revues) every day + 2 to 3 sessions of [active immersion →](/immersion/immersion-active) per week. The format is intentionally short so it still survives busy days.",
+					"[9 minutes of reviews](/start/reviews) every day, plus 2 to 3 sessions of listening to real Arabic per week. The format is intentionally short so it survives even busy days.",
 			},
 			{
 				question: "What should I do after several days without reviews?",
@@ -63,7 +63,7 @@ const WEBAPP_DOCS_FAQ_EN_SECTIONS = [
 			{
 				question: "Where should I start if I am starting from zero?",
 				answer:
-					"| Step | Action |\r\n|---|---|\r\n| 1 | Learn [the alphabet →](/bases/lalphabet-arabe) (2 to 3 days) |\r\n| 2 | Start the [Foundations 2000 deck →](/demarrer/deck-de-fondations-2k) |\r\n| 3 | Add [passive immersion →](/immersion/immersion-passive) in parallel |\r\n| 4 | Add [active immersion →](/immersion/immersion-active) during week 2 |",
+					"The [Arabic Roadmap](/understand/arabic-roadmap) covers this in full, but the quick version: learn the alphabet (2 to 3 days), start the Foundations 2000 deck, add daily reviews, then introduce short Arabic listening sessions in week 2. Each phase is covered in the roadmap.",
 			},
 		],
 	},
@@ -88,7 +88,7 @@ const WEBAPP_DOCS_FAQ_EN_SECTIONS = [
 			{
 				question: "Do I need to master grammar before immersing myself?",
 				answer:
-					"No. Immersion builds the ear and recognition first. [Grammar →](/bases/grammaire-essentielle) comes later to solve specific blockers.",
+					"No. Immersion builds the ear and recognition first. [Grammar](/foundations/grammar) comes later to solve specific blockers.",
 			},
 			{
 				question: "Why start with comprehension instead of speaking?",
@@ -105,9 +105,9 @@ const WEBAPP_DOCS_FAQ_EN_SECTIONS = [
 ] as const satisfies readonly WebappDocsFaqSection[];
 
 const WEBAPP_DOCS_FAQ_EN_NEXT_READING = [
-	{ label: "Do your reviews", slug: "/demarrer/faire-ses-revues" },
-	{ label: "Active immersion", slug: "/immersion/immersion-active" },
-	{ label: "The standard path", slug: "/comprendre/le-parcours-type" },
+	{ label: "How to Do Your Reviews", slug: "/start/reviews" },
+	{ label: "The One-Target Sentence", slug: "/start/one-target-sentence" },
+	{ label: "The Arabic Roadmap", slug: "/understand/arabic-roadmap" },
 ] as const satisfies readonly WebappDocsFaqReadingLink[];
 
 const WEBAPP_DOCS_FAQ_EN_HEADINGS = WEBAPP_DOCS_FAQ_EN_SECTIONS.flatMap(
@@ -160,7 +160,7 @@ const WEBAPP_DOCS_FAQ_EN_CONTENT = [
 	"## Next reading",
 	"",
 	...WEBAPP_DOCS_FAQ_EN_NEXT_READING.map(
-		(link) => `- [${link.label} →](${link.slug})`,
+		(link) => `- [${link.label}](${link.slug})`,
 	),
 	"",
 ].join("\r\n");

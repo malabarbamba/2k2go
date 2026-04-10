@@ -26,7 +26,7 @@ interface AuthContextType {
 		email: string,
 		password: string,
 		options?: { emailRedirectPath?: string },
-	) => Promise<{ error: Error | null }>;
+	) => Promise<{ error: Error | null; emailConfirmationSent: boolean }>;
 	signOut: () => Promise<void>;
 }
 
@@ -264,14 +264,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			window.location.origin,
 		).toString();
 
-		const { error } = await supabase.auth.signUp({
+		const { data, error } = await supabase.auth.signUp({
 			email,
 			password,
 			options: {
 				emailRedirectTo: redirectUrl,
 			},
 		});
-		return { error };
+		const emailConfirmationSent =
+			!error && Boolean(data.user) && data.session === null;
+		return { error, emailConfirmationSent };
 	};
 
 	const signOut = async () => {
