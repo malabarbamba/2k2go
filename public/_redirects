@@ -1,0 +1,6 @@
+/app-v2/home /home-v2 301
+/app-v2/login /login-v2 301
+/app-v2/signup /onboarding-v2 301
+/app-v2/onboarding /onboarding-v2 301
+/signup-v2 /onboarding-v2 301
+/* /index.html 200

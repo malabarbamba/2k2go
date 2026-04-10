@@ -1,0 +1,1006 @@
+﻿SentBase;SentFull;SentFrench;SentAudio;VocabBase;VocabFull;VocabDef;VocabAudio;Image;Focus;Tags;Note
+<b>باسم</b> الله;<b>بِاسْمِ</b> اللَّهِ;Au nom d'Allah.;[sound:1_nom_sentBase.mp3];اسم;اِسْمٌ;nom;[sound:1_nom_vocabDef.mp3];"<img src=""1_nom.avif"">";1;F2K;"expression religieuse, très fréquent;"
+<b>انا</b> نوح;<b>أَنَا</b> نُوحٌ;Je suis Noé (Nouh).;[sound:2_je_sentBase.mp3];أنا;أَنَا;je;[sound:2_je_vocabDef.mp3];"<img src=""2_je.avif"">";2;F2K;"pronom 'je', très fréquent;"
+<b>أنت</b> محمد;<b>أَنْتَ</b> مُحَمَّدٌ;Tu es Mohammed.;[sound:3_tu_sentBase.mp3];أنت;أَنْتَ;tu;[sound:3_tu_vocabDef.mp3];"<img src=""3_tu.avif"">";3;F2K;"pronom 'tu', très fréquent;"
+<b>هو</b> جبريل;<b>هُوَ</b> جِبْرِيلُ;C'est Gabriel (Jibril).;[sound:4_il_sentBase.mp3];هو;هُوَ;il;[sound:4_il_vocabDef.mp3];"<img src=""4_il.avif"">";4;F2K;"pronom 'il', très fréquent;"
+<b>هي</b> فاطمة;<b>هِيَ</b> فَاطِمَةُ;C'est Fatima.;[sound:5_elle_sentBase.mp3];هي;هِيَ;elle;[sound:5_elle_vocabDef.mp3];"<img src=""5_elle.avif"">";5;F2K;"pronom 'elle', très fréquent;"
+<b>اسمي</b> أحمد;<b>اِسْمِي</b> أَحْمَدُ;Je m'appelle Ahmed.;[sound:6_je_m_appelle_sentBase.mp3];اسمي;اِسْمِي;mon nom;[sound:6_je_m_appelle_vocabDef.mp3];"<img src=""6_je_m_appelle.avif"">";6;F2K;"pour dire son nom;"
+<b>مرحبا</b> في بيتي;<b>مَرْحَبًا</b> فِي بَيْتِي;Bienvenue chez moi.;[sound:7_bonjour_sentBase.mp3];مرحبا;مَرْحَبًا;bienvenue;[sound:7_bonjour_vocabDef.mp3];"<img src=""7_bonjour.avif"">";7;F2K;"Ici, مُرْحَبًا a le sens de “bienvenue”.
+Selon le contexte, peut vouloir dire bonjour, salut, ou bienvenue."
+<b>شكرا</b> يا أستاذ;<b>شُكْرًا</b> يَا أُسْتَاذُ;Merci, professeur.;[sound:8_merci_sentBase.mp3];شكرا;شُكْرًا;merci;[sound:8_merci_vocabDef.mp3];"<img src=""8_merci.avif"">";8;F2K;"formule de politesse;"
+<b>نعم</b> يا أمي;<b>نَعَمْ</b> يَا أُمِّي;Oui, maman.;[sound:9_oui_sentBase.mp3];نعم;نَعَمْ;oui;[sound:9_oui_vocabDef.mp3];"<img src=""9_oui.avif"">";9;F2K;"réponse positive;"
+<b>لا</b>، شكرا;<b>لَا</b>، شُكْرًا;Non, merci.;[sound:10_non_sentBase.mp3];لا;لَا;non;[sound:10_non_vocabDef.mp3];"<img src=""10_non.avif"">";10;F2K;"réponse négative;"
+<b>من فضلك</b> أريد ماء;<b>مِنْ فَضْلِكَ</b> أُرِيدُ مَاءً;S’il te plaît, je veux de l’eau.;[sound:11_s_il_te_plait_sentBase.mp3];من فضلك;مِنْ فَضْلِكَ;s'il te plaît;[sound:11_s_il_te_plait_vocabBase.mp3];"<img src=""11_s_il_te_plait.avif"">";11;F2K;"pour demander poliment;"
+"– شكرا يا احمد
+– <b>عفوا</b>";"– شُكْرًا يَا أَحْمَدُ
+– <b>عَفْوًا</b>";De rien.;[sound:12_de_rien_sentBase.mp3];عفوا;عَفْوًا;de rien;[sound:12_de_rien_vocabBase.mp3];"<img src=""12_de_rien.avif"">";12;F2K;"Ici, عفوا signifie simplement “de rien” (réponse polie à “merci”).
+Ce n’est pas “désolé” dans ce contexte."
+<b>عفوا</b> انا منشغل;<b>عَفْوًا</b> أَنَا مُنْشَغِلٌ;Pardon, je suis occupé.;[sound:13_pardon_sentBase.mp3];عفوا;عَفْوًا;pardon;[sound:13_pardon_vocabBase.mp3];"<img src=""13_pardon.avif"">";13;F2K;"Ici, عفوا signifie “désolé / pardon”.
+On l’utilise pour attirer l’attention ou s’excuser légèrement avant de parler."
+<b>كيف</b> حالك؟;<b>كَيْفَ</b> حَالُكَ؟;Comment ça va ?;[sound:14_comment_sentBase.mp3];كيف;كَيْفَ;comment;[sound:14_comment_vocabBase.mp3];"<img src=""14_comment.avif"">";14;F2K;"mot-question;"
+أنا <b>بخير</b>;أَنَا <b>بِخَيْرٍ</b>;Je vais bien.;[sound:15_bien_sentBase.mp3];بخير;بِخَيْرٍ;bien;[sound:15_bien_vocabBase.mp3];"<img src=""15_bien.avif"">";15;F2K;"pour dire ça va;"
+ما <b>اسمك</b>؟;مَا <b>اِسْمُكَ</b>؟;Quel est ton nom ?;[sound:16_nom_sentBase.mp3];اسمك;اِسْمُكَ;ton nom;[sound:16_nom_vocabBase.mp3];"<img src=""16_nom.avif"">";16;F2K;"question sur le nom;"
+<b>تشرفنا</b>;<b>تَشَرَّفْنَا</b>;Enchanté.;[sound:17_enchante_sentBase.mp3];تشرفنا;تَشَرَّفْنَا;enchanté;[sound:17_enchante_vocabBase.mp3];"<img src=""17_enchante.avif"">";17;F2K;"formule de rencontre;"
+<b>أين</b> تسكن؟;<b>أَيْنَ</b> تَسْكُنُ؟;Où habites-tu ?;[sound:18_ou_sentBase.mp3];أين;أَيْنَ;où;[sound:18_ou_vocabBase.mp3];"<img src=""18_ou.avif"">";18;F2K;"mot-question;"
+<b>أسكن</b> في جدة;<b>أَسْكُنُ</b> فِي جِدَّةَ;J'habite à Jeddah.;[sound:19_j_habite_sentBase.mp3];أسكن;أَسْكُنُ;j'habite;[sound:19_j_habite_vocabBase.mp3];"<img src=""19_j_habite.avif"">";19;F2K;"verbe habiter;"
+جدة <b>مدينة</b> هادئة وجميلة;جِدَّةُ <b>مَدِينَةٌ</b> هَادِئَةٌ وَجَمِيلَةٌ;Jeddah est une ville calme et jolie.;[sound:20_ville_sentBase.mp3];مدينة;مَدِينَةٌ;ville;[sound:20_ville_vocabBase.mp3];"<img src=""20_ville.avif"">";20;F2K;"lieu pour vivre;"
+هذا <b>بيتي</b>;هَذَا <b>بَيْتِي</b>;C'est ma maison.;[sound:21_maison_sentBase.mp3];بيت;بَيْتٌ;maison;[sound:21_maison_vocabBase.mp3];"<img src=""21_maison.avif"">";21;F2K;"vocabulaire du logement;"
+عندي <b>سيارة</b>;عِنْدِي <b>سَيَّارَةٌ</b>;J'ai une voiture.;[sound:22_voiture_sentBase.mp3];سيارة;سَيَّارَةٌ;voiture;[sound:22_voiture_vocabBase.mp3];"<img src=""22_voiture.avif"">";22;F2K;"objet du quotidien;"
+عندي <b>كتاب</b>;عِنْدِي <b>كِتَابٌ</b>;J'ai un livre.;[sound:23_livre_sentBase.mp3];كتاب;كِتَابٌ;livre;[sound:23_livre_vocabBase.mp3];"<img src=""23_livre.avif"">";23;F2K;"objet du quotidien;"
+هذا <b>قلم</b>;هَذَا <b>قَلَمٌ</b>;C'est un stylo.;[sound:24_stylo_sentBase.mp3];قلم;قَلَمٌ;stylo;[sound:24_stylo_vocabBase.mp3];"<img src=""24_stylo.avif"">";24;F2K;"objet du quotidien;"
+<b>أحب</b> القطط;<b>أُحِبُّ</b> الْقِطَطَ;J'aime les chats.;[sound:25_j_aime_sentBase.mp3];أحب;أُحِبُّ;j'aime;[sound:25_j_aime_vocabBase.mp3];"<img src=""25_j_aime.avif"">";25;F2K;"verbe très fréquent;"
+هذا <b>قط</b>ّي;هَذَا <b>قِطِّ</b>ي;C'est mon chat.;[sound:26_chat_sentBase.mp3];قط;قِطٌّ;chat;[sound:26_chat_vocabBase.mp3];"<img src=""26_chat.avif"">";26;F2K;"animal courant;"
+أحب <b>كرة القدم</b>;أُحِبُّ <b>كُرَةَ الْقَدَمِ</b>;J'aime le football.;[sound:27_football_sentBase.mp3];كرة القدم;كُرَةُ الْقَدَمِ;football;[sound:27_football_vocabBase.mp3];"<img src=""27_football.avif"">";27;F2K;"sport courant;"
+لدي <b>أخ</b>;لَدَيَّ <b>أَخٌ</b>;J'ai un frère.;[sound:28_frere_sentBase.mp3];أخ;أَخٌ;frère;[sound:28_frere_vocabBase.mp3];"<img src=""28_frere.avif"">";28;F2K;"famille;"
+<b>أريد</b> ماءً;<b>أُرِيدُ</b> مَاءً;Je veux de l'eau.;[sound:29_je_veux_sentBase.mp3];أريد;أُرِيدُ;je veux;[sound:29_je_veux_vocabBase.mp3];"<img src=""29_je_veux.avif"">";29;F2K;"verbe très fréquent;"
+أريد بعض <b>المال</b>;أُرِيدُ بَعْضَ <b>الْمَالِ</b>;Je veux un peu d'argent.;[sound:30_argent_sentBase.mp3];مال;مَالٌ;argent;[sound:30_argent_vocabBase.mp3];"<img src=""30_argent.avif"">";30;F2K;"chose utile;"
+معي <b>هاتف</b>;مَعِي <b>هَاتِفٌ</b>;J'ai un téléphone.;[sound:31_telephone_sentBase.mp3];هاتف;هَاتِفٌ;téléphone;[sound:31_telephone_vocabBase.mp3];"<img src=""31_telephone.avif"">";31;F2K;"objet du quotidien;"
+أنا في <b>المدرسة</b>;أَنَا فِي <b>الْمَدْرَسَةِ</b>;Je suis à l'école.;[sound:32_ecole_sentBase.mp3];مدرسة;مَدْرَسَةٌ;école;[sound:32_ecole_vocabBase.mp3];"<img src=""32_ecole.avif"">";32;F2K;"lieu d'étude;"
+<b>أذهب</b> إلى المدرسة;<b>أَذْهَبُ</b> إِلَى الْمَدْرَسَةِ;Je vais à l'école.;[sound:33_je_vais_sentBase.mp3];أذهب;أَذْهَبُ;je vais;[sound:33_je_vais_vocabBase.mp3];"<img src=""33_je_vais.avif"">";33;F2K;"verbe aller;"
+أنا <b>أتعلم</b> العربية;أَنَا <b>أَتَعَلَّمُ</b> الْعَرَبِيَّةَ;J'apprends l'arabe.;[sound:34_j_apprends_sentBase.mp3];أتعلم;أَتَعَلَّمُ;j'apprends;[sound:34_j_apprends_vocabBase.mp3];"<img src=""34_j_apprends.avif"">";34;F2K;"verbe apprendre;"
+أنا <b>أفهم</b> العربية;أَنَا <b>أَفْهَمُ</b> الْعَرَبِيَّةَ;Je comprends l'arabe.;[sound:35_je_comprends_sentBase.mp3];أفهم;أَفْهَمُ;je comprends;[sound:35_je_comprends_vocabBase.mp3];"<img src=""35_je_comprends.avif"">";35;F2K;"verbe comprendre;"
+لا <b>أعرف</b>;لَا <b>أَعْرِفُ</b>;Je ne sais pas.;[sound:36_sais_sentBase.mp3];أعرف;أَعْرِفُ;je sais;[sound:36_sais_vocabBase.mp3];"<img src=""36_sais.avif"">";36;F2K;"verbe savoir;"
+أعرف <b>هذا</b>;أَعْرِفُ <b>هَذَا</b>;Je connais ça.;[sound:37_ca_sentBase.mp3];هذا;هَذَا;ça;[sound:37_ca_vocabBase.mp3];"<img src=""37_ca.avif"">";37;F2K;"mot très courant;"
+هذا <b>جيد</b>;هَذَا <b>جَيِّدٌ</b>;C'est bien.;[sound:38_bien_sentBase.mp3];جيد;جَيِّدٌ;bon;[sound:38_bien_vocabBase.mp3];"<img src=""38_bien.avif"">";38;F2K;"adjectif simple;"
+هذا <b>سهل</b>;هَذَا <b>سَهْلٌ</b>;C'est facile.;[sound:39_facile_sentBase.mp3];سهل;سَهْلٌ;facile;[sound:39_facile_vocabBase.mp3];"<img src=""39_facile.avif"">";39;F2K;"adjectif simple;"
+هذا <b>صعب</b>;هَذَا <b>صَعْبٌ</b>;C'est difficile.;[sound:40_difficile_sentBase.mp3];صعب;صَعْبٌ;difficile;[sound:40_difficile_vocabBase.mp3];"<img src=""40_difficile.avif"">";40;F2K;"adjectif simple;"
+أنا <b>متعب</b>;أَنَا <b>مُتْعَبٌ</b>;Je suis fatigué.;[sound:41_fatigue_sentBase.mp3];متعب;مُتْعَبٌ;fatigué;[sound:41_fatigue_vocabBase.mp3];"<img src=""41_fatigue.avif"">";41;F2K;"état du corps;"
+أنا <b>جائع</b>;أَنَا <b>جَائِعٌ</b>;J'ai faim.;[sound:42_faim_sentBase.mp3];جائع;جَائِعٌ;avoir faim;[sound:42_faim_vocabBase.mp3];"<img src=""42_faim.avif"">";42;F2K;"état du corps;"
+أنا <b>عطشان</b>;أَنَا <b>عَطْشَانُ</b>;J'ai soif.;[sound:43_soif_sentBase.mp3];عطشان;عَطْشَانُ;avoir soif;[sound:43_soif_vocabBase.mp3];"<img src=""43_soif.avif"">";43;F2K;"état du corps;"
+أريد <b>طعاما</b>;أُرِيدُ <b>طَعَامًا</b>;Je veux à manger.;[sound:44_manger_sentBase.mp3];طعام;طَعَامٌ;nourriture;[sound:44_manger_vocabBase.mp3];"<img src=""44_manger.avif"">";44;F2K;"nourriture;"
+هذا <b>حلال</b>;هَذَا <b>حَلَالٌ</b>;C'est halal.;[sound:45_halal_sentBase.mp3];حلال;حَلَالٌ;halal;[sound:45_halal_vocabBase.mp3];"<img src=""45_halal.avif"">";45;F2K;"mot courant;"
+هذا <b>مسجد</b> كبير;هَذَا <b>مَسْجِدٌ</b> كَبِيرٌ;C'est une grande mosquée.;[sound:46_mosquee_sentBase.mp3];مسجد;مَسْجِدٌ;mosquée;[sound:46_mosquee_vocabBase.mp3];"<img src=""46_mosquee.avif"">";46;F2K;"lieu de prière;"
+<b>أصلي</b> في المسجد;<b>أُصَلِّي</b> فِي الْمَسْجِدِ;Je prie à la mosquée.;[sound:47_je_prie_sentBase.mp3];أصلي;أُصَلِّي;je prie;[sound:47_je_prie_vocabBase.mp3];"<img src=""47_je_prie.avif"">";47;F2K;"verbe prier;"
+اليوم <b>الجمعة</b>;الْيَوْمُ <b>الْجُمُعَةُ</b>;Aujourd'hui, c'est vendredi.;[sound:48_vendredi_sentBase.mp3];الجمعة;الْجُمُعَةُ;vendredi;[sound:48_vendredi_vocabBase.mp3];"<img src=""48_vendredi.avif"">";48;F2K;"jour de la semaine;"
+<b>رمضان</b> قريب;<b>رَمَضَانُ</b> قَرِيبٌ;Ramadan approche.;[sound:49_ramadan_sentBase.mp3];رمضان;رَمَضَانُ;Ramadan;[sound:49_ramadan_vocabBase.mp3];"<img src=""49_ramadan.avif"">";49;F2K;"mois important;"
+<b>العيد</b> جميل;<b>الْعِيدُ</b> جَمِيلٌ;L'Aïd est une belle fête.;[sound:50_aid_sentBase.mp3];العيد;الْعِيدُ;Aïd;[sound:50_aid_vocabBase.mp3];"<img src=""50_aid.avif"">";50;F2K;"fête;"
+أنا في <b>الرياض</b>;أَنَا فِي <b>الرِّيَاضِ</b>;Je suis à Riyad.;[sound:51_riyad_sentBase.mp3];الرياض;الرِّيَاضُ;Riyad;[sound:51_riyad_vocabBase.mp3];"<img src=""51_riyad.avif"">";51;F2K;"ville;"
+أنا في <b>المدينة</b>;أَنَا فِي <b>الْمَدِينَةِ</b>;Je suis à Médine.;[sound:52_medine_sentBase.mp3];المدينة;الْمَدِينَةُ;Médine;[sound:52_medine_vocabBase.mp3];"<img src=""52_medine.avif"">";52;F2K;"ville;"
+أين <b>الحمام</b>؟;أَيْنَ <b>الْحَمَّامُ</b>؟;Où sont les toilettes ?;[sound:53_toilettes_sentBase.mp3];الحمام;الْحَمَّامُ;toilettes;[sound:53_toilettes_vocabBase.mp3];"<img src=""53_toilettes.avif"">";53;F2K;"mot utile;"
+أين <b>السوق</b>؟;أَيْنَ <b>السُّوقُ</b>؟;Où est le marché ?;[sound:54_marche_sentBase.mp3];السوق;السُّوقُ;marché;[sound:54_marche_vocabBase.mp3];"<img src=""54_marche.avif"">";54;F2K;"lieu;"
+أريد <b>خبزا</b>;أُرِيدُ <b>خُبْزًا</b>;Je veux du pain.;[sound:55_pain_sentBase.mp3];خبز;خُبْزٌ;pain;[sound:55_pain_vocabBase.mp3];"<img src=""55_pain.avif"">";55;F2K;"nourriture;"
+أريد <b>قهوة</b>;أُرِيدُ <b>قَهْوَةً</b>;Je veux un café.;[sound:56_cafe_sentBase.mp3];قهوة;قَهْوَةٌ;café;[sound:56_cafe_vocabBase.mp3];"<img src=""56_cafe.avif"">";56;F2K;"boisson;"
+أحب <b>القهوة</b>;أُحِبُّ <b>الْقَهْوَةَ</b>;J'aime le café.;[sound:57_cafe_sentBase.mp3];القهوة;الْقَهْوَةُ;café;[sound:57_cafe_vocabBase.mp3];"<img src=""57_cafe.avif"">";57;F2K;"boisson;"
+عندي <b>وقت</b>;عِنْدِي <b>وَقْتٌ</b>;J'ai du temps.;[sound:58_temps_sentBase.mp3];وقت;وَقْتٌ;temps;[sound:58_temps_vocabBase.mp3];"<img src=""58_temps.avif"">";58;F2K;"mot courant;"
+أنا <b>أعمل</b>;أَنَا <b>أَعْمَلُ</b>;Je travaille.;[sound:59_travaille_sentBase.mp3];أعمل;أَعْمَلُ;je travaille;[sound:59_travaille_vocabBase.mp3];"<img src=""59_travaille.avif"">";59;F2K;"verbe courant;"
+هي <b>طالبة</b>;هِيَ <b>طَالِبَةٌ</b>;Elle est étudiante.;[sound:60_etudiante_sentBase.mp3];طالبة;طَالِبَةٌ;étudiante;[sound:60_etudiante_vocabBase.mp3];"<img src=""60_etudiante.avif"">";60;F2K;"statut;"
+هو <b>طالب</b>;هُوَ <b>طَالِبٌ</b>;Il est étudiant.;[sound:61_etudiant_sentBase.mp3];طالب;طَالِبٌ;étudiant;[sound:61_etudiant_vocabBase.mp3];"<img src=""61_etudiant.avif"">";61;F2K;"statut;"
+عندي <b>درس</b>;عِنْدِي <b>دَرْسٌ</b>;J'ai un cours.;[sound:62_cours_sentBase.mp3];درس;دَرْسٌ;cours;[sound:62_cours_vocabBase.mp3];"<img src=""62_cours.avif"">";62;F2K;"études;"
+<b>نحن</b> هنا;<b>نَحْنُ</b> هُنَا;Nous sommes ici.;[sound:63_nous_sentBase.mp3];نحن;نَحْنُ;nous;[sound:63_nous_vocabBase.mp3];"<img src=""63_nous.avif"">";63;F2K;"pronom;"
+<b>أنتم</b> هنا;<b>أَنْتُمْ</b> هُنَا;Vous êtes ici.;[sound:64_etes_sentBase.mp3];أنتم;أَنْتُمْ;vous;[sound:64_etes_vocabBase.mp3];"<img src=""64_etes.avif"">";64;F2K;"pronom;"
+<b>هم</b> هنا;<b>هُمْ</b> هُنَا;Ils sont ici.;[sound:65_ils_sentBase.mp3];هم;هُمْ;ils;[sound:65_ils_vocabBase.mp3];"<img src=""65_ils.avif"">";65;F2K;"pronom;"
+<b>ما</b> هذا؟;<b>مَا</b> هَذَا؟;Qu'est-ce que c'est ?;[sound:66_quoi_sentBase.mp3];ماذا;مَاذَا;quoi;[sound:66_quoi_vocabBase.mp3];"<img src=""66_quoi.avif"">";66;F2K;"mot-question;"
+<b>من</b> هذا؟;<b>مَنْ</b> هَذَا؟;Qui est-ce ?;[sound:67_qui_sentBase.mp3];من;مَنْ;qui;[sound:67_qui_vocabBase.mp3];"<img src=""67_qui.avif"">";67;F2K;"mot-question;"
+أين <b>أنت</b>؟;أَيْنَ <b>أَنْتَ</b>؟;Où es-tu ?;[sound:68_tu_sentBase.mp3];أنت;أَنْتَ;tu;[sound:68_tu_vocabBase.mp3];"<img src=""68_tu.avif"">";68;F2K;
+هذا <b>ليس</b> جيداً;هَذَا <b>لَيْسَ</b> جَيِّدًا;Ce n'est pas bien.;[sound:69_pas_sentBase.mp3];ليس;لَيْسَ;n'est pas;[sound:69_pas_vocabBase.mp3];"<img src=""69_pas.avif"">";69;F2K;"négation;"
+أنا في <b>السعودية</b>;أَنَا فِي <b>السُّعُودِيَّةِ</b>;Je suis en Arabie saoudite.;[sound:70_arabie_saoudite_sentBase.mp3];السعودية;السُّعُودِيَّةُ;Arabie saoudite;[sound:70_arabie_saoudite_vocabBase.mp3];"<img src=""70_arabie_saoudite.avif"">";70;F2K;"pays;"
+موريتانيا <b>بلد</b> جميل;مُورِيتَانْيَا <b>بَلَدٌ</b> جَمِيلٌ;La Mauritanie est un beau pays.;[sound:71_pays_sentBase.mp3];بلد;بَلَدٌ;pays;[sound:71_pays_vocabBase.mp3];"<img src=""71_pays.avif"">";71;F2K;"mot courant;"
+أنا أحب <b>موريتانيا</b>;أَنَا أُحِبُّ <b>مُورِيتَانْيَا</b>;J'aime la Mauritanie.;[sound:72_mauritanie_sentBase.mp3];موريتانيا;مُورِيتَانْيَا;Mauritanie;[sound:72_mauritanie_vocabBase.mp3];"<img src=""72_mauritanie.avif"">";72;F2K;"pays;"
+<b>مصر</b> بلد كبير;<b>مِصْرُ</b> بَلَدٌ كَبِيرٌ;L'Égypte est un grand pays.;[sound:73_egypte_sentBase.mp3];مصر;مِصْرُ;Égypte;[sound:73_egypte_vocabBase.mp3];"<img src=""73_egypte.avif"">";73;F2K;"pays;"
+أنا في <b>قطر</b>;أَنَا فِي <b>قَطَرَ</b>;Je suis au Qatar.;[sound:74_qatar_sentBase.mp3];قطر;قَطَرُ;Qatar;[sound:74_qatar_vocabBase.mp3];"<img src=""74_qatar.avif"">";74;F2K;"pays;"
+أنا في <b>عمان</b>;أَنَا فِي <b>عُمَانَ</b>;Je suis à Oman.;[sound:75_oman_sentBase.mp3];عمان;عُمَانُ;Oman;[sound:75_oman_vocabBase.mp3];"<img src=""75_oman.avif"">";75;F2K;"pays;"
+هذا <b>صديقي</b>;هَذَا <b>صَدِيقِي</b>;C'est mon ami.;[sound:76_ami_sentBase.mp3];صديق;صَدِيقٌ;ami;[sound:76_ami_vocabBase.mp3];"<img src=""76_ami.avif"">";76;F2K;"relation;"
+هذه <b>صديقة</b>;هَذِهِ <b>صَدِيقَةٌ</b>;C'est une amie.;[sound:77_amie_sentBase.mp3];صديقة;صَدِيقَةٌ;amie;[sound:77_amie_vocabBase.mp3];"<img src=""77_amie.avif"">";77;F2K;"relation;"
+أريد أن <b>أشتري</b>;أُرِيدُ أَنْ <b>أَشْتَرِيَ</b>;Je veux acheter.;[sound:78_acheter_sentBase.mp3];أشتري;أَشْتَرِي;acheter;[sound:78_acheter_vocabBase.mp3];"<img src=""78_acheter.avif"">";78;F2K;"verbe acheter;"
+<b>أشتري</b> خبزاً;<b>أَشْتَرِي</b> خُبْزًا;J'achète du pain.;[sound:79_j_achete_sentBase.mp3];أشتري;أَشْتَرِي;j'achète;[sound:79_j_achete_vocabBase.mp3];"<img src=""79_j_achete.avif"">";79;F2K;"verbe acheter;"
+<b>كم</b> هذا؟;<b>كَمْ</b> هَذَا؟;Combien ça coûte ?;[sound:80_combien_sentBase.mp3];كم;كَمْ;combien;[sound:80_combien_vocabBase.mp3];"<img src=""80_combien.avif"">";80;F2K;"mot-question;"
+هذا <b>غال</b>;هَذَا <b>غَالٍ</b>;C'est cher.;[sound:81_cher_sentBase.mp3];غال;غَالٍ;cher;[sound:81_cher_vocabBase.mp3];"<img src=""81_cher.avif"">";81;F2K;"prix;"
+هذا <b>رخيص</b>;هَذَا <b>رَخِيصٌ</b>;C'est bon marché.;[sound:82_cher_sentBase.mp3];رخيص;رَخِيصٌ;bon marché;[sound:82_cher_vocabBase.mp3];"<img src=""82_cher.avif"">";82;F2K;"prix;"
+أحب الاستماع إلى <b>بودكاست</b> بالعربية;أُحِبُّ الاِسْتِمَاعَ إِلَى <b>بُودْكَاسْت</b> بِالْعَرَبِيَّةِ;J'aime écouter des podcasts en arabe.;[sound:83_podcasts_sentBase.mp3];بودكاست;بُودْكَاسْت;podcast;[sound:83_podcasts_vocabBase.mp3];"<img src=""83_podcasts.avif"">";83;F2K;"mot moderne;"
+أستمع إلى <b>القرآن</b>;أَسْتَمِعُ إِلَى <b>الْقُرْآنِ</b>;J'écoute le Coran.;[sound:84_coran_sentBase.mp3];القرآن;الْقُرْآنُ;Coran;[sound:84_coran_vocabBase.mp3];"<img src=""84_coran.avif"">";84;F2K;"livre sacré;"
+<b>أقرأ</b> كتاباً;<b>أَقْرَأُ</b> كِتَابًا;Je lis un livre.;[sound:85_lis_sentBase.mp3];أقرأ;أَقْرَأُ;je lis;[sound:85_lis_vocabBase.mp3];"<img src=""85_lis.avif"">";85;F2K;"verbe lire;"
+<b>أشاهد</b> فيلماً;<b>أُشَاهِدُ</b> فِيلْمًا;Je regarde un film.;[sound:86_regarde_sentBase.mp3];أشاهد;أُشَاهِدُ;je regarde;[sound:86_regarde_vocabBase.mp3];"<img src=""86_regarde.avif"">";86;F2K;"verbe regarder;"
+<b>أتكلم</b> العربية;<b>أَتَكَلَّمُ</b> الْعَرَبِيَّةَ;Je parle arabe.;[sound:87_parle_sentBase.mp3];أتكلم;أَتَكَلَّمُ;je parle;[sound:87_parle_vocabBase.mp3];"<img src=""87_parle.avif"">";87;F2K;"verbe parler;"
+<b>هل</b> تتكلم العربية؟;<b>هَلْ</b> تَتَكَلَّمُ الْعَرَبِيَّةَ؟;Parles-tu arabe ?;[sound:88_parles_sentBase.mp3];هل;هَلْ;est-ce que;[sound:88_parles_vocabBase.mp3];"<img src=""88_parles.avif"">";88;F2K;"question;"
+<b>نعم</b>، أتكلم العربية;<b>نَعَمْ</b>، أَتَكَلَّمُ الْعَرَبِيَّةَ;Oui, je parle arabe.;[sound:89_oui_sentBase.mp3];نعم;نَعَمْ;oui;[sound:89_oui_vocabBase.mp3];"<img src=""89_oui.avif"">";89;F2K;"réponse;"
+<b>لا</b>، لا أتكلم;<b>لَا</b>، لَا أَتَكَلَّمُ;Non, je ne parle pas.;[sound:90_pas_sentBase.mp3];لا;لَا;non;[sound:90_pas_vocabBase.mp3];"<img src=""90_pas.avif"">";90;F2K;"négation;"
+أنا <b>آكل</b> الآن;أَنَا <b>آكُلُ</b> الْآنَ;Je mange maintenant.;[sound:91_mange_sentBase.mp3];آكل;آكُلُ;je mange;[sound:91_mange_vocabBase.mp3];"<img src=""91_mange.avif"">";91;F2K;"verbe manger;"
+أنا <b>أشرب</b> ماءً;أَنَا <b>أَشْرَبُ</b> مَاءً;Je bois de l'eau.;[sound:92_bois_sentBase.mp3];أشرب;أَشْرَبُ;je bois;[sound:92_bois_vocabBase.mp3];"<img src=""92_bois.avif"">";92;F2K;"verbe boire;"
+أنا <b>أستطيع</b>;أَنَا <b>أَسْتَطِيعُ</b>;Je peux.;[sound:93_peux_sentBase.mp3];أستطيع;أَسْتَطِيعُ;je peux;[sound:93_peux_vocabBase.mp3];"<img src=""93_peux.avif"">";93;F2K;"verbe pouvoir;"
+لا <b>أستطيع</b>;لَا <b>أَسْتَطِيعُ</b>;Je ne peux pas.;[sound:94_peux_sentBase.mp3];أستطيع;أَسْتَطِيعُ;je peux;[sound:94_peux_vocabBase.mp3];"<img src=""94_peux.avif"">";94;F2K;"verbe pouvoir;"
+أريد أن <b>أذهب</b>;أُرِيدُ أَنْ <b>أَذْهَبَ</b>;Je veux partir.;[sound:95_partir_sentBase.mp3];أذهب;أَذْهَبُ;aller;[sound:95_partir_vocabBase.mp3];"<img src=""95_partir.avif"">";95;F2K;"verbe partir;"
+أنا في <b>البيت</b>;أَنَا فِي <b>الْبَيْتِ</b>;Je suis à la maison.;[sound:96_maison_sentBase.mp3];البيت;الْبَيْتُ;maison;[sound:96_maison_vocabBase.mp3];"<img src=""96_maison.avif"">";96;F2K;"lieu;"
+الولد <b>لطيف</b>;الْوَلَدُ <b>لَطِيفٌ</b>;Le garçon est gentil.;[sound:97_gentil_sentBase.mp3];لطيف;لَطِيفٌ;gentil;[sound:97_gentil_vocabBase.mp3];"<img src=""97_gentil.avif"">";97;F2K;"adjectif;"
+البنت <b>لطيفة</b>;الْبِنْتُ <b>لَطِيفَةٌ</b>;La fille est gentille.;[sound:98_gentille_sentBase.mp3];لطيفة;لَطِيفَةٌ;gentille;[sound:98_gentille_vocabBase.mp3];"<img src=""98_gentille.avif"">";98;F2K;"adjectif;"
+<b>الساعة</b> الثامنة;<b>السَّاعَةُ</b> الثَّامِنَةُ;Il est 8 heures.;[sound:99_heures_sentBase.mp3];الساعة;السَّاعَةُ;heure;[sound:99_heures_vocabBase.mp3];"<img src=""99_heures.avif"">";99;F2K;"sert à dire l'heure;"
+هذا درس <b>عربي</b>;هَذَا دَرْسٌ <b>عَرَبِيٌّ</b>;C'est un cours d'arabe.;;عربي;عَرَبِيٌّ;arabe;;;100;F2K;"adjectif;"
+لقد <b>أنهيت</b> العمل في أقل من ساعة;لِقَدٌّ <b>أَنْهَيْتُ</b> الْعَمَلَ فِي أَقَلِّ مِن سَاعَةِ;J'ai terminé ce travail en moins d'une heure.;;أنهيت;أَنْهَيْتُ;terminé;;;101;F2K;
+<b>تماما</b>ً !;<b>تَمَامًا</b>;Exactement !;;تماماً;تَمَامَا;exactement;;;102;F2K;
+<b>قمت</b> بتوجيه تركيزي على الموضوع;<b>قُمْتُ</b> بِتَوْجِيهِ تَرْكِيزِي عَلَى الْمَوْضُوعِ;J'ai concentré mon attention sur le sujet.;;قمت;قُمْتُ;concentré;;;103;F2K;
+<b>وجهت</b> تركيزي على الموضوع;<b>وَجَّهَتْ</b> تَرْكِيزِيٌّ عَلَى الْمَوْضُوعِ;J'ai concentré mon attention sur le sujet.;;وجهت;وَجَّهَتْ;concentré;;;104;F2K;
+قد <b>يكون</b> أو لا يكون صحيحًا;قَد <b>يَكْوُنَّ</b> أَو لَا يُكَوِّنُ صَحِيحًا;Cela peut être ou ne pas être vrai.;;يكون;يَكْوُنَّ;vrai;;;105;F2K;
+<b>قدم</b> لي بعض النصائح;<b>قَدَمٌ</b> لِي بَعْضِ النَّصَائِحِ;Donne-moi quelques conseils.;;قدم;قَدَّمَ;Donne-moi;;;106;F2K;
+<b>حسن</b> !;<b>حُسْنٌ</b>;Parfait !;;حسن;حُسْنٌ;Parfait;;;107;F2K;
+<b>حيوانات</b> الباندا الضخمة تعيش في الصين فقط;<b>حَيَوَانَاتُ</b> الْبَانْدَا الضَّخْمَةَ تُعَيِّشُ فِي اِلْصِيَنَّ فَقَط;Les pandas géants vivent seulement en Chine.;;حيوانات;حَيَوَانَاتٌ;pandas;;;108;F2K;
+لديّ <b>حساسيّة</b> من الحليب;لُدِّيُّ <b>حَسَاسِيَّةٍ</b> مِن الْحَلِيبِ;Je suis allergique au lait.;;حساسيّة;حَسَّاسِيَّةٌ;allergique;;;109;F2K;
+<b>آسف</b>;<b>آسِفٌ</b>;Désolé.;;آسف;آسِفٌ;désolé;;;110;F2K;
+<b>حان</b> الوقت للذهاب إلى المدرسة;<b>حَانَ</b> الْوَقْتُ لِلذَّهَابَ إِلَى الْمَدْرَسَةِ;C'est l'heure d'aller à l'école.;;حان;حَانَ;c'est;;;111;F2K;
+<b>إني</b> في المنزل;<b>إنْي</b> فِي الْمَنْزِلِ;Je suis à la maison.;;إني;إنْي;que je;;;112;F2K;
+إن قمت <b>بخطئ</b> آخر، فستفشل;إِن قُمْتُ <b>بخطِئ</b> آخِرَ ، فَسَتَفْشَلُ;Une seule erreur, et vous avez échoué.;;بخطئ;بخطِئ;échoué;;;113;F2K;
+<b>حذاري</b> !;<b>حَذَارِيٌّ</b>;Attention !;;حذاري;حَذَارِيٌّ;Attention;;;114;F2K;
+<b>يتكلم</b> بسرعة;<b>يَتَكَلَّمُ</b> بِسُرْعَةٍ;Il parle vite.;;يتكلم;يَتَكَلَّمُ;parle;;;115;F2K;
+أسكُن <b>عند</b> عمي;أَسْكُنُ <b>عِنْد</b> عَمِّيٍّ;Je loge chez mon oncle.;;عند;عِنْد;je;;;116;F2K;
+<b>أشكرك</b> على مساعدتك;<b>أَشَكَرَكَ</b> عَلَى مُسَاعَدَتِكَ;Je vous remercie de votre aide.;;أشكرك;أَشَكَرَكَ;remercie;;;117;F2K;
+هل <b>عندكم</b> غرفة؟;هَل <b>عِنْدكُمْ</b> غُرْفَةً ؟;Est-ce que vous avez des chambres de libre ?;;عندكم;عِنْدكُمْ;avez;;;118;F2K;
+<b>تطلب</b> إقناعه ألف ين فقط;<b>تَطْلُبُ</b> إقْنَاعُهُ أَلَّفَ يِنٌ فَقَط;Il a fallu seulement 1000 yen pour le convaincre.;;تطلب;تَطْلُبُ;convaincre;;;119;F2K;
+<b>سأعمل</b> بنصيحتك;<b>سَأَعْمَلُ</b> بِنَصِيحَتِكَ;Je vais suivre votre conseil.;;سأعمل;سَأَعْمَلُ;conseil;;;120;F2K;
+هل <b>تلسع</b> هذه الحشرات؟;هَل <b>تَلْسَعُ</b> هَذِه الْحَشَرَاتِ ؟;Ces insectes piquent-ils ?;;تلسع;تَلْسَعُ;insectes;;;121;F2K;
+كم <b>كتابا</b>ً لديه؟;كَمَّ <b>كِتَابَا</b> لَدَيْهُ ؟;Combien de livres possède-t-il ?;;كتاباً;كِتَابَا;possède-t-il;;;122;F2K;
+<b>قالت</b> أنها ستأتي;<b>قَالَتْ</b> أَنّهَا سَتَأْتِي;Elle dit qu'elle viendra.;;قالت;قَالَتْ;dit;;;123;F2K;
+هي <b>سعيدة</b>;هِي <b>سَعِيدَةٍ</b>;Elle est heureuse.;;سعيدة;سَعِيدَةٌ;heureuse;;;124;F2K;
+<b>فقدت</b> أعصابها;<b>فَقُدْتُ</b> أَعْصَابَهَا;Elle s'est mise en colère.;;فقدت;فَقُدْتُ;colère;;;125;F2K;
+لا أعلم أين <b>يسكن</b>;لَا أَعَلِمَ أَيْنَ <b>يُسَكِّنُ</b>;Je ne sais pas où il habite.;;يسكن;يُسَكِّنُ;habite;;;126;F2K;
+كنت أعلم <b>منذ</b> البداية أنّه كان يكذب;كَنَّتْ أعْلَمُ <b>مُنْذ</b> الْبِدَايَةِ أنّه كَان يَكْذِبُ;Je savais depuis le début qu'il disait un mensonge.;;منذ;مُنْذ;depuis;;;127;F2K;
+طلبت <b>النجدة</b>;طَلَبَتْ <b>النَّجْدَةُ</b>;J'ai appelé à l'aide.;;النجدة;النَّجْدَةُ;j'ai;;;128;F2K;
+<b>رأيتُه</b> وهو يقطع الشارع;<b>رَأَيْتُهُ</b> وهُو يَقْطَعُ الشَّارِعَ;Je l'ai vu traverser la rue.;;رأيتُه;رَأَيْتُهُ;rue;;;129;F2K;
+<b>رأيتها</b> وهي تقطع الشارع;<b>رَأَيْتُهَا</b> وهِي تَقَطُّعِ الشَّارِعِ;Je l'ai vu traverser la rue.;;رأيتها;رَأَيْتُهَا;rue;;;130;F2K;
+أعرف <b>عائلته</b>;أَعَرَفَ <b>عَائِلَتُهُ</b>;Je connais sa famille.;;عائلته;عَائِلَتُهُ;sa;;;131;F2K;
+لا أعرف <b>اسمه</b>;لَا أعْرَفِ <b>اِسْمِهِ</b>;Je ne connais pas son nom.;;اسمه;اُسْمُهُ;nom;;;132;F2K;
+لا أعرف <b>اسمها</b>;لَا أعْرَفِ <b>اِسْمِهَا</b>;Je ne connais pas son nom.;;اسمها;اُسْمُهَا;nom;;;133;F2K;
+هل <b>يمكن</b> أن أجرّبه؟;هَل <b>يَمِّكُنَّ</b> أَنّ أَجَرَّبَهُ ؟;Puis-je essayer ceci ?;;يمكن;يُمْكِنُ;essayer;;;134;F2K;
+أنظر <b>إلى</b> نفسك في المرآة;أَنَظَرٌ <b>إِلَى</b> نَفْسكَ فِي الْمِرْآةِ;Regarde-toi dans le miroir.;;إلى;إِلَى;le;;;135;F2K;
+في <b>الواقع</b>، ما أكلت شيئاً منذ الصباح;فِي <b>الْوَاقِعِ</b> ، مَا أَكَلَتْ شَيْئًا مُنْذ الصَّبَاحِ;En fait, je n'ai rien mangé depuis ce matin.;;الواقع;الْوَاقِعُ;n'ai;;;136;F2K;
+في الحقيقة لم <b>آكل</b> أي شيء منذ هذا الصباح;فِي الْحَقِيقَةِ لَم <b>آكَلَ</b> أَيُّ شَيْءٍ مُنْذ هَذَا الصَّبَاحِ;En fait, je n'ai rien mangé depuis ce matin.;;آكل;آكَلَ;je;;;137;F2K;
+لا <b>تنس</b> أن ترسل الرسالة;لَا <b>تَنْسَ</b> أَنّ تَرَسُّلِ الرِّسَالَةِ;N'oublie pas de poster la lettre.;;تنس;تَنُسُّ;N'oublie;;;138;F2K;
+سوف يعقد <b>المدير</b> مؤتمراً صحفياً غداً;سَوْف يَعْقِدُ <b>الْمُدِيرُ</b> مُؤْتَمِرًا صَحَفِيًّا غَدًا;Le directeur tiendra une conférence de presse demain.;;مدير;مُدِيرٌ;directeur;;;139;F2K;FIX_MISMATCH=1 | SANITIZE_POLITICS=1
+أن <b>جد</b> ممتن لمساعدتك;أَنّ <b>جِدِّ</b> مُمْتَنِّ لِمُسَاعَدَتَكَ;Je vous suis très reconnaissant de votre aide.;;جد;جِدْ;reconnaissant;;;140;F2K;
+"<b>يُسمى</b> الأطفال الذين فقدوا أولياءهم""يتامى""";"<b>يُسَمَّى</b> الْأَطْفَالَ الَّذِين فَقَدُوا أَوْلِيَاءَهُمْ "" يَتَامَى """;Les enfants dont les parents sont décédés sont appelés « orphelins ».;;يُسمى;يُسَمَّى;les;;;141;F2K;
+<b>أتناول</b> الغداء عند الظهيرة مع أصدقائي;<b>أَتَنَاوَلَ</b> الْغَدَاءُ عِنْد الظَّهيرَةِ مَع أَصْدِقَائِيِّ;Je déjeune à midi avec mes amis.;;أتناول;أَتَنَاوَلَ;déjeune;;;142;F2K;
+لم <b>يصدّق</b> أحد قصّته;لَم <b>يُصَدِّقُ</b> أحَدُ قِصَّتِهِ;Personne ne crut son histoire.;;يصدّق;يُصَدِّقُ;crut;;;143;F2K;
+لا أريد <b>لحما</b>;لَا أُرِيدُ <b>لَحْمًا</b>;Je ne veux pas de viande.;;لحما;لَحَمَا;viande;;;144;F2K;
+<b>أمر</b> سخيف أن يبذر ماله على هذه التفاهات;<b>أَمْرُ</b> سَخِيفُ أَن يَبْذُرُ مَالُهُ عَلَى هَذِه التَّفَاهَاتِ;Il était bête de perdre son argent pour de pareilles broutilles.;;أمر;أَمْرٌ;broutilles;;;145;F2K;
+<b>سمعته</b> ينزل المدرج;<b>سَمْعَتُهُ</b> يُنْزِلُ الْمُدَرَّجُ;Je l'ai entendu descendre les escaliers.;;سمعته;سَمِعَتْهُ;escaliers;;;146;F2K;
+سمعته <b>ينزل</b> السلالم;سَمْعَتُهُ <b>يُنْزِلُ</b> السَّلَالِمُ;Je l'ai entendu descendre les escaliers.;;ينزل;يُنْزِلُ;escaliers;;;147;F2K;
+<b>ليتني</b> كنت أعرف أين هو!;<b>لِيَتْنُي</b> كَنَّتْ أعْرَفُ أَيْن هُو;J'aurais aimé savoir où il était !;;ليتني;لِيَتْنِيٌّ;j'aurais;;;148;F2K;
+<b>افكاره</b> تختلف عن افكاري;<b>اَفْكَارُهُ</b> تَخْتَلِفُ عَن اْفَكَاْرَيْ;Ces idées sont assez différentes des miennes.;;افكاره;اَفْكَارُهُ;ces;;;149;F2K;
+<b>ابنه</b> يريد ان يصبح محامي;<b>اِبْنُهُ</b> يُرِيدُ انَّ يُصْبِحُ مَحَامُّي;Son fils veut être juriste.;;ابنه;اِبْنَهُ;fils;;;150;F2K;
+<b>قال</b> إنه قد كان سعيدا جدا;<b>قَالَ</b> إِنّهُ قَد كَان سَعِيدًا جِدّا;Il a dit qu'il était très heureux.;;قال;قَالَ;dit;;;151;F2K;
+<b>لديه</b> قطان: أحدهما أسود والآخر أبيض;<b>لَدَيْهُ</b> قُطَّانَ أَحَدُّهُمَا أسْوَدُ وَالْآخِرُ أَبْيَضُ;Il a deux chats : l'un est noir et l'autre blanc.;;لديه;لَدَيْهُ;a;;;152;F2K;
+هو <b>يتجنب</b> مصاحبة هذه السيدات;هُو <b>يَتَجَنَّبُ</b> مُصَاحِبَةَ هَذِه السَّيِّدَاتِ;Il évite de tenir compagnie à ces dames.;;يتجنب;يَتَجَنَّبُ;évite;;;153;F2K;
+<b>إنه</b> غير متفق معنا بخصوص هذا الموضوع;<b>إِنّهُ</b> غَيْرَ مُتَّفَقِ مَعنَا بَخَصَوْصْ هَذَا الْمَوْضُوعِ;Il n'est pas d'accord avec nous sur ce sujet.;;إنه;إِنّهُ;il;;;154;F2K;
+<b>نفى</b> الأفعال المنسوبة إليه;<b>نَفَى</b> الْأَفْعَالُ الْمَنْسُوبَةُ إِلَيْهِ;Il a nié les faits.;;نفى;نَفَى;faits;;;155;F2K;
+إنه <b>قوي</b> كالحصان;إِنّهُ <b>قُوِّيَّ</b> كَالْْحِصَانِ;Il est fort comme un cheval.;;قوي;قُوِّيٌّ;fort;;;156;F2K;
+إنه <b>وسيم</b> و ذكي;إِنّهُ <b>وَسِيمَ</b> وْ ذَكِيٌّ;Il est beau et intelligent.;;وسيم;وَسِيمَ;beau;;;157;F2K;
+هو <b>يدرس</b> الانجليزية;هُو <b>يَدْرُسُ</b> اْلَاْنَجَلَيْزَيْةْ;Il enseigne l'anglais.;;يدرس;يَدْرُسُ;il;;;158;F2K;
+هو <b>معتاد</b> على التحدُّث إلى الأجانب;هُو <b>مُعْتَادٍ</b> عَلَى التَّحَدُّثِ إِلَى الْأجَانِبِ;Il a l'habitude de parler à des étrangers.;;معتاد;مُعْتَادٌ;l'habitude;;;159;F2K;
+هو يدرس <b>بجامعة</b> طوكيو;هُو يَدْرُسُ <b>بِجَامِعَةِ</b> طُوكِيُوٍ;Il étudie à l'université de Kyoto.;;بجامعة;بِجَامِعَةٍ;étudie;;;160;F2K;
+هو <b>غني</b> بينما أنا فقير;هُو <b>غَنِيِّ</b> بَيْنَمَا أَنَا فَقِيرٍ;Il est riche et je suis pauvre.;;غني;غَنِيٌّ;riche;;;161;F2K;
+هو ليس <b>غنيا</b> ولكنه سعيد;هُو لَيْس <b>غَنِيًّا</b> ولَكِنّهُ سَعِيدَ;Il n'est pas riche, mais il est heureux.;;غنيا;غَنَّيَا;heureux;;;162;F2K;
+هو <b>متزوج</b> وله طفلان;هُو <b>مُتَزَوِّجٍ</b> ولَه طِفْلَانِ;Il est marié et a deux enfants.;;متزوج;مُتَزَوِّجٌ;marié;;;163;F2K;
+<b>يتقاضى</b> شهريا خمس مائة ين;<b>يَتَقَاضَى</b> شَهْرِيَّا خَمْسِ مَِائََِة يِنً;Son salaire mensuel s'élève à plus de 500 000 yens.;;يتقاضى;يَتَقَاضَى;son;;;164;F2K;
+<b>سرق</b> مني كل مالي;<b>سَرَقَ</b> مَنِّيٌّ كُلّ مَالِيُّ;Il m'a volé chaque centime que j'avais.;;سرق;سَرَقَ;volé;;;165;F2K;
+<b>طلب</b> مني النصيحة;<b>طَلَبَ</b> مَنُّي النَّصِيحَةُ;Il m'a demandé conseil.;;طلب;طَلَبَ;demandé;;;166;F2K;
+هو <b>يوزّع</b> الجرائد;هُو <b>يُوَزِّعُ</b> الْجَرَائِدَ;Il livre les journaux.;;يوزّع;يُوَزِّعُ;journaux;;;167;F2K;
+إنه وسيم <b>جدا</b>;إِنّهُ وَسِيمَ <b>جِدّا</b>;Il est extrêmement beau.;;جدا;جِدّا;est;;;168;F2K;
+لقد <b>قام</b> بما في وسعه لانقاذها;لِقَدٌّ <b>قَام</b> بِمَا فِي وُسْعِهِ لَاْنَقَاْذَهَاْ;Il a fait de son mieux pour la sauver.;;قام;قَام;a;;;169;F2K;
+لقد <b>كَلَّفَ</b> نفسه الكثير من أجل انقاذها;لِقَدَّ <b>كَلَّفَ</b> نَفْسهُ الْكَثِيرَ مِن أَجَل اْنَقَاْذَهَاْ;Il a fait de son mieux pour la sauver.;;كَلَّفَ;كَلَّفَ;sauver;;;170;F2K;
+هو <b>معروف</b> لدى الجميع;هُو <b>مَعْرُوفِ</b> لَدَى الْجَمِيعِ;Il est connu de tous.;;معروف;مَعْرُوفٌ;connu;;;171;F2K;
+لم <b>يتمكن</b> من السيطرة على اعصابه;لَم <b>يَتِمُّكُنَّ</b> مِن السَّيْطَرَةِ عَلَى اْعَصَاْبَهْ;Il n'a pas pu contrôler sa colère.;;يتمكن;يَتِمُّكُنَّ;pu;;;172;F2K;
+لم <b>يكن</b> قادرا على أن يتزوجها;لَم <b>يَكُنُّ</b> قَادِرًا عَلَى أَن يَتَزَوَّجُهَا;Il fut dans l'incapacité de l'épouser.;;يكن;يَكُنُّ;fut;;;173;F2K;
+إنه <b>يشبه</b> أباه كثيراً;إِنّهُ <b>يُشْبِهُ</b> أَبَاهُ كَثِيرًا;Il ressemble beaucoup à son père.;;يشبه;يُشْبِهُ;ressemble;;;174;F2K;
+<b>غضب</b>;<b>غَضَبٌ</b>;Il s'est fâché.;;غضب;غَضَبٌ;fâché;;;175;F2K;
+إنه يشبه <b>أمه</b>;إِنّهُ يُشَبِّهُ <b>أُمَّهُ</b>;Il ressemble à sa mère.;;أمه;أَمَّهُ;sa;;;176;F2K;
+<b>غدا</b>، سيكون في بيته;<b>غَدًا</b> ، سَيُكَوِّنُ فِي بَيْتِهِ;Il sera chez lui demain.;;غدا;غَدَا;demain;;;177;F2K;
+<b>سيأتي</b> إن كان يرغب ذلك;<b>سَيَأْتِي</b> إِنّ كَان يَرْغَبُ ذَلِك;Il viendra s'il en a envie.;;سيأتي;سَيَأْتِي;viendra;;;178;F2K;
+هي <b>رافقتني</b> إلى المستشفى;هِي <b>رَافَقَتْنِي</b> إِلَى الْمُسْتَشْفَى;Elle m'a accompagné à l'hôpital.;;رافقتني;رَافَقَتْنِي;accompagné;;;179;F2K;
+<b>صديقها</b> مغني;<b>صَدِيقُهَا</b> مغنِي;Son ami est un chanteur.;;صديقها;صَدِيقُهَا;son;;;180;F2K;
+هي <b>ليست</b> فقيرة;هِي <b>لَيْسَت</b> فَقِيرَةٍ;Elle n'est pas pauvre.;;ليست;لَيْسَت;pas;;;181;F2K;
+هي <b>تعمل</b> في بنك;هِي <b>تَعْمَلُ</b> فِي بَنْكٍ;Elle travaille dans une banque.;;تعمل;تَعْمَلُ;travaille;;;182;F2K;
+هي <b>قلقة</b> بشأن سلامتك;هِي <b>قَلَقَةٍ</b> بِشَأْنِ سُلَّامَتِكَ;Elle a peur pour ta sécurité.;;قلقة;قَلَقَةٌ;sécurité;;;183;F2K;
+<b>وجدت</b> لي رباط عنق جميل;<b>وَجَدَتْ</b> لِي رِبَاطِ عُنُقِ جَمِيلِ;Elle m'a trouvé une belle cravate.;;وجدت;وَجَدَتْ;cravate;;;184;F2K;
+<b>كانت</b> ترتدي حذاءً ذا لون بني غامق;<b>كَانَتْ</b> تَرْتَدِي حِذَاءً ذَا لَوْنِ بُنِّيِّ غَامِقِ;Elle portait des chaussures brun foncé.;;كانت;كَانَتْ;etait;;;185;F2K;
+<b>قرأت</b> رسالته عدة مرات;<b>قَرَأَتْ</b> رِسَالَتُهُ عِدَّةَ مَرَّاتٍ;Elle a lu sa lettre à maintes reprises.;;قرأت;قَرَأَتْ;reprises;;;186;F2K;
+كانت <b>تسخر</b> من زوجها;كَانَتْ <b>تُسَخِّرُ</b> مِن زَوْجِهَا;Elle se moquait de son mari.;;تسخر;تُسَخِّرُ;moquait;;;187;F2K;
+هي <b>تمشي</b>;هِي <b>تَمْشِي</b>;Elle marche.;;تمشي;تَمْشِي;marche;;;188;F2K;
+<b>أبي</b> اقلع عن التدخين مؤخرا;<b>أبِي</b> اِقْلَعْ عَن التَّدْخِينِ مُؤَخَّرًا;Mon père a arrêté de fumer récemment.;;أبي;أبِي;père;;;189;F2K;
+<b>ألقيت</b> نظرة داخل الغرفة و لم أرى أحدا;<b>أَلْقَيْتُ</b> نَظَرَةَ دَاخِلَ الْغُرْفَةِ وْ لَم أَرَى أحَدًا;Regardant dans la pièce, je n'ai trouvé personne.;;ألقيت;أَلْقَيْتُ;Regardant;;;190;F2K;
+لا تنس <b>إضافتي</b>;لَا تَنْسَ <b>إضَافَتَي</b>;N'oublie pas de m'y ajouter.;;إضافتي;إضَافَتُي;m'y;;;191;F2K;
+أريد أن <b>أنام</b>;أُرِيدُ أَنّ <b>أَنَامٍ</b>;Je veux dormir.;;أنام;أَنَامٍ;dormir;;;192;F2K;
+<b>أحبها</b> و تحبني;<b>أَحَبَّهَا</b> وْ تُحِبُّنِي;Je l'aime et elle m'aime.;;أحبها;أَحَبَّهَا;l'aime;;;193;F2K;
+<b>اغلق</b> كتابك;<b>اِغْلِقْ</b> كِتَابَكَ;Ferme ton livre.;;اغلق;اِغْلِقْ;Ferme;;;194;F2K;
+ما <b>زالت</b> الحشرة حية;مَا <b>زَالَتْ</b> الْحَشَرَةَ حَيَّةً;Cet insecte est toujours vivant.;;زالت;زَالَتْ;cet;;;195;F2K;
+لقد <b>عاد</b> كل العمال لمنازلهم عدا واحد;لِقَدٌّ <b>عَاد</b> كُلّ الْعُمَّالِ لِمُنَازِلَهُمْ عَدَا وَاحِدٍ;Tous les ouvriers rentrèrent chez eux sauf un.;;عاد;عَاد;ouvriers;;;196;F2K;
+<b>أجبني</b>;<b>أَجِبُنِي</b>;Répondez-moi.;;أجبني;أَجِبُنِي;Répondez-moi;;;197;F2K;
+لقد <b>انتهى</b> كل شيء بالنسبة لي . لقد فقدت عملي;لِقَدَّ <b>اِنْتَهَى</b> كُلّ شَيْءٍ بِالنِّسْبَةِ لِي لِقَدٌّ فَقَدَتْ عَمَلِيٌّ;Tout est fini pour moi. J'ai perdu mon travail.;;انتهى;اِنْتَهَى;Tout;;;198;F2K;
+لا <b>يسعني</b> إلا أن أؤدي أفضل ما لدي;لَا <b>يَسَعُنِي</b> إِلَّا أَنّ أُؤَدِّي أفْضَلَ مَا لُدِّي;Tout ce que je peux faire c'est faire de mon mieux.;;يسعني;يَسَعُنِي;faire;;;199;F2K;
+<b>تناول</b> هذا الدواء مرّتين في اليوم;<b>تَنَاوَلَ</b> هَذَا الدَّوَاءِ مَرَّتَيْنِ فِي الْيَوْمِ;Prenez ce médicament deux fois par jour.;;تناول;تَنَاوَلَ;Prenez;;;200;F2K;
+إشتريت <b>سيارة</b> قديمة;إَشَتَرَيْتْ <b>سَيَّارَةَ</b> قَدِيمَةَ;J'ai acheté une vieille voiture.;;سيارة;سَيَّارَةٌ;voiture;;;201;F2K;
+<b>أفضل</b> السمك على اللحم;<b>أَفَضْلُ</b> السَّمَكِ عَلَى اللَّحْمِ;Je préfère le poisson à la viande.;;أفضل;أَفَضْلٌ;je;;;202;F2K;
+<b>يتبعني</b> كلبي أين ما ذهبت;<b>يَتْبَعُنِي</b> كَلْبِيٌّ أَيْن مَا ذَهَبَتْ;Mon chien me suit partout où je vais.;;يتبعني;يَتْبَعُنِي;chien;;;203;F2K;
+يتبعني <b>كلبي</b> حيثما ذهبت;يَتْبَعُنِي <b>كَلْبِيُّ</b> حَيْثُمَا ذَهَبَتْ;Mon chien me suit partout où je vais.;;كلبي;كَلْبِيٌّ;chien;;;204;F2K;
+<b>منزلك</b> رائع;<b>مَنْزِلُكَ</b> رَائِعٌ;Votre maison est fantastique.;;منزلك;مَنْزِلُكَ;votre;;;205;F2K;
+كنت <b>أتنفس</b> على سطح المرآة;كَنَّتْ <b>أَتَنَفُّسٌ</b> عَلَى سَطْحِ الْمِرْآةِ;Je respirais contre le miroir.;;أتنفس;أَتَنَفُّسٌ;respirais;;;206;F2K;
+كنت أتنفس <b>على</b> زجاج المرآة;كَنَّتْ أَتَنَفُّسٌ <b>عَلَى</b> زَجَّاجِ الْمِرْآةِ;Je respirais contre le miroir.;;على;عَلَى;le;;;207;F2K;
+كنت <b>أخرج</b> أنفاسي على زجاج المرآة;كَنَّتْ <b>أَخَرَجَ</b> أَنْفَاسِيٌّ عَلَى زَجَّاجِ الْمِرْآةِ;Je respirais contre le miroir.;;أخرج;أَخَرَجَ;respirais;;;208;F2K;
+كانت <b>أنفاسي</b> ترتسم على المرآة;كَانَتْ <b>أَنِفَاسِيَّ</b> تَرْتَسِمُ عَلَى الْمِرْآةِ;Je respirais contre le miroir.;;أنفاسي;أَنِفَاسِيٌّ;respirais;;;209;F2K;
+كانت أنفاسي <b>تتشكل</b> ككتلة على سطح المرآة;كَانَتْ أَنِفَاسِيَّ <b>تَتَشَكَّلُ</b> كَكُتْلَةٍ عَلَى سَطْحِ الْمِرْآةِ;Je respirais contre le miroir.;;تتشكل;تَتَشَكَّلُ;respirais;;;210;F2K;
+<b>عندي</b> سؤال;<b>عُنَّدُي</b> سُؤَّالٌ;J'ai une question.;;عندي;عَنَدِيٌّ;j'ai;;;211;F2K;
+<b>كان</b> من الصعب رؤية الطريق بسبب كثافة الضباب;<b>كَان</b> مِن الصَّعْبِ رُؤْيَةَ الطَّرِيقِ بِسَبَبِ كَثَافَةِ الضَّبَابِ;Il était difficile de voir la route à cause de l'épais brouillard.;;كان;كَان;etait;;;212;F2K;
+<b>ماذا</b> تفعل بأوقات فراغك؟;<b>مَاذَا</b> تَفْعَلُ بِأَوْقَاتِ فَرَاغِكَ ؟;Que faites-vous de votre temps libre ?;;ماذا;مَاذَا;que;;;213;F2K;
+<b>بعض</b> الأطفال يسبحون في البحر;<b>بَعْضَ</b> الْأَطْفَالِ يُسَبِّحُونَ فِي الْبَحْرِ;Quelques enfants nagent dans la mer.;;بعض;بَعْضَ;Quelques;;;214;F2K;
+ماذا <b>تحتاج</b>؟;مَاذَا <b>تَحْتَاجُ</b> ؟;De quoi as-tu besoin ?;;تحتاج;تَحْتَاجُ;as-tu;;;215;F2K;
+ليس لدي <b>مال</b>;لَيْسَ لَدَيَّ <b>مَالٌ</b>;Je n'ai pas d'argent.;;مال;مَالٌ;argent;;;216;F2K;" swapped_from_money_sentence;"
+<b>عادة</b> ما يكون الأطفال ماهرين جداً في تعلم اللغات;<b>عَادَةٌ</b> مَا يَكْوُنَّ الْأَطْفَالَ مَاهِرِينَ جِدًّا فِي تَعَلَّمَ اللُّغَاتِ;Les enfants sont souvent très doués pour apprendre des langues étrangères.;;عادة;عَادَةٌ;souvent;;;217;F2K;
+حسب علمي، لم تترجم <b>الرواية</b> إلى العربية;حَسْب عِلْمِيٍّ ، لَم تُتَرْجِمُ <b>الرِّوَايَةُ</b> إِلَى الْعَرَبِيَّةِ;À ma connaissance, le roman n'est pas traduit en arabe.;;رواية;رِوَايَةٌ;à;;;218;F2K;
+حسب ما أعرف، <b>الرواية</b> غير مترجمة إلى العربية;حَسَبٌ مَا أعْرَفُ ، <b>الرِّوَايَةَ</b> غَيْرَ مُتَرْجِمَةٍ إِلَى الْعَرَبِيَّةِ;À ma connaissance, le roman n'est pas traduit en arabe.;;رواية;رِوَايَةٌ;à;;;219;F2K;
+من <b>اخترع</b> هذه الآلة؟;مَن <b>اِخْتَرَعَ</b> هَذِه الْآلةِ ؟;Qui a inventé cette machine ?;;اخترع;اِخْتَرَعَ;inventé;;;220;F2K;
+<b>بيل</b>، افتح الباب;<b>بِيلٌ</b> ، اِفْتَحْ الْبَابَ;Bill, ouvre la porte.;;بيل;بِيلٌ;Bill;;;221;F2K;
+لا أريد <b>العمل</b>;لَا أُرِيدُ <b>الْعَمَلَ</b>;Je ne veux pas travailler.;;العمل;الْعَمَلُ;travailler;;;222;F2K;
+عيد <b>ميلاد</b> سعيد!‏‏;عِيدَ <b>مِيلَاَدُ</b> سَعِيدُ !‏‏;Bon anniversaire !;;ميلاد;مِيلَاَدٌ;anniversaire;;;223;F2K;
+<b>مذاق</b> هذا الماء طيب;<b>مَذَاقُ</b> هَذَا الْمَاءُ طَيِّبٌ;Cette eau a bon goût.;;مذاق;مَذَاقٌ;eau;;;224;F2K;
+<b>اغسل</b> يديك قبل الطّعام;<b>اِغْسِلْ</b> يَدِيَّكَ قَبْل الطَّعَامِ;Lavez vos mains avant de manger.;;اغسل;اِغْسِلْ;Lavez;;;225;F2K;
+<b>أفكر</b> فيك;<b>أَفِكْرٌ</b> فِيكَ;Je pense à toi.;;أفكر;أَفِكْرٌ;pense;;;226;F2K;
+<b>تشغل</b> بالي;<b>تَشْغَلُ</b> بَالِيٌّ;Je pense à toi.;;تشغل;تَشْغَلُ;toi;;;227;F2K;
+<b>تملأ</b> ذهني;<b>تَمْلَأُ</b> ذِهْنِيٌّ;Je pense à toi.;;تملأ;تَمْلَأُ;toi;;;228;F2K;
+<b>تستولي</b> على أفكاري;<b>تَسْتَوْلِي</b> عَلَى أَفْكَارِيٍّ;Je pense à toi.;;تستولي;تَسْتَوْلِي;pense;;;229;F2K;
+<b>أخفت</b> الغيوم الشمس;<b>أَخْفَتْ</b> الْغُيُومُ الشُّمُسُ;Les nuages cachèrent le soleil.;;أخفت;أَخْفَتْ;cachèrent;;;230;F2K;
+<b>مرحبا</b>ً بك في المنزل;<b>مُرْحِبًا</b> بِك فِي الْمَنْزِلِ;Bienvenue à la maison.;;مرحباً;مُرْحِبَا;Bienvenue;;;231;F2K;
+<b>هناك</b> القليل من التفاح على الشجرة ، أليس كذلك؟;<b>هُنَاك</b> الْقَلِيلِ مِن التُّفَّاحِ عَلَى الشَّجَرَةِ ، ألَيْس كَذَلِك ؟;Il y a quelques pommes sur cet arbre, n'est-ce pas ?;;هناك;هُنَاك;la-bas;;;232;F2K;
+لا <b>أوافقك</b> الرأي;لَا <b>أَوَافَقَكَ</b> الرَّأْي;Je ne suis pas d'accord avec toi.;;أوافقك;أَوَافَقَكَ;toi;;;233;F2K;
+<b>طقس</b> اليوم جميل;<b>طَقْسُ</b> الْيَوْمِ جَمِيلٌ;Il fait beau aujourd'hui.;;طقس;طَقْسٌ;fait;;;234;F2K;
+<b>الجو</b> صحو هذا اليوم;<b>الْجَوُّ</b> صَحْوَ هَذَا الْيَوْمِ;Il fait beau aujourd'hui.;;الجو;الْجَوُّ;fait;;;235;F2K;
+أبي لا <b>يحب</b> كرة القدم;أَبِيٌّ لَا <b>يُحِبُّ</b> كُرَةُ الْقَدَمِ;Mon père n'aime pas le foot.;;يحب;يُحِبُّ;n'aime;;;236;F2K;
+<b>انتخبناها</b> مديرة لفريقنا;<b>اِنْتَخَبْنَاهَا</b> مُدِيرَةً لِفَرِيقَنَا;Nous l'avons élue capitaine de notre équipe.;;انتخبناها;اِنْتَخَبْنَاهَا;équipe;;;237;F2K;
+لا <b>أظن</b> أنها تشبه أمها;لَا <b>أَظَنٌّ</b> أَنّهَا تُشَبِّهُ أُمَّهَا;Je ne pense pas qu'elle ressemble à sa mère.;;أظن;أَظَنَّ;pense;;;238;F2K;
+<b>الفتى</b> الذي أحبه لا يحبني;<b>الْفَتَى</b> الَّذِي أَحَبَّهُ لَا يُحِبُّنِي;Le garçon que j'aime ne m'aime pas.;;الفتى;الْفَتَى;j'aime;;;239;F2K;
+<b>سأبقى</b> في الفندق حاليّا;<b>سَأُبْقَى</b> فِي الْفُنْدُقِ حَالِيًّا;Je reste à l'hôtel pour le moment.;;سأبقى;سَأَبْقَى;reste;;;240;F2K;
+<b>سأقاتل</b> حتّى آخررمق;<b>سَأُقَاتِلُ</b> حتَّى آْخَرَرَمَقْ;Je me battrai jusqu'au dernier souffle.;;سأقاتل;سَأُقَاتِلُ;souffle;;;241;F2K;
+<b>سبق</b> لي و أن زرت هذا المتجر;<b>سَبْقٌ</b> لِي وْ أَنّ زُرْتُ هَذَا الْمَتْجَرِ;Je suis allé à ce magasin avant.;;سبق;سَبْقٌ;magasin;;;242;F2K;
+يتكلم <b>بسرعة</b>;يَتَكَلَّمُ <b>بِسُرْعَةٍ</b>;Il parle vite.;;بسرعة;بِسُرْعَةٍ;vite;;;243;F2K;
+<b>قررت</b> الذهاب إلى أمريكا بدلا من أوروبا;<b>قَرَّرَتْ</b> الذَّهَابُ إِلَى أَمْرِيكَا بَدَلًا مِن أُورُوبَّا;J'ai décidé d'aller en Amérique plutôt qu'en Europe.;;قررت;قَرَّرَتْ;d'aller;;;244;F2K;
+إنه وسيم و <b>ذكي</b>;إِنّهُ وَسِيمَ وْ <b>ذَكِيٌّ</b>;Il est beau et intelligent.;;ذكي;ذَكِيٌّ;intelligent;;;245;F2K;
+هذه القلعة <b>جميلة</b>;هَذِه الْقَلْعَةُ <b>جَمِيلَةٌ</b>;Ce château est beau.;;جميلة;جَمِيلَةٌ;est;;;246;F2K;
+موريتانيا <b>بلد</b> جميل جداً;مُورِيتَانْيَا <b>بَلَدِ</b> جَمِيلِ جِدًّا;La Mauritanie est un très beau pays.;;بلد;بَلَدٌ;pays;;;247;F2K;
+طقس <b>اليوم</b> جميل;طَقْسُ <b>الْيَوْمِ</b> جَمِيلٌ;Il fait beau aujourd'hui.;;اليوم;الْيَوْمُ;aujourd'hui;;;248;F2K;
+منزلي <b>كبير</b>;مَنْزِلُي <b>كَبِيرٌ</b>;Ma maison est grande.;;كبير;كَبِيرٌ;grande;;;249;F2K;
+أنظر إلى هذا <b>المنزل</b>;أَنَظَرٌ إِلَى هَذَا <b>الْمَنْزِلِ</b>;Regarde cette maison.;;المنزل;الْمَنْزِلُ;maison;;;250;F2K;
+مرحباً <b>بك</b> في المنزل;مُرْحِبًا <b>بِك</b> فِي الْمَنْزِلِ;Bienvenue à la maison.;;بك;بِك;Bienvenue;;;251;F2K;
+لا أحب <b>المدرسة</b>;لَا أَحُبَّ <b>الْمَدْرَسَةِ</b>;Je n'aime pas l'école.;;المدرسة;الْمَدْرَسَةُ;l'école;;;252;F2K;
+هل يمكن أن <b>تضع</b> إسمي على قائمة الانتظار؟;هَل يَمِّكُنَّ أَن <b>تَضَعُ</b> إِسْمِي عَلَى قَائِمَةِ الْاِنْتِظَارِ ؟;Pourrais-tu ajouter mon nom à la liste d'attente ?;;تضع;تَضَعُ;Pourrais-tu;;;253;F2K;
+<b>ضحك</b>;<b>ضَحِكَ</b>;Il a ri.;;ضحك;ضَحِكَ;ri;;;254;F2K;
+هل <b>يمكنك</b> أخذ هذا من فضلك؟;هَلٌّ <b>يُمْكِنُكَ</b> أَخَذ هَذَا مِن فَضْلِكَ ؟;Peux-tu prendre ça s'il te plaît ?;;يمكنك;يُمْكِنُكَ;peux-tu;;;255;F2K;
+لقد <b>تغيّر</b> شكلك حتى إني وجدت صعوبة في التعرف عليك;لِقَدَّ <b>تَغَيُّرُ</b> شَكْلِكَ حَتَّى إنْي وَجَدَتْ صُعُوبَةٌ فِي التَّعَرُّفِ عَلَيْكَ;Tu as tellement changé que j'ai du mal à te reconnaître.;;تغيّر;تَغَيَّرَ;tellement;;;256;F2K;
+<b>العربية</b> تُتَكَلَّمُ في السعودية;<b>الْعَرَبِيَّةُ</b> تُتَكَلَّمُ فِي السُّعُودِيَّةِ;L'arabe est parlé en Arabie saoudite.;;العربية;الْعَرَبِيَّةُ;l'arabe;;;257;F2K;
+<b>بوب</b> صديقي;<b>بَوَّبَ</b> صَدِيقِيٌّ;Bob est mon ami.;;بوب;بَوَّبَ;Bob;;;258;F2K;
+<b>يلعب</b> الحظ دورا هاما في الحياة;<b>يَلْعَبُ</b> الْحَظُّ دَوْرًا هَامَا فِي الْحَيَاةِ;La chance joue un rôle important dans la vie.;;يلعب;يَلْعَبُ;important;;;259;F2K;
+أتذكر <b>طفولتي</b> بوضوح;أَتَذْكُرُ <b>طُفُولَتُي</b> بِوُضُوحٍ;J'ai un souvenir clair de mon enfance.;;طفولتي;طُفُولَتُي;j'ai;;;260;F2K;
+إنه <b>طبيب</b>;إِنّهُ <b>طَبِيبَ</b>;Il est médecin.;;طبيب;طَبِيبٌ;médecin;;;261;F2K;
+ماذا <b>تحب</b>؟;مَاذَا <b>تُحِبُّ</b> ؟;Qu'aimes-tu ?;;تحب;تُحِبُّ;Qu'aimes-tu;;;262;F2K;
+لديه <b>عائلة</b> كعصير;لَدَيْهُ <b>عَائِلَةً</b> كَعَصِيرٍ;Il a une grande famille.;;عائلة;عَائِلَةٌ;famille;;;263;F2K;
+<b>شاهد</b> توم التلفاز بالأمس;<b>شَاهَدَ</b> تُومَ التِّلْفَازِ بِالْأَمْسِ;Tom a regardé la télé hier.;;شاهد;شَاهِدٌ;regardé;;;264;F2K;
+<b>ينبغي</b> أن تبدأَ أبكر ما يمكنك;<b>يَنْبَغِي</b> أَن تَبْدَأَ أَبِكَرٍّ مَا يُمْكِنُكَ;Tu devrais commencer aussi tôt que possible.;;ينبغي;يَنْبَغِي;commencer;;;265;F2K;
+<b>وقد</b> أسعدتهم فكرة إرسالهم إلى الخارج;<b>وَقُدْ</b> أَسْعُدَتَهُمْ فَكُرَةَ إِرْسَالِهِمْ إِلَى الْخَارِجِ;L'idée même d'être envoyés à l'étranger les ravissait.;;وقد;وقَد;L'idée;;;266;F2K;
+<b>نأسف</b> لوفاته;<b>نَأْسَفُ</b> لِوَفَاتَهُ;Nous regrettons sa mort.;;نأسف;نَأْسَفُ;mort;;;267;F2K;
+أنا <b>مشغول</b> جداً;أَنَا <b>مَشْغُولِ</b> جِدًّا;Je suis très occupé.;;مشغول;مَشْغُولٌ;occupé;;;268;F2K;
+<b>أنتظر</b> أخبارا سعيدة منهم;<b>أَنْتَظِرُ</b> أَخَبَارًا سَعِيدَةً مِنهُمْ;J'attendais des bonnes nouvelles de leur part.;;أنتظر;أَنْتَظِرُ;des;;;269;F2K;
+<b>وقت</b> استراحتنا يمتد من 10h40 إلى 11h00;<b>وَقْتَ</b> اِسْتِرَاحَتِنَا يَمْتَدُّ مِن 10h40 إِلَى 11h00;Nous avons une pause de 10 h 40 à 11 h 00.;;وقت;وَقْتَ;de;;;270;F2K;
+انه <b>يأكل</b> الكثير;اِنْهَ <b>يَأْكُلُ</b> الْكَثِيرَ;Il mange beaucoup.;;يأكل;يَأْكُلُ;mange;;;271;F2K;
+<b>تدخل</b> فيما كنت أقوم به;<b>تَدَخُّلٌ</b> فِيمَا كَنَّتْ أَقْوَمُ بِه;Il s'est mêlé de ce que je faisais.;;تدخل;تَدْخُلُ;s'est;;;272;F2K;
+<b>لينكس</b> هو نظام تشغيل حر؛ أنصحك بتجريبه !;<b>لِيَنْكُسُ</b> هُو نِظَامِ تَشْغِيلِ حُرِّ ؛ أَنَصَحَكَ بِتَجْرِيبِهِ;"Linux est un système d'exploitation libre ; tu devrais l'essayer.";;لينكس;لِيَنْكُسُ;Linux;;;273;F2K;
+هناك <b>مستشفى</b> بالقرب من هنا;هُنَاك <b>مُسْتَشْفًى</b> بِالْقُرْبِ مِن هُنَا;Il y a un hôpital près d'ici.;;مستشفى;مُسْتَشْفًى;hôpital;;;274;F2K;
+إن <b>أردت</b> أن يحبك الناس فأحببه;إِنّ <b>أَرَدْتُ</b> أَن يُحِبُّكَ النَّاسُ فَأَحْبِبْهُ;Si tu veux être aimé, aime !;;أردت;أَرَدْتُ;aimé;;;275;F2K;
+<b>درّسني</b> التاريخ;<b>دَرَّسَنِي</b> التَّارِيخُ;Il m'a appris l'histoire.;;درّسني;دَرَّسَنِي;l'histoire;;;276;F2K;
+<b>شك</b> المحامي في براءته;<b>شَكُّ</b> الْمُحَامِي فِي برَاءَتِهِ;L'avocat doutait de son innocence.;;شك;شَكٌّ;L'avocat;;;277;F2K;
+<b>القلم</b> مكسور;<b>الْقَلَمُ</b> مَكْسُورٌ;Le stylo est cassé.;;القلم;الْقَلَمُ;cassé;;;278;F2K;
+أين <b>ذهب</b>؟;أَيْن <b>ذَهَبٍ</b> ؟;Où est-il allé ?;;ذهب;ذَهَبَ;est-il;;;279;F2K;
+لا <b>تفتح</b> الباب;لَا <b>تَفْتَحُ</b> الْبَابَ;N'ouvrez pas la porte !;;تفتح;تَفْتَحُ;n'ouvrez;;;280;F2K;
+لا تفتح <b>الباب</b>;لَا تَفْتَحُ <b>الْبَابَ</b>;N'ouvre pas la porte !;;الباب;الْبَابُ;porte;;;281;F2K;
+أنا في <b>بيت</b> جديد;أَنَا فِي <b>بَيْتِ</b> جَديدٍ;Je suis dans une nouvelle maison.;;بيت;بَيْتٌ;maison;;;282;F2K;
+أحب <b>اللّغة</b> العربية;أَحُبُّ <b>اللُّغَةِ</b> الْعَرَبِيَّةِ;J'adore l'arabe.;;اللّغة;اللُّغَةُ;j'adore;;;283;F2K;
+<b>أعد</b> الكتاب إلى صاحبه;<b>أَعْدُ</b> الْكِتَابَ إِلَى صَاحِبِهِ;Rends le livre à son propriétaire.;;أعد;أَعِدْ;Rends;;;284;F2K;
+لديّ <b>عشرة</b> أقلام;لُدِّيُّ <b>عُشُرَةِ</b> أَقْلَاَمٍ;J'ai dix stylos.;;عشرة;عُشُرَةٌ;dix;;;285;F2K;
+لا <b>أشك</b>ّ لحظة في صدقك;لَا <b>أَشَكَّ</b> لَحْظَةُ فِي صِدْقِكَ;Je ne doute pas un seul instant de votre sincérité.;;أشكّ;أَشَكٌّ;doute;;;286;F2K;
+<b>أدخله</b>;<b>أَدَخَلَهُ</b>;Fais-le entrer.;;أدخله;أَدَخَلَهُ;Fais-le;;;287;F2K;
+<b>كيف</b> لي أن أعرف؟;<b>كَيْف</b> لِي أَنّ أعْرَفِ ؟;Comment je peux savoir ?;;كيف;كَيْف;Comment;;;288;F2K;
+إنه <b>دورك</b>;إِنّهُ <b>دَوْرَكَ</b>;À ton tour.;;دورك;دَوَّرَكَ;ton;;;289;F2K;
+<b>نسيت</b> أن أسأله;<b>نَسِيَتْ</b> أَنّ أَسَأَلَهُ;J'ai oublié de lui demander.;;نسيت;نَسِيَتْ;oublié;;;290;F2K;
+<b>الولد</b> عطشان;<b>الْوَلَدُ</b> عَطْشَانُ;Le garçon a soif.;;الولد;الْوَلَدُ;garçon;;;291;F2K;
+<b>لونه</b> أحمر;<b>لَوْنُهُ</b> أحْمَرُ;Sa couleur est le rouge.;;لونه;لَوَّنَهُ;sa;;;292;F2K;
+الجو <b>بارد</b>;الْجَوُّ <b>بَارِدٌ</b>;Le temps est froid.;;بارد;بَارِدٌ;temps;;;293;F2K;
+<b>سأوصلك</b> إلى المطار;<b>سَأُوصِلُكَ</b> إِلَى الْمَطَارِ;Je te conduirai à l'aéroport.;;سأوصلك;سَأُوصِلُكَ;conduirai;;;294;F2K;
+أنا في المطار <b>الآن</b>;أَنَا فِي الْمَطَارِ <b>الْآن</b>;Je suis maintenant à l'aéroport.;;الآن;الْآن;maintenant;;;295;F2K;
+فقدت <b>الوعي</b>;فَقُدْتُ <b>الْوَعْي</b>;Je perdis connaissance.;;الوعي;الْوَعْي;connaissance;;;296;F2K;
+أين وُلِدَ <b>توم</b>؟;أَيْنٌ وُلِدَ <b>تُومٌ</b> ؟;Où est né Tom ?;;توم;تُومٌ;Tom;;;297;F2K;
+هل هذه <b>المعلومة</b> صحيحة؟;هَل هَذِه <b>الْمَعْلُومَةُ</b> صَحِيحَةٌ ؟;Cette information est-elle correcte ?;;المعلومة;الْمَعْلُومَةُ;information;;;298;F2K;
+هذا <b>أجمل</b>;هَذَا <b>أَجْمَلُ</b>;Celui-ci est plus joli.;;أجمل;أَجْمَلَ;Celui-ci;;;299;F2K;
+<b>الأسود</b> لي;<b>الْأُسودُ</b> لِي;Le noir est à moi.;;الأسود;الْأُسودُ;noir;;;300;F2K;
+أريد أن <b>أقول</b> لك شيئاً;أُرِيدُ أَنّ <b>أَقُولُ</b> لَك شَيْئًا;Je veux te dire quelque chose.;;أقول;أَقُولُ;quelque;;;301;F2K;
+لم يصدّق <b>أحد</b> قصّته;لَم يُصَدِّقُ <b>أحَدُ</b> قِصَّتِهِ;Personne ne crut son histoire.;;أحد;أَحَدٌّ;Personne;;;302;F2K;
+هل <b>ستساعدني</b>؟;هَل <b>سَتُسَاعِدُنِي</b> ؟;M'aideras-tu ?;;ستساعدني;سَتُسَاعِدُنِي;M'aideras-tu;;;303;F2K;
+كان ذلك <b>أمله</b> الوحيد;كَان ذَلِك <b>أَمَلِهِ</b> الْوَحِيدِ;C'était son unique espoir.;;أمله;أَمَلَهُ;son;;;304;F2K;
+كان ذلك أمله <b>الوحيد</b>;كَان ذَلِك أَمَلِهِ <b>الْوَحِيدِ</b>;Ça a été son seul espoir.;;الوحيد;الْوَحِيدُ;seul;;;305;F2K;
+هذه <b>الساعة</b> أفضل من تلك;هَذِه <b>السَّاعَةِ</b> أَفَضْلٌ مِن تِلْك;Cette montre-ci est meilleure que celle-là.;;الساعة;السَّاعَةُ;que;;;306;F2K;
+أعيش في <b>الطابق</b> الأرضي;أَعَيْشٌ فِي <b>الطَّابَقِ</b> الْأَرْضِيِّ;J'habite au rez-de-chaussée.;;الطابق;الطَّابَقُ;rez-de-chaussée;;;307;F2K;
+<b>استمرت</b> الخطبة ثلاثين دقيقة;<b>اِسْتَمَرَّتْ</b> الْخُطْبَةُ ثَلَاثِينَ دَقيقَةً;Le discours a duré trente minutes.;;استمرت;اِسْتَمَرَّتْ;minutes;;;308;F2K;
+<b>الحب</b> أعمى;<b>الْحُبُّ</b> أعْمَى;L'amour est aveugle.;;الحب;اِلْحَبْ;l'amour;;;309;F2K;
+<b>أتحبني</b>؟;<b>أَتُحِبُّنِي</b> ؟;Est-ce que tu m'aimes ?;;أتحبني;أَتُحِبُّنِي;Est-ce;;;310;F2K;
+لا أوافقك <b>الرأي</b>;لَا أَوَافَقَكَ <b>الرَّأْي</b>;Je ne suis pas d'accord avec toi.;;الرأي;الرَّأْي;toi;;;311;F2K;
+لا <b>لست</b> نعساناً;لَا <b>لَسْت</b> نَعْسَاِنَا;Non, je n'ai pas sommeil.;;لست;لَسْت;pas;;;312;F2K;
+لا ليس <b>حقا</b>;لَا لَيْس <b>حَقًّا</b>;Non, pas vraiment.;;حقا;حَقَا;vraiment;;;313;F2K;
+لا <b>تأت</b> هنا;لَا <b>تَأَتٍّ</b> هُنَا;Ne viens pas ici !;;تأت;تَأَتَّ;viens;;;314;F2K;
+لا <b>تتدخل</b>!;لَا <b>تَتَدَخَّلُ</b>;Ne t'immisce pas là-dedans !;;تتدخل;تَتَدَخَّلُ;là-dedans;;;315;F2K;
+لست <b>سريعا</b>ً بما فيه الكفاية;لُسْتُ <b>سَرِيعًا</b> بِمَا فِيهِ الْكِفَايَةَ;Vous n'êtes pas assez rapide.;;سريعاً;سَرِيعَا;assez;;;316;F2K;
+من <b>المهم</b> أن تتذكر من هم أصدقاؤك;مِن <b>الْمُهِمِّ</b> أَن تَتَذَكَّرُ مِن هُم أَصْدِقَاؤُكَ;Il est important de se rappeler de ses amis.;;المهم;اُلْمُهُمْ;important;;;317;F2K;
+و <b>أخيرا</b>ً أتى;وْ <b>أَخِيرًا</b> أَتَى;Il est enfin venu.;;أخيراً;أَخِيرَا;enfin;;;318;F2K;
+<b>ضميري</b> مرتاح;<b>ضَمِيرُي</b> مُرْتَاحٌ;J'ai la conscience tranquille.;;ضميري;ضَمِيرِيٌّ;j'ai;;;319;F2K;
+<b>أيمكنني</b> أن أقول شيئاً؟;<b>أَيُمْكِنُنِي</b> أَنّ أَقُولُ شَيْئًا ؟;Est-ce que je peux dire quelque chose?;;أيمكنني;أَيُمْكِنُنِي;peux;;;320;F2K;
+من <b>كسر</b> هذا؟;مِن <b>كَسْرِ</b> هَذَا ؟;Qui a cassé ceci ?;;كسر;كَسْرٌ;cassé;;;321;F2K;
+من اخترع هذه <b>الآلة</b>؟;مَن اِخْتَرَعَ هَذِه <b>الْآلةِ</b> ؟;Qui a inventé cette machine ?;;الآلة;الْآلةُ;inventé;;;322;F2K;
+<b>كلنا</b> نخطئ;<b>كُلّنَا</b> نُخْطِئُ;Nous faisons tous des erreurs.;;كلنا;كُلّنَا;erreurs;;;323;F2K;
+<b>متى</b> تكون مشغولاً؟;<b>مَتَى</b> تَكَوُّنِ مَشْغُولًا ؟;Quand es-tu occupé ?;;متى;مَتَى;quand;;;324;F2K;
+متى <b>استيقظت</b>؟;مَتَى <b>اِسْتَيْقَظَتْ</b> ؟;Quand est-ce que tu t'es levé ?;;استيقظت;اِسْتَيْقَظَتْ;levé;;;325;F2K;
+متى <b>ستعود</b>؟;مَتَى <b>سَتَعُودُ</b> ؟;Tu rentres quand ?;;ستعود;سَتَعُودُ;rentres;;;326;F2K;
+ماذا <b>تريد</b> أن تأكل؟;مَاذَا <b>تُرِيدُ</b> أَن تَأْكُلُ ؟;Que voulez-vous manger ?;;تريد;تُرِيدُ;manger;;;327;F2K;
+ماذا تريد أن <b>تأكل</b>؟;مَاذَا تُرِيدُ أَن <b>تَأْكُلُ</b> ؟;Qu’est-ce que tu veux manger ?;;تأكل;تَأْكُلُ;manger;;;328;F2K;
+<b>الحاسوب</b> جديد;<b>الْحَاسوبُ</b> جَدِيدٌ;L'ordinateur est neuf.;;الحاسوب;الْحَاسوبُ;l'ordinateur;;;329;F2K;
+أين <b>غرفتك</b>؟;أَيْن <b>غُرْفَتِكَ</b> ؟;Où est ta chambre ?;;غرفتك;غَرَفَتْكَ;ta;;;330;F2K;
+<b>سأذهب</b> معك;<b>سَأَذْهَبُ</b> مَعكَ;J'irai avec toi.;;سأذهب;سَأَذْهَبُ;j'irai;;;331;F2K;
+<b>أقلعت</b> الطائرة في الساعة العاشرة بالضبط;<b>أَقْلَعَتْ</b> الطَّائِرَةُ فِي السَّاعَةِ الْعَاشِرَةِ بِالضَّبْطِ;L'avion a décollé à 10h précises.;;أقلعت;أَقْلَعَتْ;décollé;;;332;F2K;
+إنه مشغول <b>بشيء</b> ما;إِنّهُ مَشْغُولَ <b>بِشَيْءٍ</b> مَا;Il est occupé à faire quelque chose.;;بشيء;بِشَيْءٍ;quelque;;;333;F2K;
+إنه مشغول <b>بفعل</b> شيء ما;إِنّهُ مَشْغُولَ <b>بِفِعْلِ</b> شَيْءٍ مَا;Il est occupé à faire quelque chose.;;بفعل;بِفِعْلٍ;quelque;;;334;F2K;
+<b>تزداد</b> جمالاً يوماً بعد يوم;<b>تَزْدَادُ</b> جَمَالَا يَوْمَا بَعْد يَوْمٍ;Elle devient de plus en plus jolie.;;تزداد;تَزْدَادُ;plus;;;335;F2K;
+ما <b>ثمن</b> هذه القبّعة؟;مَا <b>ثَمَنِ</b> هَذِه الْقُبَّعَةِ ؟;Quel est le prix de cette casquette ?;;ثمن;ثَمَنٌ;prix;;;336;F2K;
+لم أنت <b>وحدك</b>؟;لَم أَنْت <b>وَحْدِكَ</b> ؟;Pourquoi êtes-vous seule ?;;وحدك;وَحَدَّكَ;pourquoi;;;337;F2K;
+هناك مستشفى <b>بالقرب</b> من هنا;هُنَاك مُسْتَشْفًى <b>بِالْقُرْبِ</b> مِن هُنَا;Il y a un hôpital près d'ici.;;بالقرب;بِالْقُرْبِ;il;;;338;F2K;
+أيمكنك <b>كتابة</b> رسالة بالإنجليزية؟;أَيُمْكِنُكَ <b>كِتَابَةُ</b> رِسَالَةِ بَاْلَإَنَجَلَيْزَيْةْ ؟;Pouvez-vous écrire une lettre en anglais ?;;كتابة;كِتَابَةٌ;écrire;;;339;F2K;
+أيمكنني <b>الدفع</b> عن طريق بطاقة الإئتمان؟;أَيُمْكِنُنِي <b>الدَّفْعُ</b> عَن طَرِيقِ بِطَاقَةِ اْلَإَئَتَمَاْنْ ؟;Puis-je payer par carte de crédit ?;;الدفع;الدَّفْعُ;payer;;;340;F2K;
+انظر <b>خلفك</b>!;اُنْظُرْ <b>خَلْفكَ</b>;Regarde en arrière !;;خلفك;خَلْفكَ;Regarde;;;341;F2K;
+شكراً <b>جزيلا</b>ً!;شُكْرَا <b>جَزِيلَا</b>;Merci beaucoup !;;جزيلاً;جَزِيلَا;beaucoup;;;342;F2K;
+هل <b>تعرف</b> أين ساعتي؟;هَل <b>تَعَرُّفٍ</b> أَيْن سَاعَتِِي ؟;Tu ne sais pas où est ma montre ?;;تعرف;تَعْرُفُ;sais;;;343;F2K;
+<b>كن</b> هادئاً وقت الدرس;<b>كَنَّ</b> هَادِئَا وَقْتِ الدَّرْسِ;Ne fais pas de bruit pendant le cours.;;كن;كَنَّ;sois;;;344;F2K;
+<b>مع</b> من تريد أن تتحدث؟;<b>مَع</b> مَن تُرِيدُ أَن تَتَحَدَّثُ ؟;Avec qui veux-tu parler ?;;مع;مَع;avec;;;345;F2K;
+<b>رأيتك</b> راكباً سيارتك الجديدة;<b>رَأْيَتُكَ</b> رَاكِبًا سَيَّارَتَكَ الْجَدِيدَةَ;Je t'ai vu au volant de ta nouvelle voiture.;;رأيتك;رَأَيْتُكَ;voiture;;;346;F2K;
+يجب أن <b>أتعلم</b> العربية;يَجِبُ أَنّ <b>أَتَعَلَّمَ</b> الْعَرَبِيَّةَ;Je dois apprendre l'arabe.;;أتعلم;أَتَعْلَمُ;apprendre;;;347;F2K;
+<b>عاملتها</b> كأنها بنتي;<b>عَامَلَتْهَا</b> كأَنّهَا بِنْتَي;Je l'ai traitée comme ma propre fille.;;عاملتها;عَامَلَتْهَا;fille;;;348;F2K;
+تطلب <b>إقناعه</b> ألف ين فقط;تَطْلُبُ <b>إقْنَاعُهُ</b> أَلَّفَ يِنٌ فَقَط;Il a fallu seulement 1000 yen pour le convaincre.;;إقناعه;إقْنَاعُهُ;convaincre;;;349;F2K;
+هل <b>تمتلك</b> كمبيوتر؟;هَل <b>تَمْتَلِكُ</b> كَمْبِيُوتِرٌ ؟;Possèdes-tu un ordinateur ?;;تمتلك;تَمْتَلِكُ;Possèdes-tu;;;350;F2K;
+<b>إسمي</b> وانج;<b>إِسْمِي</b> وَاُنْجُ;Mon nom est Wang.;;إسمي;إِسْمِي;nom;;;351;F2K;
+هل تلسع هذه <b>الحشرات</b>؟;هَل تَلْسَعُ هَذِه <b>الْحَشَرَاتِ</b> ؟;Ces insectes piquent-ils ?;;الحشرات;الْحَشَرَاتُ;insectes;;;352;F2K;
+<b>ألا</b> تشعر بالبرد؟;<b>ألَا</b> تَشْعُرُ بِالْبَرْدِ ؟;N'as-tu pas froid ?;;ألا;ألَا;pas;;;353;F2K;
+<b>أهلا</b>ً كيف حالك؟;<b>أهْلًا</b> كَيْف حَالِكَ ؟;Salut. Comment vas-tu ?;;أهلاً;أهْلَا;Salut;;;354;F2K;
+<b>شرب</b> القليل;<b>شُرْبُ</b> الْقَلِيلِ;Il but peu.;;شرب;شُرْبٌ;but;;;355;F2K;
+رأيته <b>يمزّق</b> الرسالة;رَأْيَتُهُ <b>يُمَزِّقُ</b> الرِّسَالَةُ;Je l'ai vu déchirer la lettre.;;يمزّق;يُمَزِّقُ;déchirer;;;356;F2K;
+اليابان بلد <b>صناعي</b>;الْيَابَانُ بَلَدَ <b>صِنَاعَيْ</b>;Le Japon est un pays industrialisé.;;صناعي;صِنَاعِيٌّ;industrialisé;;;357;F2K;
+ما <b>جنسيته</b>؟;مَا <b>جِنْسِيَّتِهِ</b> ؟;Quelle est sa nationalité ?;;جنسيته;جِنْسِيَّتُهُ;sa;;;358;F2K;
+<b>اِكتب</b> عنوانك هنا;<b>اِكْتِبْ</b> عُنْوَانَكَ هُنَا;Écrivez votre adresse ici.;;اِكتب;اِكْتِبْ;écrivez;;;359;F2K;
+بوب <b>صديقي</b>;بَوَّبَ <b>صَدِيقِيٌّ</b>;Bob est mon ami.;;صديقي;صَدِيقِيٌّ;ami;;;360;F2K;
+أنا <b>معك</b>;أَنَا <b>مَعكَ</b>;Je suis avec vous.;;معك;مَعكَ;avec;;;361;F2K;
+ذلك الولد <b>يركض</b>;ذَلِك الْوَلَدِ <b>يَرْكُضُ</b>;Ce garçon court.;;يركض;يَرْكُضُ;court;;;362;F2K;
+<b>أتى</b> الولد راكضاً;<b>أَتَى</b> الْوَلَدُ رَاكِضًا;Le garçon est arrivé en courant.;;أتى;أَتَى;est;;;363;F2K;
+<b>وجد</b> دراجتي الضائعة;<b>وَجَدَ</b> دَرَّاجَتُي الضَّائِعَةُ;Il a trouvé mon vélo.;;وجد;وَجَدَ;trouvé;;;364;F2K;
+أنا <b>بطل</b>;أَنَا <b>بَطَلٍ</b>;Je suis un héros.;;بطل;بَطَلٌ;héros;;;365;F2K;
+<b>البارحة</b> كان يوم الخميس;<b>الْبَارِحَةُ</b> كَان يَوْمِ الْخَمِيسِ;Hier, c'était jeudi.;;البارحة;الْبَارِحَةُ;hier;;;366;F2K;
+إشتريت كتاباً <b>بالأمس</b>;إَشَتَرَيْتْ كِتَابًا <b>بِالْأَمْسِ</b>;Hier, j'ai acheté un livre.;;بالأمس;بِالْأَمْسِ;hier;;;367;F2K;
+كنت <b>أشاهد</b> التلفاز حينها;كَنَّتْ <b>أَشَاهِدَ</b> التِّلْفَازِ حِينهَا;À ce moment, je regardais la télé.;;أشاهد;أَشَاهِدٌ;regardais;;;368;F2K;
+<b>شتمني</b> من دون سبب;<b>شَتَّمَنِي</b> مِن دُون سَبَبٍ;Il m'a insulté sans raison.;;شتمني;شَتَّمَنِي;m'a;;;369;F2K;
+<b>لعبنا</b> كرة القدم بالأمس;<b>لِعِبْنَا</b> كُرَةَ الْقَدَمِ بِالْأَمْسِ;Nous avons joué au foot hier.;;لعبنا;لَعِبْنَا;joué;;;370;F2K;
+أعزف <b>لشوبان</b>;أَعَزَفَ <b>لِشُوبَان</b>;Je joue du Chopin.;;لشوبان;لِشُوبَان;chopin;;;371;F2K;
+من <b>فضلك</b> تنحّى جانباً;مِن <b>فَضْلِكَ</b> تَنَحَّى جَانِبَا;Veuillez reculer s'il vous plaît.;;فضلك;فَضَّلَكَ;s'il;;;372;F2K;
+ما زالت الحياة <b>أمامك</b>;مَا زَالَتْ الْحَيَاةَ <b>أَمَامَكَ</b>;La vie s'étend devant toi.;;أمامك;أَمَامَكَ;s'étend;;;373;F2K;
+أشعر <b>بالجوع</b>;أَشَعَرَ <b>بِالْجُوعِ</b>;J'ai faim !;;بالجوع;بِالْجُوعِ;faim;;;374;F2K;
+<b>أعطاني</b> توم قلماً;<b>أَعْطَانِي</b> تُومُ قَلَمًا;Tom m'a donné un stylo.;;أعطاني;أَعْطَانِي;m'a;;;375;F2K;
+<b>إحمر</b>ّ وجهها;<b>إِحْمرّ</b> وَجَّهَهَا;Elle rougit.;;إحمرّ;إِحْمرّ;rougit;;;376;F2K;
+إحمرّ <b>وجهها</b>;إِحْمرّ <b>وَجَّهَهَا</b>;Son visage vira au rouge.;;وجهها;وَجَّهَهَا;son;;;377;F2K;
+<b>طلى</b> الباب باللون الأزرق;<b>طَلَى</b> الْبَابُ بِاللَّوْنِ الْأَزْرَقِ;Il a peint la porte en bleue.;;طلى;طَلَى;bleue;;;378;F2K;
+إنه <b>الخيار</b> الوحيد لديهم;إِنّهُ <b>الْخِيَارَ</b> الْوَحِيدَ لَدَيْهُمْ;C'est leur seul choix.;;الخيار;الْخِيَارُ;leur;;;379;F2K;
+إنه <b>خيارهم</b> الوحيد;إِنّهُ <b>خِيَارَهُمْ</b> الْوَحِيدَ;C'est leur seul choix.;;خيارهم;خِيَارُهُمْ;leur;;;380;F2K;
+الحاسوب <b>جديد</b>;الْحَاسوبُ <b>جَدِيدٌ</b>;L'ordinateur est neuf.;;جديد;جَدِيدٌ;L'ordinateur;;;381;F2K;
+<b>بدلا</b>ً من الذهاب إلى أوروبا, أنا قررت الذهاب إلى أمريكا;<b>بَدَلًا</b> مِن الذَّهَابِ إِلَى أُورُوبَّا أَنَا قَرَّرَتْ الذَّهَابُ إِلَى أَمْرِيكَا;Au lieu d'aller en Europe, j'ai décidé d'aller aux États-Unis.;;بدلاً;بَدَلَا;lieu;;;382;F2K;
+<b>ساعدني</b> أبي في حل واجبي;<b>سَاعَدَنِي</b> أَبِي فِي حَلِّ وَاجِبِي;Mon père m'a aidé à faire mes devoirs.;;ساعدني;سَاعَدَنِي;aidé;;;383;F2K;
+<b>ها</b> هو العنوان;<b>هَا</b> هُو الْعُنْوَانِ;Voici l'adresse.;;ها;هَا;Voici;;;384;F2K;
+<b>أدين</b> بنجاحي لصديقي;<b>أَدِّيَنَّ</b> بِنُجَّاحِيٍّ لِصَدِيقِيٍّ;Je dois mon succès à mon ami.;;أدين;أَدِّيَنَّ;mon;;;385;F2K;
+<b>جعلت</b> أخي يصلح دراجتي;<b>جَعَلَتْ</b> أَخِي يَصْلُحُ دَرَّاجَتُي;J'ai demandé à mon frère de réparer mon vélo.;;جعلت;جَعَلَتْ;j'ai;;;386;F2K;
+لديه <b>كلب</b>;لَدَيْهُ <b>كَلْبَ</b>;Il a un chien.;;كلب;كَلْبٌ;chien;;;387;F2K;
+أنت <b>محق</b>ّ;أَنْت <b>مُحِقٍّ</b>;Tu as raison.;;محقّ;مُحِقٌّ;raison;;;388;F2K;
+<b>أوافق</b>;<b>أَوَافَقَ</b>;Je suis d'accord.;;أوافق;أَوَافَقَ;d'accord;;;389;F2K;
+أريد أن أذهب إلى <b>طوكيو</b>;أُرِيدُ أَنّ أَذَهَبَ إِلَى <b>طُوكِيُوٍ</b>;Je veux aller à Tokyo.;;طوكيو;طُوكِيُوٌ;à;;;390;F2K;
+هو <b>زار</b> مصر ثلاث مرات;هُو <b>زَارَ</b> مِصْرُ ثَلاث مَرَّاتٍ;Il a visité l'Égypte trois fois.;;زار;زَارَ;visité;;;391;F2K;
+<b>يعيش</b> السمك في الماء;<b>يُعَيِّشُ</b> السَّمَكُ فِي الْمَاءِ;Les poissons vivent dans l'eau.;;يعيش;يُعَيِّشُ;poissons;;;392;F2K;
+أنا أحب <b>الشوكولاتة</b>;أَنَا أَحُبَّ <b>الشُّوكُولَاتَة</b>;J'aime le chocolat.;;الشوكولاتة;الشُّوكُولَاتَة;chocolat;;;393;F2K;
+كنت أشاهد <b>الصورة</b>;كَنَّتْ أَشَاهِدَ <b>الصُّورَةِ</b>;Je regardais l'image.;;الصورة;الصُّورَةُ;l'image;;;394;F2K;
+<b>جيم</b> من كندا;<b>جِيمٌ</b> مَن كَنَدَا;Jim est canadien.;;جيم;جِيمٌ;jim;;;395;F2K;
+لا تتدخل <b>فيما</b> لا يعنيك!;لَا تَتَدَخَّلُ <b>فِيمَا</b> لَا يَعْنِيكَ;Ne te mêle pas de ce qui ne te regarde pas !;;فيما;فِيمَا;ce;;;396;F2K;
+لا <b>يوجد</b> شخص معصوم;لَا <b>يُوجَدُ</b> شَخْصُ مَعْصُومُ;Personne n'est parfait.;;يوجد;يُوجِدُ;parfait;;;397;F2K;
+أنا <b>ممثل</b> مشهور;أَنَا <b>مُمَثِّلِ</b> مَشْهُورِ;Je suis un acteur célèbre.;;ممثل;مُمَثِّلٌ;acteur;;;398;F2K;
+هل أنهيت <b>واجبك</b> بهذه السرعة؟;هَلٌّ أَنْهَيْتُ <b>وَاجِبَكَ</b> بهَذِه السُّرْعَةِ ؟;Tu as déjà fini tes devoirs ?;;واجبك;وَاِجْبِكَ;fini;;;399;F2K;
+هل اشتريت ذلك من <b>السوق</b> السوداء؟;هَل اِشْتَرَيْتُ ذَلِك مِن <b>السُّوقِ</b> السَّوْدَاءِ ؟;L'avez-vous achetée au marché noir ?;;السوق;السُّوقُ;marché;;;400;F2K;
+هناك <b>القليل</b> من التفاح على الشجرة ، أليس كذلك؟;هُنَاك <b>الْقَلِيلِ</b> مِن التُّفَّاحِ عَلَى الشَّجَرَةِ ، ألَيْس كَذَلِك ؟;Il y a quelques pommes sur cet arbre, n'est-ce pas ?;;القليل;الْقَلِيلُ;il;;;401;F2K;
+أيمكنك أن <b>تحزر</b> ما لديّ؟;أَيُمْكِنُكَ أَن <b>تَحْزُرُ</b> مَا لُدِّيٍّ ؟;Pouvez-vous deviner ce que j'ai ?;;تحزر;تَحْزُرُ;deviner;;;402;F2K;
+<b>أضعت</b> الساعة التي أعطاني إياها والدي;<b>أَضُعْتُ</b> السَّاعَةَ الَّتِي أَعْطَانِي إِيَّاهَا وَالِدِيٍّ;J'ai perdu la montre que Père m'a donnée.;;أضعت;أَضُعْتُ;perdu;;;403;F2K;
+<b>أعتقد</b> أنه سيصبح غنياً يوماً ما;<b>أَعْتَقِدُ</b> أَنّهُ سَيُصْبِحُ غَنِيَّا يَوْمًا مَا;Je pense qu'il deviendra riche un jour.;;أعتقد;أَعْتَقِدُ;pense;;;404;F2K;
+ما زالت <b>الحشرة</b> حية;مَا زَالَتْ <b>الْحَشَرَةَ</b> حَيَّةً;Cet insecte est toujours vivant.;;الحشرة;الْحَشَرَةُ;cet;;;405;F2K;
+<b>سام</b> ، ماذا تفعل؟;<b>سَامٌّ</b> ، مَاذَا تَفْعَلُ ؟;Sam, que fais-tu ?;;سام;سَامٌّ;Sam;;;406;F2K;
+لدي <b>عائلة</b> كبيرة;لِدِي <b>عَائِلَةَ</b> كَبِيرَةَ;J'ai une grande famille.;;عائلة;عَائِلَةٌ;famille;;;407;F2K;FIX_CORRUPT_SENT=1 | FIX_MISMATCH=1
+نحن <b>جائعون</b>;نَحْن <b>جَائِعُونَ</b>;Nous avons faim.;;جائعون;جَائِعُونَ;faim;;;408;F2K;
+هل هي <b>طبيبة</b>؟;هَلٌّ هِي <b>طَبِيبَةٍ</b> ؟;Est-elle médecin ?;;طبيبة;طَبِيبَةٌ;médecin;;;409;F2K;
+هل <b>تمانع</b> أن أدخن هنا؟;هَل <b>تُمَانِعُ</b> أَنّ أَدُخْنَ هُنَا ؟;Voyez-vous un inconvénient à ce que je fume ici ?;;تمانع;تُمَانِعُ;Voyez-vous;;;410;F2K;
+هل كنت <b>متعبا</b>ً صباح البارحة؟;هَل كَنَّتْ <b>مُتْعِبَا</b> صَبَاح الْبَارِحَةِ ؟;Étais-tu fatigué hier soir ?;;متعباً;مُتْعِبَا;étais-tu;;;411;F2K;
+<b>إسمع</b> جيداً;<b>إِسْمع</b> جَيِّدًا;Écoutez attentivement.;;إسمع;إِسْمع;écoutez;;;412;F2K;
+توم <b>شكرني</b> على الهدية;تُومُ <b>شَكَرَنِي</b> عَلَى الْهَدِيَّةِ;Tom m'a remercié pour le cadeau.;;شكرني;شَكَرَنِي;cadeau;;;413;F2K;
+توم قام <b>بشكري</b> على الهدية;تُومٌ قَام <b>بِشُكْرِيٍّ</b> عَلَى الْهَدِيَّةِ;Tom m'a remercié pour le cadeau.;;بشكري;بِشُكْرِيٍّ;remercié;;;414;F2K;
+<b>سألتني</b> أن كنت أعرف عنوانه;<b>سَأَلَتْنِي</b> أَنّ كَنَّتْ أعْرَفُ عُنْوَانِهِ;Elle m'a demandé si je connaissais son adresse.;;سألتني;سَأَلَتْنِي;m'a;;;415;F2K;
+<b>يريد</b> كين تحسين معارفه في الإنجليزية;<b>يُرِيدُ</b> كِيَنَّ تَحْسِينَ مَعَارِفِهِ فِي الْإِنْجِلِيزِيَّة;Ken désire améliorer son anglais.;;يريد;يُرِيدُ;Ken;;;416;F2K;
+يريد <b>كين</b> أن يتحسن في الإنجليزية;يُرِيدُ <b>كِيَنَّ</b> أَن يَتَحَسَّنُ فِي الْإِنْجِلِيزِيَّة;Ken désire améliorer son anglais.;;كين;كِيَنَّ;Ken;;;417;F2K;
+<b>يجب</b> أن نأكل لنعيش، لا أن نعيش لنأكل;<b>يَجِبُ</b> أَن نَأْكُلُ لِنُعَيِّشُ ، لَا أَن نُعَيِّشُ لِنَأْكُلُ;Il faut manger pour vivre, et non vivre pour manger.;;يجب;يَجِبُ;pour;;;418;F2K;
+<b>بعد</b> الظلمات يظهر الضوء;<b>بَعْد</b> الظُّلْمَاتِ يَظْهَرُ الضَّوْءُ;Après la pluie, le beau temps.;;بعد;بَعْد;le;;;419;F2K;
+ما بعد <b>الضيق</b> إلا الفرج;مَا بَعْد <b>الضَّيِّقِ</b> إِلَّا الْفَرَجِ;Après la pluie, le beau temps.;;الضيق;الضَّيِّقُ;Après;;;420;F2K;
+مرحباً, توم. <b>صباح</b> الخير;مُرْحِبًا تُومً <b>صَبَاح</b> الْخَيْرِ;Salut, Tom. Bonjour.;;صباح;صَبَاح;salut;;;421;F2K;
+"قال توم <b>مبتسما</b>ً: ""مرحباً""";"قَالَ تُومُ <b>مُبْتَسِمًا</b> :"" مُرْحِبَا """;Bonjour, dit Tom, souriant.;;مبتسماً;مُبْتَسِمَا;souriant;;;422;F2K;
+و إن رأيت توم، <b>أبلغه</b> بتحية مني;وْ إِن رَأَيْتُ تُومً ، <b>أَبَلَغَهُ</b> بِتَحِيَّةِ مُنْي;Et si tu vois Tom, dis-lui bonjour de ma part.;;أبلغه;أَبَلَغَهُ;vois;;;423;F2K;
+<b>يا</b> الهي!;<b>يَا</b> اُلْهِي;Oh, mon Allah !;;يا;يَا;mon;;;424;F2K;
+<b>أمضت</b> طفولة سعيدة;<b>أَمَضَتْ</b> طُفُولَةُ سَعِيدَةُ;Elle a eu une enfance heureuse.;;أمضت;أَمَضَتْ;enfance;;;425;F2K;
+اشتقت <b>إليك</b>;اِشْتَقْتُ <b>إِلَيْكَ</b>;Tu me manques.;;إليك;إِلَيْكَ;manques;;;426;F2K;
+هل أنت <b>متأكد</b>؟;هَلٌّ أَنْت <b>مُتَأَكِّدٍ</b> ؟;Tu es sûr ?;;متأكد;مُتَأَكِّدٌ;sûr;;;427;F2K;
+لست سريعاً <b>بما</b> يكفي;لُسْتُ سَرِيعًا <b>بِمَا</b> يَكْفِي;Vous n'êtes pas assez rapide.;;بما;بِمَا;assez;;;428;F2K;
+ليس أنا ، <b>بل</b> أنت!;لَيْس أَنَا ، <b>بَل</b> أَنْت;Non je ne le suis pas, c'est toi qui l'es !;;بل;بَل;toi;;;429;F2K;
+هل تعرف <b>الإجابة</b>؟;هَل تَعَرُّفِ <b>الْإِجَابَةِ</b> ؟;Est-ce que tu sais la réponse ?;;الإجابة;الْإِجَابَةُ;réponse;;;430;F2K;
+<b>رائحة</b> فمك كريهة;<b>رَائِحَةُ</b> فَمِكَ كَرِيهَةً;Tu as mauvaise haleine.;;رائحة;رَائِحَةٌ;haleine;;;431;F2K;
+ليس لديك أي <b>حُمّى</b>;لَيْس لَدَيْكَ أَيَّ <b>حُمَّى</b>;Tu n'as pas de fièvre.;;حُمّى;حُمَّى;n'as;;;432;F2K;
+أيمكنك أن <b>تتكلم</b> اللغة الفرنسية؟;أَيُمْكِنُكَ أَن <b>تَتَكَلَّمُ</b> اللُّغَةُ الْفَرَنْسِيَّةُ ؟;Est-ce que tu sais parler français ?;;تتكلم;تَتَكَلَّمُ;sais;;;433;F2K;
+<b>يبدو</b> عليك التعب;<b>يَبْدُو</b> عَلَيْك التَّعَبِ;Vous avez l'air très fatigué.;;يبدو;يَبْدُو;avez;;;434;F2K;
+يمكنك <b>الذهاب</b> إلى هناك;يُمْكِنُكَ <b>الذَّهَابُ</b> إِلَى هُنَاك;Vous avez la permission de vous y rendre.;;الذهاب;الذَّهَابُ;vous;;;435;F2K;
+يعجبني <b>فيك</b> شجاعتك;يُعْجِبُنِي <b>فِيكَ</b> شَجَاعَتَكَ;Je t'admire pour ton courage.;;فيك;فِيكَ;je;;;436;F2K;
+هل <b>كتبت</b> هذا الكتاب؟;هَل <b>كَتَبَتْ</b> هَذَا الْكِتَابِ ؟;As-tu écrit ce livre ?;;كتبت;كَتَبَتْ;As-tu;;;437;F2K;
+<b>لكم</b> أنا مشتاق إليك;<b>لِكَمٌّ</b> أَنَا مُشْتَاقٍ إِلَيْكَ;Comme tu me manques !;;لكم;لَكُم;comme;;;438;F2K;
+و كيف <b>لي</b> أن أعرف؟;وْ كَيْف <b>لِي</b> أَنّ أعْرَفِ ؟;Et comment puis-je le savoir ?;;لي;لِي;savoir;;;439;F2K;
+لا أستطيع أن <b>أفعل</b> ذلك;لَا أَسْتَطِيعُ أَنّ <b>أَفَعَلَ</b> ذَلِك;Je ne peux pas faire ça.;;أفعل;أَفِعْلٌ;faire;;;440;F2K;
+و أخيراً <b>وصلنا</b>;وْ أَخِيرَا <b>وَصْلِنَا</b>;Nous voici !;;وصلنا;وَصَلَنَا;voici;;;441;F2K;
+<b>سأحاول</b> مرة أخرى، شكراً لك;<b>سَأُحَاوِلُ</b> مَرَّة أُخْرَى ، شُكْرًا لَك;Je vais encore essayer, merci.;;سأحاول;سَأُحَاوِلُ;encore;;;442;F2K;
+سأحاول <b>مجددا</b>ً، شكراً;سَأُحَاوِلُ <b>مُجَدَّدًا</b> ، شُكْرًا;Je vais encore essayer, merci.;;مجدداً;مُجَدَّدَا;vais;;;443;F2K;
+بوب هو <b>الذي</b> ضربني و ليس هي;بَوَّبَ هُو <b>الَّذِي</b> ضَرَبَنِي وْ لَيْس هِي;C'est Bob qui m'a frappé, pas elle.;;الذي;الَّذِي;qui;;;444;F2K;
+لا <b>تتهرّب</b> من سؤالي;لَا <b>تَتَهَرَّبُ</b> مِن سُؤَالِيٍّ;N'élude pas ma question.;;تتهرّب;تَتَهَرَّبُ;N'élude;;;445;F2K;
+لا يمكن <b>الاحتفاظ</b> بالحليب طويلا عندما يكون الجو ساخنا;لَا يَمِّكُنَّ <b>الْاِحْتِفَاظَ</b> بِالْحَلِيبِ طَوِيلَا عِنْدَمَا يَكْوُنَّ الْجَوَّ سَاخِنًا;Le lait ne se conserve pas longtemps lorsqu'il fait chaud.;;الاحتفاظ;الْاِحْتِفَاظُ;chaud;;;446;F2K;
+<b>سخرنا</b> منه حول هذه الحادثة;<b>سَخَّرَنَا</b> مِنهُ حَوْل هَذِه الْحَادِثَةِ;Nous l'avons moqué à propos de cet incident.;;سخرنا;سَخَّرَنَا;l'avons;;;447;F2K;
+<b>أشتاق</b> إليك كثيرا;<b>أَشْتَاقُ</b> إِلَيْكَ كَثِيرًا;Tu me manques énormément.;;أشتاق;أَشْتَاقُ;énormément;;;448;F2K;
+<b>أفتقدك</b> جدا;<b>أَفَتَقُدُّكَ</b> جِدّا;Tu me manques énormément.;;أفتقدك;أَفْتَقِدُكَ;énormément;;;449;F2K;
+لا <b>شكر</b> على واجب;لَا <b>شُكْرٍ</b> عَلَى وَاجِبٍ;De rien.;;شكر;شُكْرٌ;rien;;;450;F2K;
+أين <b>بيتها</b>؟;أَيْن <b>بَيْتِهَا</b> ؟;Où se trouve sa maison ?;;بيتها;بَيَّتَهَا;maison;;;451;F2K;
+أين <b>بيته</b>؟;أَيْن <b>بَيْتِهِ</b> ؟;Où se trouve sa maison ?;;بيته;بَيَّتَهُ;maison;;;452;F2K;
+لا يحب <b>كرة</b> المضرب و لا كرة القدم;لَا يُحِبُّ <b>كُرَةُ</b> الْمِضْرَبِ وْ لَا كُرَةِ الْقَدَمِ;Il n'aime ni le baseball ni le football.;;كرة;كُرَةٌ;le;;;453;F2K;
+حسن، ماذا <b>سأغني</b>؟;حُسْنٌ ، مَاذَا <b>سَأُغَنِّي</b> ؟;D'accord. Je chante quoi ?;;سأغني;سَأُغَنِّي;D'accord;;;454;F2K;
+<b>نعم</b> ذهبت البارحة;<b>نَعَم</b> ذَهَبَتْ الْبَارِحَةُ;Oui, je suis allé hier.;;نعم;نَعَم;oui;;;455;F2K;
+هل هي <b>بعيدة</b> من هنا؟;هَلٌّ هِي <b>بَعيدَةٍ</b> مِن هُنَا ؟;Est-ce loin d'ici ?;;بعيدة;بَعيدَةٌ;loin;;;456;F2K;
+<b>ذاك</b> المنزل صغير جداً;<b>ذَاك</b> الْمَنْزِلُ صَغِيرُ جِدًّا;Cette maison est toute petite.;;ذاك;ذَاك;toute;;;457;F2K;
+أنظر! <b>الكتاب</b> يحترق;أَنَظَرٌ <b>الْكِتَابَ</b> يَحْتَرِقُ;Regarde ! Le livre brûle.;;الكتاب;الْكِتَابُ;livre;;;458;F2K;
+أنظر! <b>النّار</b> تلتهم الكتاب;أَنَظَرٌ <b>النَّارَ</b> تَلَتْهُمْ الْكِتَابُ;Regarde ! Le livre brûle.;;النّار;النَّارُ;brûle;;;459;F2K;
+<b>فزت</b> باليانصيب;<b>فَزَّتْ</b> بِالْيَانَصِيبِ;J'ai gagné à la loterie.;;فزت;فُزْتُ;j'ai;;;460;F2K;
+يجب <b>عليك</b> المجيء معي;يَجِبُ <b>عَلَيْكَ</b> الْمَجِيءَ مَعِيٌّ;Vous devez venir avec moi.;;عليك;عَلَيْكَ;vous;;;461;F2K;
+إنها <b>غاضبة</b> عليّ;إِنّهَا <b>غَاضِبَةَ</b> عَلِيَّ;Elle est en colère contre moi.;;غاضبة;غَاضِبَةٌ;moi;;;462;F2K;
+أيمكنني أن <b>أكلم</b> الطبيب؟;أَيُمْكِنُنِي أَنّ <b>أَكَلَّمَ</b> الطَّبِيبُ ؟;Puis-je parler au médecin ?;;أكلم;أَكَلَّمَ;parler;;;463;F2K;
+هل لي أن <b>أتحدث</b> مع الطبيب؟;هَلٌّ لِي أَنّ <b>أَتَحَدَّثَ</b> مَع الطَّبِيبِ ؟;Puis-je parler au médecin ?;;أتحدث;أَتَحَدَّثَ;médecin;;;464;F2K;
+لن <b>يصلح</b> ذلك!;لَن <b>يَصْلُحُ</b> ذَلِك;Ça ne marchera pas !;;يصلح;يَصْلُحُ;marchera;;;465;F2K;
+<b>أنجزت</b> واجباتي مبكراً اليوم;<b>أَنْجَزَتْ</b> وَاجِبَاتُي مُبَكِّرَا الْيَوْمِ;J'ai fait mes devoirs tôt aujourd'hui.;;أنجزت;أَنْجَزَتْ;devoirs;;;466;F2K;
+<b>حضر</b> المؤتمر مئة و خمسون دبلوماسي;<b>حَضَرَ</b> الْمُؤْتَمَرُ مِِئََة وْ خَمْسُونَ دِبْلُومَاسِيٌّ;Cent cinquante diplomates ont assisté au congrès.;;حضر;حَضَرَ;Cent;;;467;F2K;
+<b>فهو</b> المطلوب;<b>فهُو</b> الْمَطْلُوبِ;C.Q.F.D.;;فهو;فهُو;donc il;;;468;F2K;
+ليس <b>باليد</b> حيلة;لِيسَ <b>بِالْيَدِ</b> حِيلَةً;Je ne peux rien faire.;;باليد;بِالْيَدِ;peux;;;469;F2K;
+أحبها و <b>تحبني</b>;أَحَبَّهَا وْ <b>تُحِبُّنِي</b>;Je l'aime et elle m'aime.;;تحبني;تُحِبُّنِي;l'aime;;;470;F2K;
+<b>أختي</b> أقصر منك;<b>أَخَتُي</b> أقْصَرُ مِنكَ;Ma sœur est de plus petite taille que toi.;;أختي;أُخْتِيٌّ;ma;;;471;F2K;
+أريد أن <b>أصبح</b> طبيباً;أُرِيدُ أَنّ <b>أَصْبَح</b> طَبِيبًا;Je veux être médecin.;;أصبح;أَصْبَح;médecin;;;472;F2K;
+أعرف <b>أخاك</b> جيداً;أَعَرَفَ <b>أَخَاكَ</b> جَيِّدًا;Je connais très bien ton frère.;;أخاك;أَخَاكَ;frère;;;473;F2K;
+كنت <b>مشغولا</b> جدا الأسبوع الماضي;كَنَّتْ <b>مَشْغُولَا</b> جِدّا الْأُسْبُوعِ الْمَاضِي;J'étais très occupé la semaine dernière.;;مشغولا;مَشْغُولَا;occupé;;;474;F2K;
+أنا أفضل <b>الربيع</b> على الخريف;أَنَا أفْضَلِ <b>الرَّبِيعِ</b> عَلَى الْخَرِيفِ;Je préfère le printemps à l'automne.;;الربيع;الرَّبِيعُ;printemps;;;475;F2K;
+<b>عصفور</b> في اليد و لا عشرة على الشجرة;<b>عَصْفُورٌ</b> فِي الْيَدِ وْ لَا عُشُرَةٍ عَلَى الشَّجَرَةِ;Un tiens vaut mieux que deux tu l'auras.;;عصفور;عَصْفُورٌ;tiens;;;476;F2K;
+لعبنا كرة <b>القدم</b> بالأمس;لِعِبْنَا كُرَةَ <b>الْقَدَمِ</b> بِالْأَمْسِ;Nous avons joué au foot hier.;;القدم;الْقَدَمُ;foot;;;477;F2K;
+هل تعرف <b>سفينة</b> نوح؟;هَل تَعَرُّفِ <b>سَفِينَةِ</b> نَوْحٍ ؟;Connais-tu l'arche de Noé ?;;سفينة;سَفِينَةٌ;Connais-tu;;;478;F2K;
+هل <b>تعرفين</b> سفينة نوح؟;هَل <b>تَعَرُّفَيْنِ</b> سَفِينَةَ نَوْحٍ ؟;Connais-tu l'arche de Noé ?;;تعرفين;تَعْرُفِينَ;Connais-tu;;;479;F2K;
+هل أنجزت <b>فرضك</b>؟;هَلٌّ أَنْجَزَتْ <b>فَرْضُكَ</b> ؟;Tu as fait tes devoirs ?;;فرضك;فَرَضَكَ;tes;;;480;F2K;
+إلى ماذا <b>تنظر</b>؟;إِلَى مَاذَا <b>تَنَظُّرٍ</b> ؟;Que regardes-tu ?;;تنظر;تَنْظُرُ;regardes-tu;;;481;F2K;
+هل يمكنك <b>إعارتي</b> قاموسك؟;هَلٌّ يُمْكِنُكَ <b>إِعَارَتُي</b> قَامُوسَكَ ؟;Peux-tu me prêter ton dictionnaire ?;;إعارتي;إِعَارَتُي;prêter;;;482;F2K;
+ليس لدي <b>سكين</b> لأقطع به;لَيْس لُدِّيِّ <b>سِكِّينِ</b> لِأَقْطَعُ بِه;Je n'ai pas de couteau avec lequel couper.;;سكين;سِكِّينٌ;couteau;;;483;F2K;
+<b>انتبه</b>! هناك حفرة كعصير هناك;<b>اِنْتَبَهَ</b> هُنَاك حُفْرَةٍ كَعَصِيرِ هُنَاك;Attention ! Il y a un gros trou là-bas.;;انتبه;اِنْتَبَهَ;Attention;;;484;F2K;
+ليس لدي أي <b>أسئلة</b> أخرى;لَيْس لُدِّيِّ أَيِّ <b>أسْئِلَةِ</b> أُخْرَى;Je n'ai pas d'autres questions.;;أسئلة;أسْئِلَةٌ;d'autres;;;485;F2K;
+<b>نصيحتك</b> تفيدني دائما;<b>نَصِيحَتُكَ</b> تُفِيدُنِي دَائِمَا;Tes conseils me sont toujours d'une aide précieuse.;;نصيحتك;نَصِيحَتُكَ;tes;;;486;F2K;
+<b>أتعرف</b> السيد براون؟;<b>أَتَعْرُفُ</b> السَّيِّدُ برَاونً ؟;Connais-tu M. Brown ?;;أتعرف;أَتَعْرُفُ;Connais-tu;;;487;F2K;
+أنت لا <b>تهتم</b> بالحيوانات الأليفة;أَنْت لَا <b>تَهْتِمُ</b> بِالْحَيَوَانَاتِ الْألِيفَةِ;Tu ne te soucies pas des animaux domestiques.;;تهتم;تَهْتَمُّ;soucies;;;488;F2K;
+<b>أسبق</b> و ذهبت إلى نيويورك؟;<b>أَسَبْقٌ</b> وْ ذَهَبَتْ إِلَى نِيُويُورْكٍ ؟;Êtes-vous déjà allé à New York ?;;أسبق;أَسَبْقٌ;Êtes-vous;;;489;F2K;
+أيمكنك <b>فتح</b> النافذة؟;أَيُمْكِنُكَ <b>فَتْحُ</b> النَّافِذَةِ ؟;Tu peux ouvrir la fenêtre ?;;فتح;فَتْحٌ;la;;;490;F2K;
+يمكنك فتح <b>النافذة</b>;يُمْكِنُكَ فَتْحُ <b>النَّافِذَةِ</b>;Tu peux ouvrir la fenêtre.;;النافذة;النَّافِذَةُ;ouvrir;;;491;F2K;
+عليك أن <b>تجيب</b> على السؤال;عَلَيْكَ أَن <b>تُجِيبُ</b> عَلَى السُّؤَالِ;Tu dois répondre à la question.;;تجيب;تُجِيبُ;répondre;;;492;F2K;
+ماذا كنت <b>تفعل</b> في ذلك الوقت؟;مَاذَا كَنَّتْ <b>تَفْعَلُ</b> فِي ذَلِك الْوَقْتِ ؟;Qu'étiez-vous en train de faire à ce moment-là ?;;تفعل;تَفْعَلُ;de;;;493;F2K;
+<b>أتحب</b> الرياضة؟;<b>أَتُحِبُّ</b> الرِّيَاضَةُ ؟;Vous aimez le sport ?;;أتحب;أَتُحِبُّ;aimez;;;494;F2K;
+هل يحب توم <b>الطماطم</b>؟;هَلٌّ يُحِبُّ تُومَ <b>الطَّمَاطِمِ</b> ؟;Est-ce que Tom aime les tomates ?;;الطماطم;الطَّمَاطِمُ;tomates;;;495;F2K;
+إنها تأكل <b>تفاحة</b>;إِنّهَا تَأْكُلُ <b>تُفَّاحَةٌ</b>;Elle mange une pomme.;;تفاحة;تُفَّاحَةٌ;mange;;;496;F2K;
+<b>مشكلتك</b> شبيهة بمشكلتي;<b>مُشَكَّلَتُكَ</b> شَبِيهَةٌ بِمُشَكَّلَتِي;Votre problème est similaire au mien.;;مشكلتك;مُشَكَّلَتُكَ;problème;;;497;F2K;
+مشكلتك <b>شبيهة</b> بمشكلتي;مُشَكَّلَتُكَ <b>شَبِيهَةٌ</b> بِمُشَكَّلَتِي;Ton problème est similaire au mien.;;شبيهة;شَبِيهَةٌ;problème;;;498;F2K;
+<b>تابعت</b> العمل;<b>تَابَعَتْ</b> الْعَمَلُ;Elle a continué de travailler.;;تابعت;تَابَعَتْ;continué;;;499;F2K;
+مع من تريد <b>التحدث</b>؟;مَع مَن تُرِيدُ <b>التَّحَدُّثَ</b> ؟;À qui aimeriez-vous parler ?;;التحدث;التَّحَدُّثُ;aimeriez-vous;;;500;F2K;
+متى <b>سترجع</b>؟;مَتَى <b>سَتَرْجِعُ</b> ؟;Tu rentres quand ?;;سترجع;سَتَرْجِعُ;rentres;;;501;F2K;
+<b>اختبأ</b> توم تحت الطاولة;<b>اِخْتَبَأَ</b> تُومُ تَحْت الطَّاوِلَةِ;Tom est caché sous la table.;;اختبأ;اِخْتَبَأَ;caché;;;502;F2K;
+عما <b>تتحدث</b>؟;عَمَّا <b>تَتَحَدَّثُ</b> ؟;De quoi parles-tu ?;;تتحدث;تَتَحَدَّثُ;parles-tu;;;503;F2K;
+<b>زرت</b> باريس مرتين;<b>زُرْتُ</b> بَارِيس مَرَّتَيْنِ;Je me suis rendu deux fois à jeus.;;زرت;زُرْتُ;suis;;;504;F2K;
+هناك <b>الكثير</b> من الحيوانات في الحديقة;هُنَاك <b>الْكَثِيرِ</b> مِن الْحَيَوَانَاتِ فِي الْحَديقَةِ;Il y a beaucoup d'animaux dans le parc.;;الكثير;الْكَثِيرُ;beaucoup;;;505;F2K;
+درست <b>الإنجليزية</b> لمدة خمس سنوات;دَرَسَتْ <b>الْإِنْجِلِيزِيَّة</b> لِمُدَّةَ خُمُسِ سنوَاتٍ;J’ai étudié l'anglais pendant cinq ans.;;الإنجليزية;الْإِنْجِلِيزِيَّة;j'ai;;;506;F2K;
+<b>أسرعنا</b> إلى محطة القطار;<b>أَسْرَعَنَا</b> إِلَى مَحَطَّةِ الْقِطَارِ;Nous nous sommes hâtées vers la gare.;;أسرعنا;أَسْرَعَنَا;nous;;;507;F2K;
+<b>باتي</b> قتلتها;<b>بَاتِّيُّ</b> قَتْلَتِهَا;Betty l'a tuée.;;باتي;بَاتِّيٌّ;Betty;;;508;F2K;
+صباح <b>سعيد</b>!;صَبَاح <b>سَعِيدٍ</b>;Bon matin !;;سعيد;سَعِيدٌ;bon;;;509;F2K;SANITIZE_UNMUSLIM=nuit->matin
+اِكتب <b>عنوانك</b> هنا;اِكْتِبْ <b>عُنْوَانَكَ</b> هُنَا;Écrivez votre adresse ici.;;عنوانك;عُنْوَانُكَ;écrivez;;;510;F2K;
+<b>احتفظ</b> به في مكان بارد;<b>اِحْتَفَظَ</b> بِه فِي مَكَانِ بَارِدِ;Conservez-le au frais.;;احتفظ;اِحْتَفَظَ;Conservez-le;;;511;F2K;
+لا تتدخل فيما لا <b>يعنيك</b>!;لَا تَتَدَخَّلُ فِيمَا لَا <b>يَعْنِيكَ</b>;Ne te mêle pas de ce qui ne te regarde pas !;;يعنيك;يَعْنِيكَ;te;;;512;F2K;
+هل هذه المعلومة <b>صحيحة</b>؟;هَل هَذِه الْمَعْلُومَةُ <b>صَحِيحَةٌ</b> ؟;Cette information est-elle correcte ?;;صحيحة;صَحِيحَةٌ;information;;;513;F2K;
+رائحة <b>فمك</b> كريهة;رَائِحَةُ <b>فَمِكَ</b> كَرِيهَةً;Tu as mauvaise haleine.;;فمك;فَمَكَّ;haleine;;;514;F2K;
+رأيتك <b>راكبا</b>ً سيارتك الجديدة;رَأْيَتُكَ <b>رَاكِبًا</b> سَيَّارَتَكَ الْجَدِيدَةَ;Je t'ai vu au volant de ta nouvelle voiture.;;راكباً;رَاكِبَا;voiture;;;515;F2K;
+أعد الكتاب إلى <b>صاحبه</b>;أَعْدُ الْكِتَابَ إِلَى <b>صَاحِبِهِ</b>;Rends le livre à son propriétaire.;;صاحبه;صَاحَبَهُ;Rends;;;516;F2K;
+أمضت <b>طفولة</b> سعيدة;أَمَضَتْ <b>طُفُولَةُ</b> سَعِيدَةُ;Elle a eu une enfance heureuse.;;طفولة;طُفُولَةٌ;enfance;;;517;F2K;
+أعيش في الطابق <b>الأرضي</b>;أَعَيْشٌ فِي الطَّابَقِ <b>الْأَرْضِيِّ</b>;J'habite au rez-de-chaussée.;;الأرضي;الْأَرْضِيُّ;rez-de-chaussée;;;518;F2K;
+هناك الكثير من <b>الحيوانات</b> في الحديقة;هُنَاك الْكَثِيرِ مِن <b>الْحَيَوَانَاتِ</b> فِي الْحَديقَةِ;Il y a beaucoup d'animaux dans le parc.;;الحيوانات;الْحَيَوَانَاتُ;d'animaux;;;519;F2K;
+ساعدني أبي في <b>حل</b> واجبي;سَاعَدَنِي أَبِي فِي <b>حَلِّ</b> وَاجِبِي;Mon père m'a aidé à faire mes devoirs.;;حل;حَلٌّ;aidé;;;520;F2K;
+لديّ عشرة <b>أقلام</b>;لُدِّيُّ عُشُرَةِ <b>أَقْلَاَمٍ</b>;J'ai dix stylos.;;أقلام;أَقْلَاَمٌ;stylos;;;521;F2K;
+أختي <b>أقصر</b> منك;أَخَتُي <b>أقْصَرُ</b> مِنكَ;Ma sœur est de plus petite taille que toi.;;أقصر;أَقَصْرٌ;ma;;;522;F2K;
+أعطاني توم <b>قلما</b>ً;أَعْطَانِي تُومُ <b>قَلَمًا</b>;Tom m'a donné un stylo.;;قلماً;قَلَمَا;stylo;;;523;F2K;
+أضعت الساعة <b>التي</b> أعطاني إياها والدي;أَضُعْتُ السَّاعَةَ <b>الَّتِي</b> أَعْطَانِي إِيَّاهَا وَالِدِيٍّ;J'ai perdu la montre que Père m'a donnée.;;التي;الَّتِي;j'ai;;;524;F2K;
+هل يمكنك إعارتي <b>قاموسك</b>؟;هَلٌّ يُمْكِنُكَ إِعَارَتُي <b>قَامُوسَكَ</b> ؟;Peux-tu me prêter ton dictionnaire ?;;قاموسك;قَامُوسُكَ;ton;;;525;F2K;
+نصيحتك <b>تفيدني</b> دائما;نَصِيحَتُكَ <b>تُفِيدُنِي</b> دَائِمَا;Tes conseils me sont toujours d'une aide précieuse.;;تفيدني;تُفِيدُنِي;tes;;;526;F2K;
+لا أشكّ <b>لحظة</b> في صدقك;لَا أَشَكَّ <b>لَحْظَةُ</b> فِي صِدْقِكَ;Je ne doute pas un seul instant de votre sincérité.;;لحظة;لَحْظَةَ;doute;;;527;F2K;
+من فضلك <b>تنحّى</b> جانباً;مِن فَضْلِكَ <b>تَنَحَّى</b> جَانِبَا;Veuillez reculer s'il vous plaît.;;تنحّى;تَنَحَّى;Veuillez;;;528;F2K;
+كن <b>هادئا</b>ً وقت الدرس;كَنَّ <b>هَادِئَا</b> وَقْتِ الدَّرْسِ;Ne fais pas de bruit pendant le cours.;;هادئاً;هَادِئَا;fais;;;529;F2K;
+أتى الولد <b>راكضا</b>ً;أَتَى الْوَلَدُ <b>رَاكِضًا</b>;Le garçon est arrivé en courant.;;راكضاً;رَاكِضَا;arrivé;;;530;F2K;
+أدين <b>بنجاحي</b> لصديقي;أَدِّيَنَّ <b>بِنُجَّاحِيٍّ</b> لِصَدِيقِيٍّ;Je dois mon succès à mon ami.;;بنجاحي;بِنُجَّاحِيٍّ;mon;;;531;F2K;
+ليس باليد <b>حيلة</b>;لِيسَ بِالْيَدِ <b>حِيلَةً</b>;Je ne peux rien faire.;;حيلة;حِيلَةٌ;peux;;;532;F2K;
+<b>أعطت</b> الحليب لقط;<b>أَعْطَتْ</b> الْحَلِيبُ لِقِطٍّ;Elle a donné du lait à un chat.;;أعطت;أَعْطَتْ;chat;;;533;F2K;
+<b>السفينة</b> تغرق;<b>السَّفِينَةُ</b> تُغَرِّقُ;Le bateau coule.;;السفينة;السَّفِينَةُ;le;;;534;F2K;
+باتي <b>قتلتها</b>;بَاتِّيُّ <b>قَتْلَتِهَا</b>;Betty l'a tuée.;;قتلتها;قَتَلَتْهَا;Betty;;;535;F2K;
+ماذا تفعل <b>بأوقات</b> فراغك؟;مَاذَا تَفْعَلُ <b>بِأَوْقَاتِ</b> فَرَاغِكَ ؟;Que faites-vous de votre temps libre ?;;بأوقات;بِأَوْقَاتٍ;faites-vous;;;536;F2K;
+هذا <b>الكلب</b> أبيض;هَذَا <b>الْكَلْبُ</b> أَبْيَضُ;Ce chien est blanc.;;الكلب;الْكَلْبُ;chien;;;537;F2K;
+<b>نهر</b> شينانو أطول من أي نهر آخر في اليابان;<b>نَهْرُ</b> شَيْنَاْنَوْ أَطُولٌ مِن أَيِّ نَهْرِ آخِرِ فِي الْيَابَانِ;Le fleuve Shinano est plus long que n'importe quelle rivière du Japon.;;نهر;نَهْرٌ;fleuve;;;538;F2K;
+عليك أن تجيب على <b>السؤال</b>;عَلَيْكَ أَن تُجِيبُ عَلَى <b>السُّؤَالِ</b>;Tu dois répondre à la question.;;السؤال;السُّؤَالُ;répondre;;;539;F2K;
+من المهم أن <b>تتذكر</b> من هم أصدقاؤك;مِن الْمُهِمِّ أَن <b>تَتَذَكَّرُ</b> مِن هُم أَصْدِقَاؤُكَ;Il est important de se rappeler de ses amis.;;تتذكر;تَتَذَكَّرُ;important;;;540;F2K;
+<b>رأيي</b> أنه محق;<b>رَأْيِيٌّ</b> أَنّهُ مُحِقَّ;Je crois qu'il a raison.;;رأيي;رَأْيِيٌّ;crois;;;541;F2K;
+أي <b>قاموس</b> تعنيه؟;أَيَّ <b>قَامُوسِ</b> تَعَنِّيِهِ ؟;À quel dictionnaire t'es-tu référé ?;;قاموس;قَامُوسٌ;dictionnaire;;;542;F2K;
+الحب <b>أعمى</b>;الْحُبُّ <b>أعْمَى</b>;L'amour est aveugle.;;أعمى;أَعْمَى;L'amour;;;543;F2K;
+ما هي <b>مهنتك</b>؟;مَا هِي <b>مِهْنَتِكَ</b> ؟;Tu travailles dans quoi ?;;مهنتك;مَهَنَتْكَ;travailles;;;544;F2K;
+<b>لدينا</b> نفس السن;<b>لَدَيْنَا</b> نَفْس السِّنِّ;Il a le même âge que moi.;;لدينا;لَدَيْنَا;nous avons;;;545;F2K;
+افكاره <b>تختلف</b> عن افكاري;اَفْكَارُهُ <b>تَخْتَلِفُ</b> عَن اْفَكَاْرَيْ;Ces idées sont assez différentes des miennes.;;تختلف;تَخْتَلِفُ;ces;;;546;F2K;
+انصحك ان <b>تتوقف</b> عن التدخين;اِنْصَحْكَ انَّ <b>تَتَوَقَّفُ</b> عَن التَّدْخِينِ;Je te conseille d'arrêter de fumer.;;تتوقف;تَتَوَقَّفُ;d'arrêter;;;547;F2K;
+طلب <b>مني</b> النصيحة;طَلَبَ <b>مَنُّي</b> النَّصِيحَةُ;Il m'a demandé conseil.;;مني;مُنِيَ;m'a;;;548;F2K;
+أيمكنني الذهاب <b>معه</b>؟;أَيُمْكِنُنِي الذَّهَابُ <b>مَعهُ</b> ؟;Je peux aller avec lui ?;;معه;مَعهُ;aller;;;549;F2K;
+<b>سيُفرج</b> عن الرهائن;<b>سَيُفَرِّجُ</b> عَن الرَّهَائِنِ;Les otages seront libérés.;;سيُفرج;سَيُفْرِجُ;libérés;;;550;F2K;
+نحن <b>مضطرون</b> للتوقف عن تنفيذ خطتنا;نَحْن <b>مُضْطَرُّونَ</b> لِلتَّوَقُّفَ عَن تَنْفِيذِ خُطَّتِنَا;Nous avons été contraints d'abandonner notre plan.;;مضطرون;مُضْطَرُّونَ;été;;;551;F2K;
+لقد عاد كل <b>العمال</b> لمنازلهم عدا واحد;لِقَدٌّ عَاد كُلّ <b>الْعُمَّالِ</b> لِمُنَازِلَهُمْ عَدَا وَاحِدٍ;Tous les ouvriers rentrèrent chez eux sauf un.;;العمال;الْعُمَّالُ;ouvriers;;;552;F2K;
+لقد انتهى كل <b>شيء</b> بالنسبة لي . لقد فقدت عملي;لِقَدَّ اِنْتَهَى كُلّ <b>شَيْءٍ</b> بِالنِّسْبَةِ لِي لِقَدٌّ فَقَدَتْ عَمَلِيٌّ;Tout est fini pour moi. J'ai perdu mon travail.;;شيء;شَيْءٌ;est;;;553;F2K;
+لا يسعني إلا أن <b>أؤدي</b> أفضل ما لدي;لَا يَسَعُنِي إِلَّا أَنّ <b>أُؤَدِّي</b> أفْضَلَ مَا لُدِّي;Tout ce que je peux faire c'est faire de mon mieux.;;أؤدي;أُؤَدِّي;faire;;;554;F2K;
+استيقظت عند <b>السادسة</b> هذا الصباح;اِسْتَيْقَظَتْ عِنْد <b>السَّادِسَةِ</b> هَذَا الصَّبَاحِ;Je me suis réveillé à six heures ce matin.;;السادسة;السَّادِسَةُ;heures;;;555;F2K;
+لا إنجاز <b>بلا</b> جهد;لَا إِنْجَازٍ <b>بِلَا</b> جَهْدٍ;Rien n'est accompli sans effort.;;بلا;بِلَا;accompli;;;556;F2K;
+لم يتمكن من <b>السيطرة</b> على اعصابه;لَم يَتِمُّكُنَّ مِن <b>السَّيْطَرَةِ</b> عَلَى اْعَصَاْبَهْ;Il n'a pas pu contrôler sa colère.;;السيطرة;السَّيْطَرَةُ;pu;;;557;F2K;
+<b>وضعت</b> السماعة قريبا من أذني;<b>وَضَعَتْ</b> السَّمَاعَةُ قَرِيبًا مِن أُذْنِيٍّ;J'ai mis le combiné du téléphone près de mon oreille.;;وضعت;وَضَعَتْ;mis;;;558;F2K;
+ليست لدي <b>أدنى</b> فكرة عن مكان إقامتها;لَيْسَت لُدِّيٍّ <b>أَدْنَى</b> فِكْرَةٍ عَن مَكَانِ إقَامَتِهَا;Je n'ai aucune idée d'où elle habite.;;أدنى;أَدْنَى;d'où;;;559;F2K;
+أنا <b>فقير</b>;أَنَا <b>فَقِيرٍ</b>;Je suis pauvre.;;فقير;فَقِيرٌ;pauvre;;;560;F2K;
+<b>الدنيا</b> صغيرة;<b>الدُّنْيَا</b> صَغِيرَةٌ;Le monde est petit.;;الدنيا;الدُّنْيَا;petit;;;561;F2K;
+لا <b>يحتاج</b> لامرأة كي تعتني به;لَا <b>يَحْتَاجُ</b> لِاِمْرَأَةٌ كَي تَعْتَنِي بِه;Il n'a pas besoin d'une femme pour s'occuper de lui.;;يحتاج;يَحْتَاجُ;lui;;;562;F2K;
+هو ليس بحاجة <b>لامرأة</b> كي تعتني به;هُو لَيْس بِحَاجَةٍ <b>لِاِمْرَأَةً</b> كَي تَعْتَنِي بِه;Il n'a pas besoin d'une femme pour s'occuper de lui.;;لامرأة;لِاِمْرَأَةٌ;n'a;;;563;F2K;
+نسيت أن <b>أسأله</b>;نَسِيَتْ أَنّ <b>أَسَأَلَهُ</b>;J'ai oublié de lui demander.;;أسأله;أَسَأَلَهُ;oublié;;;564;F2K;
+أيمكنك كتابة <b>رسالة</b> بالإنجليزية؟;أَيُمْكِنُكَ كِتَابَةُ <b>رِسَالَةِ</b> بَاْلَإَنَجَلَيْزَيْةْ ؟;Pouvez-vous écrire une lettre en anglais ?;;رسالة;رِسَالَةٌ;écrire;;;565;F2K;
+<b>كَمن</b> يبحث عن إبرة في كومة قَشّ;<b>كَمَنٍّ</b> يَبْحَثُ عَن إِبْرَةٍ فِي كُومَةِ قَشٍّ;C'est comme chercher une aiguille dans une botte de foin.;;كَمن;كَمَنَ;c'est;;;566;F2K;
+<b>لبس</b> الرجل قناع نمر;<b>لِبَسَّ</b> الرَّجُلُ قِنَاعَ نَمِرٍ;L'homme mit un masque de tigre.;;لبس;لِبَسَّ;L'homme;;;567;F2K;
+يجب عليك <b>المجيء</b> معي;يَجِبُ عَلَيْكَ <b>الْمَجِيءَ</b> مَعِيٌّ;Vous devez venir avec moi.;;المجيء;الْمَجِيءُ;venir;;;568;F2K;
+لبس <b>الرجل</b> قناع نمر;لِبَسَّ <b>الرَّجُلُ</b> قِنَاعَ نَمِرٍ;L'homme mit un masque de tigre.;;الرجل;الرَّجُلُ;L'homme;;;569;F2K;
+<b>ضع</b> الجزر في القدر;<b>ضَعْ</b> الْجَزَرَ فِي الْقَدْرِ;Mets les carottes dans la casserole.;;ضع;ضَعْ;Mets;;;570;F2K;
+هذا الكلب <b>أبيض</b>;هَذَا الْكَلْبُ <b>أَبْيَضُ</b>;Ce chien est blanc.;;أبيض;أَبَيَّضَ;blanc;;;571;F2K;
+سيُفرج عن <b>الرهائن</b>;سَيُفَرِّجُ عَن <b>الرَّهَائِنِ</b>;Les otages seront libérés.;;الرهائن;الرَّهَائِنُ;libérés;;;572;F2K;
+أعرف أخاك <b>جيدا</b>ً;أَعَرَفَ أَخَاكَ <b>جَيِّدًا</b>;Je connais très bien ton frère.;;جيداً;جَيِّدَا;bien;;;573;F2K;
+هو <b>هَزّ</b> برأسِه;هُو <b>هَزَّ</b> بِرَأْسِهِ;Il secoua la tête.;;هَزّ;هَزَّ;secoua;;;574;F2K;
+لم <b>نتمكن</b> من الوصول في الوقت المحدد و كان هذا بسبب العاصفة;لَم <b>نَتِمُّكُنَّ</b> مِن الْوُصُولِ فِي الْوَقْتِ الْمُحَدَّدِ وْ كَان هَذَا بِسَبَبِ الْعَاصِفَةِ;Nous ne pûmes arriver à l'heure convenue en raison de la tempête.;;نتمكن;نَتِمُّكُنَّ;pûmes;;;575;F2K;
+<b>مسحت</b> دمعها;<b>مَسَحَتْ</b> دَمْعُهَا;Elle sécha ses larmes.;;مسحت;مَسَحَتْ;larmes;;;576;F2K;
+مسحت <b>دموعها</b>;مَسَحَتْ <b>دُموعُهَا</b>;Elle sécha ses larmes.;;دموعها;دُموعُهَا;larmes;;;577;F2K;
+هم <b>أقوياء</b> مثلنا;هُم <b>أَقْوِيَاءِ</b> مِثْلنَا;Ils sont aussi forts que nous.;;أقوياء;أَقْوِيَاءُ;que;;;578;F2K;
+<b>أخشى</b> أن تمطر غدًا;<b>أَخْشَى</b> أَنّ تَمَطُّرِ غَدًا;Je crains qu'il pleuve demain.;;أخشى;أَخْشَى;crains;;;579;F2K;
+عاملتها <b>كأنها</b> بنتي;عَامَلَتْهَا <b>كأَنّهَا</b> بِنْتَي;Je l'ai traitée comme ma propre fille.;;كأنها;كأَنّهَا;fille;;;580;F2K;
+<b>سألني</b> الشيخ عن الساعة;<b>سَأَلَنِي</b> الشَّيْخُ عَن السَّاعَةِ;Le vieil homme me demanda l'heure.;;سألني;سَأَلَنِي;l'heure;;;581;F2K;
+يبدو عليك <b>التعب</b>;يَبْدُو عَلَيْك <b>التَّعَبِ</b>;Vous avez l'air très fatigué.;;التعب;التَّعَبُ;avez;;;582;F2K;
+لا تفتح <b>كتابك</b>;لَا تَفْتَحُ <b>كِتَابَكَ</b>;N'ouvre pas ton livre.;;كتابك;كِتَابُكَ;ton;;;583;F2K;
+لم أعد <b>أحبه</b>;لَم أَعَدٌّ <b>أَحَبَّهُ</b>;Je ne l'aime plus.;;أحبه;أَحَبَّهُ;l'aime;;;584;F2K;
+إنه <b>يجهز</b> نفسه للإمتحان;إِنّهُ <b>يُجَهِّزُ</b> نَفْسهُ لَلَإَمَتَحَاْنْ;Il se prépare pour le test.;;يجهز;يُجَهِّزُ;test;;;585;F2K;
+إنه <b>يستعد</b> للامتحان;إِنّهُ <b>يَسْتَعِدُّ</b> لِلْاِمْتِحَانُ;Il se prépare pour le test.;;يستعد;يَسْتَعِدُّ;test;;;586;F2K;
+هذا <b>الجهاز</b> يولد الكهرباء;هَذَا <b>الْجِهَازِ</b> يُوَلِّدُ الْكَهْرَبَاءُ;Cet appareil produit de l'électricité.;;الجهاز;الْجِهَازُ;appareil;;;587;F2K;
+<b>تركته</b> لتكون مع رجل آخر;<b>تَرَكَتْهُ</b> لِتَكَوُّنِ مَع رَجُلِ آخِرِ;Elle l'a quitté pour un autre homme.;;تركته;تَرَكَتْهُ;quitté;;;588;F2K;
+إنها <b>تعيش</b> في نيويورك;إِنّهَا <b>تَعَيُّشَ</b> فِي نِيُويُورْكٍ;Elle vit à New York.;;تعيش;تَعَيَّشَ;vit;;;589;F2K;
+آسف <b>ساعتي</b> ليست معي;آسَفَ <b>سَاعَتُِي</b> لَيْسَت مَعْي;Désolé, je n'ai pas ma montre.;;ساعتي;سَاعَتَِي;ma;;;590;F2K;
+<b>أكره</b> القهوة;<b>أَكَرِهَ</b> الْقَهْوَةُ;Je déteste le café.;;أكره;أَكَرِهَ;déteste;;;591;F2K;
+ذهبَتْ إلى هناك <b>الصيف</b> الماضي;ذَهَبَتْ إِلَى هُنَاك <b>الصَّيْفِ</b> الْمَاضِي;Elle s'y est rendue l'été dernier.;;الصيف;الصَّيْفُ;s'y;;;592;F2K;
+<b>أُنشئت</b> هارفارد عام ١٦٣٦م;<b>أُنْشِئَتْ</b> هَاْرَفَاْرَدْ عَامَ ١َ٦َ٣َ٦َمْ;Harvard fut fondé en 1636.;;أُنشئت;أُنْشِئَتْ;Harvard;;;593;F2K;
+أكره <b>القهوة</b>;أَكَرِهَ <b>الْقَهْوَةُ</b>;Je déteste le café.;;القهوة;الْقَهْوَةُ;café;;;594;F2K;
+لن <b>أنساك</b> أبداً;لَن <b>أَنْسَاكَ</b> أبَدَا;Je ne vous oublierai jamais.;;أنساك;أَنْسَاكَ;jamais;;;595;F2K;
+أحبك <b>بجنون</b>;أَحَبَّكَ <b>بِجُنُونٍ</b>;Je suis fou de toi.;;بجنون;بِجُنُونٍ;toi;;;596;F2K;
+<b>سأُحوّل</b> المبلغ;<b>سَأُحَوِّلُ</b> الْمَبْلَغَ;Je vais transférer la somme d'argent.;;سأُحوّل;سَأُحَوِّلُ;d'argent;;;597;F2K;
+إنه يجهز <b>نفسه</b> للإمتحان;إِنّهُ يُجَهِّزُ <b>نَفْسهُ</b> لَلَإَمَتَحَاْنْ;Il se prépare pour le test.;;نفسه;نَفْسهُ;pour;;;598;F2K;
+أنا <b>مريض</b>;أَنَا <b>مَرِيضٍ</b>;Je suis malade.;;مريض;مَرِيضٌ;malade;;;599;F2K;
+لقد <b>تردد</b> قبل الإجابة;لِقَدَّ <b>تَرَدُّدُ</b> قَبْل الْإِجَابَةِ;Il hésita avant de répondre.;;تردد;تَرَدَّدَ;hésita;;;600;F2K;
+يجب أن أتعلم <b>العربية</b>;يَجِبُ أَنّ أَتَعَلَّمَ <b>الْعَرَبِيَّةَ</b>;Je dois apprendre l'arabe.;;العربية;الْعَرَبِيَّةُ;l'arabe;;;601;F2K;
+لن أنساك <b>أبدا</b>ً;لَن أَنْسَاكَ <b>أبَدَا</b>;Je ne vous oublierai jamais.;;أبداً;أبَدَا;jamais;;;602;F2K;
+<b>غير</b> معقول !;<b>غَيْرَ</b> مَعْقُولٍ;Incroyable !;;غير;غَيْرَ;Incroyable;;;603;F2K;
+نحن <b>نرحب</b> بك في نادينا;نَحْن <b>نُرَحِّبُ</b> بِك فِي نَادِيِنَا;Nous vous souhaitons la bienvenue à notre club.;;نرحب;نُرَحِّبُ;club;;;604;F2K;
+<b>الجميع</b> كان حاضرا إلا شخص واحد;<b>الْجَمِيعُ</b> كَان حَاضِرًا إِلَّا شَخْصِ وَاحِدِ;Tous sauf une personne étaient présents.;;الجميع;الْجَمِيعُ;Tous;;;605;F2K;
+سأحاول <b>مرة</b> أخرى، شكراً لك;سَأُحَاوِلُ <b>مَرَّة</b> أُخْرَى ، شُكْرًا لَك;Je vais encore essayer, merci.;;مرة;مَرَّة;vais;;;606;F2K;
+<b>أخذني</b> أبي إلى السينما مساء أمس;<b>أَخَذَنِي</b> أَبِيٌّ إِلَى السِّينَمَا مَسَاء أَمْس;Mon père m'a emmené au cinéma hier soir.;;أخذني;أَخَذَنِي;emmené;;;607;F2K;
+<b>اقرأ</b> هذا الكتاب;<b>اِقْرَأْ</b> هَذَا الْكِتَابِ;Lis ce livre.;;اقرأ;اِقْرَأْ;Lis;;;608;F2K;
+<b>اطّلع</b> على هذا الكتاب;<b>اِطَّلَعَ</b> عَلَى هَذَا الْكِتَابِ;Lis ce livre.;;اطّلع;اِطَّلَعَ;Lis;;;609;F2K;
+قد يبدو <b>أحيانا</b>ً شاباً غريباً;قَد يَبْدُو <b>أَحَيَّانَا</b> شَابَّا غَرِيبَا;Parfois il peut être un gars bizarre.;;أحياناً;أَحَيَّانَا;parfois;;;610;F2K;
+هل <b>بقي</b> ملح؟;هَل <b>بَقِّيِّ</b> مِلْحٍ ؟;Reste-t-il du sel ?;;بقي;بَقِيَ;Reste-t-il;;;611;F2K;
+<b>كانا</b> يبدوان سعيدين جدا;<b>كَانَا</b> يَبْدُوَانِّ سَعِيدِينَ جِدّا;Ils avaient l'air très heureux.;;كانا;كَانَا;heureux;;;612;F2K;
+<b>النقد</b> سهل لكن الفن صعب;<b>النَّقْدُ</b> سَهْلٌ لَكِنّ الْفَنِّ صَعْبٌ;La critique est facile mais l'art est difficile.;;النقد;النَّقْدُ;est;;;613;F2K;
+أنا <b>أعمل</b> هنا. لست زائرا;أَنَا <b>أَعَمِلَ</b> هُنَا لُسْتُ زَائِرًا;Je travaille ici. Je ne suis pas un invité.;;أعمل;أَعَمَلٌ;travaille;;;614;F2K;
+شك <b>المحامي</b> في براءته;شَكُّ <b>الْمُحَامِي</b> فِي برَاءَتِهِ;L'avocat doutait de son innocence.;;المحامي;الْمُحَامِي;L'avocat;;;615;F2K;
+ماذا <b>تنصحني</b> أن أفعل؟;مَاذَا <b>تَنْصَحُنِي</b> أَنّ أَفِعْلٌ ؟;Que me conseillez-vous de faire ?;;تنصحني;تَنْصَحُنِي;conseillez-vous;;;616;F2K;
+<b>دخان</b> السجائر يزعج الركاب الآخرين;<b>دُخَانُ</b> السَّجَائِرِ يُزْعِجُ الرِّكَابُ الْآخِرَيْنِ;La fumée des cigarettes dérange les autres passagers.;;دخان;دُخَانٌ;passagers;;;617;F2K;
+كان الجو <b>باردًا</b> في ذلك اليوم، وايضاً، بدأت تمطر;كَان الْجَوِّ <b>بَارِدًا</b> فِي ذَلِك الْيَوْمِ ، وايضاً ، بَدَأَتْ تَمَطُّرٌ;Il faisait froid ce jour-là, et il commença en outre à pleuvoir.;;باردًا;بَارِدًا;faisait;;;618;F2K;
+أنت <b>أصلا</b> غير مفيد;أَنْت <b>أَصْلا</b> غَيْرِ مُفِيدٍ;Tu es déjà inutile.;;أصلا;أَصْلا;déjà;;;619;F2K;
+عما <b>تتحدثون</b>؟;عَمَّا <b>تَتَحَدَّثُونَ</b> ؟;De quoi parlez-vous ?;;تتحدثون;تَتَحَدَّثُونَ;parlez-vous;;;620;F2K;
+عما <b>تتحدثن</b>؟;عَمَّا <b>تَتَحَدَّثَنَّ</b> ؟;De quoi parlez-vous ?;;تتحدثن;تَتَحَدَّثَنَّ;parlez-vous;;;621;F2K;
+عما <b>تتحدثان</b>؟;عَمَّا <b>تَتَحَدَّثَانِّ</b> ؟;De quoi parlez-vous ?;;تتحدثان;تَتَحَدَّثَانِّ;parlez-vous;;;622;F2K;
+عما <b>تتحدثين</b>؟;عَمَّا <b>تَتَحَدَّثِينَ</b> ؟;De quoi parlez-vous ?;;تتحدثين;تَتَحَدَّثِينَ;parlez-vous;;;623;F2K;
+اليوم هو <b>الإثنين</b>;الْيَوْمُ هُو <b>الْإِثْنَيْن</b>;Aujourd'hui c'est lundi.;;الإثنين;الْإِثْنَيْن;lundi;;;624;F2K;
+إنها تعيش في <b>نيويورك</b>;إِنّهَا تَعَيُّشَ فِي <b>نِيُويُورْكٍ</b>;Elle vit à New York.;;نيويورك;نِيُويُورْكٌ;new;;;625;F2K;
+<b>أسرع</b>;<b>أَسْرَعَ</b>;Dépêchez-vous.;;أسرع;أَسْرَعَ;Dépêchez-vous;;;626;F2K;
+ما <b>رأيك</b> في هذا?;مَا <b>رَأْيِكَ</b> فِي هَذَا;Que penses-tu de ça ?;;رأيك;رَأْيُكَ;penses-tu;;;627;F2K;
+<b>نرى</b> بأعيننا;<b>نَرَى</b> بِأَعْيُنِنَا;Nous voyons avec nos yeux.;;نرى;نَرَى;yeux;;;628;F2K;
+<b>لنعُد</b> !;<b>لِنَعُدُّ</b>;Retournons !;;لنعُد;لِنَعُدُّ;Retournons;;;629;F2K;
+<b>المجد</b> لأوكرانيا;<b>الْمَجْدُ</b> لَأَوْكَرَاْنَيْاْ;Gloire à l'Ukraine !;;المجد;الْمَجْدُ;gloire;;;630;F2K;
+<b>أحسنت</b> عملا;<b>أَحَسُنَتْ</b> عَمَلَا;Bien cuit !;;أحسنت;أَحْسَنَتْ;Bien;;;631;F2K;
+<b>كسول</b>;<b>كَسُولٌ</b>;Branleur.;;كسول;كَسُولٌ;Branleur;;;632;F2K;
+هل هناك طبيب على <b>متن</b> الطائرة؟;هَل هُنَاك طَبِيبٍ عَلَى <b>مَتْنِ</b> الطَّائِرَةِ ؟;Y a-t-il un médecin à bord ?;;متن;مَتْنٌ;bord;;;633;F2K;
+عليك أن <b>تقلع</b> عن التدخين;عَلَيْكَ أَنّ <b>تَقَلُّعٍ</b> عَن التَّدْخِينِ;Tu devrais cesser de fumer.;;تقلع;تُقْلِعُ;cesser;;;634;F2K;
+لا أحد <b>يفهمه</b>;لَا أحَدٍ <b>يَفْهَمُهُ</b>;Personne ne le comprend.;;يفهمه;يَفْهَمُهُ;comprend;;;635;F2K;
+ليس <b>معي</b> العنوان الآن;لَيْس <b>مَعْي</b> الْعُنْوَانِ الْآن;Je n'ai pas l'adresse maintenant.;;معي;مَعْي;n'ai;;;636;F2K;
+واحد <b>زائد</b> اثنان يساوي ثلاثة;وَاحِدُ <b>زَائِدُ</b> اِثْنَان يُسَاوِي ثَلَاثَةٌ;Un plus deux égale trois.;;زائد;زَائِدٌ;trois;;;637;F2K;
+ما تلك <b>الضجة</b>؟;مَا تِلْك <b>الضَّجَّةِ</b> ؟;Quel était ce bruit ?;;الضجة;الضَّجَّةُ;était;;;638;F2K;
+شتمني من <b>دون</b> سبب;شَتَّمَنِي مِن <b>دُون</b> سَبَبٍ;Il m'a insulté sans raison.;;دون;دُون;m'a;;;639;F2K;
+<b>حاولت</b> أن أغير الموضوع;<b>حَاوَلَتْ</b> أَنّ أغَيْرَ الْمَوْضُوعِ;J’ai essayé de changer le sujet.;;حاولت;حَاوَلَتْ;essayé;;;640;F2K;
+<b>هراء</b>;<b>هُرَاءٌ</b>;Foutaises.;;هراء;هُرَاءٌ;Foutaises;;;641;F2K;
+قد <b>وصلوا</b> إلى انكلترا قبل اسبوع;قَدٌّ <b>وَصَلُوا</b> إِلَى اِنْكِلْتَرَا قَبْل اْسَبَوْعْ;Ils sont arrivés en Angleterre il y a une semaine.;;وصلوا;وَصَلُوا;semaine;;;642;F2K;
+عادة ما يكون <b>الأطفال</b> ماهرين جداً في تعلم اللغات;عَادَةٌ مَا يَكْوُنَّ <b>الْأَطْفَالَ</b> مَاهِرِينَ جِدًّا فِي تَعَلَّمَ اللُّغَاتِ;Les enfants sont souvent très doués pour apprendre des langues étrangères.;;الأطفال;الْأَطْفَالُ;enfants;;;643;F2K;
+<b>لماذا</b> لا تتنافس حول هذا العمل؟;<b>لِمَاذَا</b> لَا تَتَنَافَسُ حَوْل هَذَا الْعَمَلِ ؟;Pourquoi ne pas faire acte de candidature pour cet emploi ?;;لماذا;لِمَاذَا;pourquoi;;;644;F2K;
+يعجبني فيك <b>شجاعتك</b>;يُعْجِبُنِي فِيكَ <b>شَجَاعَتَكَ</b>;Je t'admire pour ton courage.;;شجاعتك;شَجَاعَتُكَ;t'admire;;;645;F2K;
+مشكلتك شبيهة <b>بمشكلتي</b>;مُشَكَّلَتُكَ شَبِيهَةٌ <b>بِمُشَكَّلَتِي</b>;Votre problème est similaire au mien.;;بمشكلتي;بِمُشَكَّلَتِي;problème;;;646;F2K;
+إنه <b>رجل</b> يوفي بوعده، فبإمكانك الاعتماد عليه;إِنّهُ <b>رَجُلَ</b> يُوفِي بِوَعْدِهِ ، فَبِإِمْكَانِكَ الْاِعْتِمَادَ عَلَيْهِ;C'est un homme de parole, alors vous pouvez compter sur lui.;;رجل;رَجُلٌ;homme;;;647;F2K;
+من فضلك <b>اشرح</b> لماذا لا يمكنك المجيء;مِن فَضْلِكَ <b>اِشْرَحْ</b> لِمَاذَا لَا يُمْكِنُكَ الْمَجِيءُ;S'il te plait, explique-moi pourquoi tu ne peux pas venir.;;اشرح;اِشْرَحْ;plait;;;648;F2K;
+<b>تبا</b> !;<b>تَبًّا</b>;Merde !;;تبا;تَبَّا;merde;;;649;F2K;
+لم <b>نرها</b> مطلقاً;لَم <b>نُرْهَا</b> مُطْلَقًا;On ne l'a vue nulle part.;;نرها;نُرْهَا;part;;;650;F2K;
+هذا هو الكتاب الذي <b>تبحثون</b> عنه;هَذَا هُو الْكِتَابِ الَّذِي <b>تَبْحَثُونَ</b> عَنهُ;C'est le livre que vous cherchez.;;تبحثون;تَبْحَثُونَ;cherchez;;;651;F2K;
+<b>اغلي</b> الماء;<b>اِغْلِي</b> الْمَاءَ;Faites bouillir l'eau.;;اغلي;اِغْلِي;Faites;;;652;F2K;
+<b>وضع</b> يده على كتفي;<b>وَضَعَ</b> يَدَهُ عَلَى كَتِفِيٍّ;Il posa sa main sur mon épaule.;;وضع;وَضْعٌ;posa;;;653;F2K;
+<b>عودوا</b> إلى أماكنكم;<b>عُودُوا</b> إِلَى أَمَاكِنِكُمْ;Retournez vous asseoir.;;عودوا;عُودُوا;Retournez;;;654;F2K;
+إن <b>دعوتَه</b>، ربما سيأتي;إِن <b>دَعَوْتَهُ</b> ، رُبَّمَا سَيَأْتِي;Si vous l'invitez il viendra peut-être.;;دعوتَه;دَعَوْتَهُ;l'invitez;;;655;F2K;
+أيمكنني الدفع عن <b>طريق</b> بطاقة الإئتمان؟;أَيُمْكِنُنِي الدَّفْعُ عَن <b>طَرِيقِ</b> بِطَاقَةِ اْلَإَئَتَمَاْنْ ؟;Puis-je payer par carte de crédit ?;;طريق;طَرِيقٌ;payer;;;656;F2K;
+عودوا إلى <b>أماكنكم</b>;عُودُوا إِلَى <b>أَمَاكِنِكُمْ</b>;Retournez vous asseoir.;;أماكنكم;أَمَاكِنُكُمْ;Retournez;;;657;F2K;
+<b>أود</b> أن أعرف اسمها;<b>أوَدٌ</b> أَنّ أعْرَفِ اِسْمِهَا;Je voudrais connaître son nom.;;أود;أَوَدَّ;voudrais;;;658;F2K;
+<b>ابحث</b> عنها في قاموسك;<b>اِبْحَثْ</b> عَنهَا فِي قَامُوسِكَ;Cherche-le dans ton dictionnaire.;;ابحث;اِبْحَثْ;Cherche-le;;;659;F2K;
+من ذلك <b>الصبي</b> الذي يسبح هناك؟;مِن ذَلِك <b>الصَّبِيِّ</b> الَّذِي يُسَبِّحُ هُنَاك ؟;Qui est le garçon qui nage là-bas ?;;الصبي;اِلْصَبِي;qui;;;660;F2K;
+<b>قلت</b> له أن يأتي;<b>قُلْتُ</b> لَه أَن يَأْتِي;Je lui ai dit de venir.;;قلت;قُلْتُ;venir;;;661;F2K;
+قلت <b>له</b> أن يأتي;قُلْتُ <b>لَه</b> أَن يَأْتِي;Je lui ai dit de venir.;;له;لَه;venir;;;662;F2K;
+<b>توقف</b> جاك فجأة عن الكلام عندما دخلت ماري إلى الغرفة;<b>تَوَقَّفَ</b> جَاكُ فَجْأَةٍ عَن الْكِلَاَمِ عِنْدَمَا دَخَلَتْ مَارِيٌّ إِلَى الْغُرْفَةِ;Jaques s'arrêta soudain de parler quand Marie entra dans la chambre.;;توقف;تَوَقَّفَ;Jaques;;;663;F2K;
+<b>افترق</b> الزوجان للأبد;<b>اِفْتَرَقَ</b> الزَّوْجَانِ لِلْأبَدَ;Le couple se sépara, pour ne plus jamais se retrouver.;;افترق;اِفْتَرَقَ;se;;;664;F2K;
+<b>كادت</b> أن تبكي;<b>كَادَتْ</b> أَن تَبْكِي;Elle était au bord des larmes.;;كادت;كَادَتْ;bord;;;665;F2K;
+<b>ملأت</b> الكأس بالحليب;<b>مَلَأَتْ</b> الْكَأْسُ بِالْحَلِيبِ;Elle emplit le verre de lait.;;ملأت;مَلَأَتْ;verre;;;666;F2K;
+أحب <b>قراءة</b> الروايات البوليسية;أَحُبُّ <b>قَرَّاءَةُ</b> الرِّوَايَاتِ الْبُولِيسِيَّةِ;J'aime lire des romans policiers.;;قراءة;قَرَّاءَةٌ;lire;;;667;F2K;
+عادة ما كان <b>يقول</b> أشياء من هذا القبيل;عَادَةٌ مَا كَان <b>يَقُولُ</b> أَشْيَاءٌ مِن هَذَا الْقَبِيلِ;Il disait souvent de telles choses.;;يقول;يَقُولُ;telles;;;668;F2K;
+<b>صحح</b> نطقي من فضلك;<b>صَحَّحَ</b> نُطْقِيٌّ مِن فَضْلِكَ;Merci de corriger ma prononciation.;;صحح;صَحَّحَ;Merci;;;669;F2K;
+<b>أخبرتني</b> بأنها تعرف أخي;<b>أَخْبَرَتْنِي</b> بأَنّهَا تَعَرُّفَ أَخِي;Elle m'a dit qu'elle connaissait mon frère.;;أخبرتني;أَخْبَرَتْنِي;connaissait;;;670;F2K;
+سألتني <b>إذا</b> كنت على ما يرام;سَأَلَتْنِي <b>إِذَا</b> كَنَّتْ عَلَى مَا يُرَامُ;Elle m'a demandé si j'allais bien.;;إذا;إِذَا;bien;;;671;F2K;
+سألتني إن كنت <b>بخير</b>;سَأَلَتْنِي إِن كَنَّتْ <b>بِخَيْرٍ</b>;Elle m'a demandé si j'allais bien.;;بخير;بِخَيْرٍ;bien;;;672;F2K;
+<b>بلغها</b> أن تعاود الإتصال بي من فضلك;<b>بَلَغَهَا</b> أَن تُعَاوِدُ اْلَإَتَصَاْلْ بِي مِن فَضْلِكَ;S'il vous plaît, dîtes-lui de me rappeler.;;بلغها;بَلَغَهَا;dîtes-lui;;;673;F2K;
+<b>أرسل</b> إلينا المزيد من المعلومات إذا تكرمت;<b>أَرْسَلَ</b> إِلَيْنَا الْمَزِيدَ مِن الْمَعْلُومَاتِ إِذَا تَكَرَّمَتْ;S'il te plaît, envoie-nous plus d'informations.;;أرسل;أَرْسَلَ;envoie-nous;;;674;F2K;
+صحح <b>نطقي</b> من فضلك;صَحَّحَ <b>نُطْقِيٌّ</b> مِن فَضْلِكَ;Merci de corriger ma prononciation.;;نطقي;نُطْقِيٌّ;Merci;;;675;F2K;
+لا <b>يشرب</b> أي من أصدقائي القهوة;لَا <b>يَشْرَبُ</b> أَيُّ مِن أَصْدِقَائِيِّ الْقَهْوَةِ;Aucun de mes amis ne boit de café.;;يشرب;يَشْرَبُ;Aucun;;;676;F2K;
+<b>تكره</b> أمي كتابة الرسائل;<b>تَكْرَهُ</b> أُمِّيُّ كِتَابَةِ الرَّسَائِلِ;Ma mère déteste rédiger des lettres.;;تكره;تَكْرَهُ;ma;;;677;F2K;
+يتبعني كلبي <b>حيثما</b> ذهبت;يَتْبَعُنِي كَلْبِيُّ <b>حَيْثُمَا</b> ذَهَبَتْ;Mon chien me suit partout où je vais.;;حيثما;حَيْثُمَا;où;;;678;F2K;
+<b>ستحبه</b> قريبا;<b>سَتُحِبُّهُ</b> قَرِيبَا;Tu te mettras bientôt à l'aimer.;;ستحبه;سَتُحِبُّهُ;l'aimer;;;679;F2K;
+هل أنت <b>متزوجة</b>؟;هَلٌّ أَنْت <b>مُتَزَوِّجَةٍ</b> ؟;Es-tu mariée ?;;متزوجة;مُتَزَوِّجَةٌ;mariée;;;680;F2K;
+كنت أشاهد <b>التلفاز</b> حينها;كَنَّتْ أَشَاهِدَ <b>التِّلْفَازِ</b> حِينهَا;À ce moment, je regardais la télé.;;التلفاز;التِّلْفَازُ;télé;;;681;F2K;
+<b>ستجد</b> أن هذه الخريطة مفيدة للغاية;<b>سَتَجِدُ</b> أَنّ هَذِه الْخَرِيطَةُ مُفِيدَةٌ لِلَغَاِيَّةً;Tu trouveras cette carte très utile.;;ستجد;سَتَجِدُ;trouveras;;;682;F2K;
+كان <b>عليهم</b> البقاء في المنزل طوال اليوم;كَان <b>عَلَيْهُمْ</b> الْبَقَاءَ فِي الْمَنْزِلِ طُوَّالَ الْيَوْمِ;Ils devaient rester à la maison.;;عليهم;عَلَيْهُمْ;devaient;;;683;F2K;
+<b>باستطاعته</b> أن يجري;<b>بِاِسْتِطَاعَتِهِ</b> أَن يَجْرِي;Il est capable de courir.;;باستطاعته;بِاِسْتِطَاعَتِهِ;capable;;;684;F2K;
+هو <b>قادر</b> على الركض;هُو <b>قَادِرٍ</b> عَلَى الرَّكْضِ;Il est capable de courir.;;قادر;قَادِرٌ;capable;;;685;F2K;
+إنه <b>يستطيع</b> الركض;إِنّهُ <b>يَسْتَطِيعُ</b> الرَّكْضُ;Il est capable de courir.;;يستطيع;يَسْتَطِيعُ;capable;;;686;F2K;
+<b>أمطرت</b> مطراً خفيفاً البارحة;<b>أَمْطَرَتْ</b> مَطَرًا خَفِيفًا الْبَارِحَةَ;Il est tombé une légère pluie hier.;;أمطرت;أَمْطَرَتْ;pluie;;;687;F2K;
+كانت <b>ترتدي</b> حذاءً ذا لون بني غامق;كَانَتْ <b>تَرْتَدِي</b> حِذَاءً ذَا لَوْنِ بُنِّيِّ غَامِقِ;Elle portait des chaussures brun foncé.;;ترتدي;تَرْتَدِي;portait;;;688;F2K;
+<b>أخرجت</b> قلماً من جيبها;<b>أَخَرَجَتْ</b> قَلَمَا مِن جَيْبِهَا;Elle a pris un stylo dans sa poche.;;أخرجت;أَخَرَجَتْ;pris;;;689;F2K;
+<b>لنبدأ</b> !;<b>لِنَبْدَأُ</b>;Commençons !;;لنبدأ;لِنَبْدَأُ;commençons;;;690;F2K;
+ماذا <b>فعلت</b>َ بعد ذلك؟;مَاذَا <b>فَعَلْتَ</b> بَعْد ذَلِك ؟;Qu'est ce que tu as fait ensuite ?;;فعلتَ;فَعَلْتَ;qu'est;;;691;F2K;
+<b>اضطر</b> للعيش فقيرا لسنوات عدة;<b>اِضْطَرَّ</b> لِلْعَيْشُ فَقِيرًا لِسنوَاتَ عِدَّةٍ;Il dut passer une vie misérable durant de nombreuses années.;;اضطر;اِضْطَرَّ;années;;;692;F2K;
+متى <b>وُلدتَ</b>؟;مَتَى <b>وُلِدْتَ</b> ؟;En quelle année êtes-vous né ?;;وُلدتَ;وُلِدْتَ;né;;;693;F2K;
+<b>سأرجع</b> حالاً;<b>سَأَرْجِعُ</b> حَالًا;Je reviens tout de suite.;;سأرجع;سَأَرْجِعُ;suite;;;694;F2K;
+<b>اهدنا</b> الصراط المستقيم;<b>اِهْدِنَا</b> الصِّرَاطَ الْمُسْتَقِيمَ;Guide-nous dans le droit chemin.;;اهدنا;اِهْدِنَا;Guide-nous;;;695;F2K;
+قالت <b>لهم</b> المدرسة ألا يسبحوا في النهر;قَالَتْ <b>لهُم</b> الْمَدْرَسَةِ ألَا يُسَبِّحُوا فِي النَّهْرِ;L'institutrice leur dit de ne pas nager dans la rivière.;;لهم;لهُم;L'institutrice;;;696;F2K;
+<b>سنرى</b>;<b>سَنَرَى</b>;Nous verrons.;;سنرى;سَنَرَى;verrons;;;697;F2K;
+متى <b>تكون</b> مشغولاً؟;مَتَى <b>تَكَوُّنِ</b> مَشْغُولًا ؟;Quand es-tu occupé ?;;تكون;تَكَوَّنَ;es-tu;;;698;F2K;
+لا <b>فكرة</b> لدي;لَا <b>فِكْرَةِ</b> لُدِّي;Aucune idée.;;فكرة;فَكُرَةٌ;Aucune;;;699;F2K;
+<b>سنعيش</b> في إنكلترا;<b>سَنُعَيِّشُ</b> فِي إِنْكلترَا;Nous vivrons en Angleterre.;;سنعيش;سَنُعَيِّشُ;vivrons;;;700;F2K;
+<b>أرى</b> أن لديك قبعة جديدة;<b>أَرَى</b> أَنّ لَدَيْكَ قُبَّعَةَ جَديدَةٍ;Je vois que tu as un nouveau chapeau.;;أرى;أَرَى;je;;;701;F2K;
+<b>مللت</b>ُ من تشكياتكم الكثيرة;<b>مَلَلْتُ</b> مِن تَشَكِّيَاتِكُمْ الْكَثِيرَةِ;Je suis excédé par vos plaintes incessantes.;;مللتُ;مَلَلْتُ;excédé;;;702;F2K;
+<b>نجاحك</b> يعود لاجتهادك في عملك;<b>نجَاحُكَ</b> يَعُودُ لِاِجْتِهَادِكَ فِي عَمَلِكَ;Ton succès sera le résultat de ton travail assidu.;;نجاحك;نُجَّاحُكَ;ton;;;703;F2K;
+إن <b>ضيعت</b> مفتاحي، فلن أقدر على فتح الباب;إِن <b>ضَيَّعَتْ</b> مِفْتَاحِيٌّ ، فلَن أَقَدَّرَ عَلَى فَتْحِ الْبَابِ;Si je perds ma clé, je ne pourrai plus fermer la porte.;;ضيعت;ضِيعَتْ;je;;;704;F2K;
+أين يسكن <b>عمك</b>؟;أَيْنٌ يُسَكِّنُ <b>عَمُّكَ</b> ؟;Où habite ton oncle ?;;عمك;عَمَّكَ;ton;;;705;F2K;
+أين يعيش <b>خالك</b>؟;أَيْنٌ يُعَيِّشُ <b>خَالُكَ</b> ؟;Où habite ton oncle ?;;خالك;خَالَكَ;ton;;;706;F2K;
+ابحث <b>عنه</b> في القاموس;اِبْحَثْ <b>عَنهُ</b> فِي الْقَامُوسِ;Cherche-le dans le dictionnaire.;;عنه;عَنهُ;le;;;707;F2K;
+<b>ليندا</b> تحب الشوكولاتة;<b>لِيَنِدَّا</b> تُحِبُّ الشُّوكُولَاتَة;Linda aime le chocolat.;;ليندا;لِيَنِدَّا;Linda;;;708;F2K;
+لسببٍ ما، أشعر أني <b>نشيط</b> أكثر في الصباح;لِسَبَبٍ مَا ، أَشَعَرَ أَنِّيُّ <b>نَشِيطُ</b> أَكْثَرِ فِي الصَّبَاحِ;Pour une raison que j'ignore, je me sens plus vivant le matin.;;نشيط;نَشِيطٌ;j'ignore;;;709;F2K;
+قد وصلوا إلى <b>انكلترا</b> قبل اسبوع;قَدٌّ وَصَلُوا إِلَى <b>اِنْكِلْتَرَا</b> قَبْل اْسَبَوْعْ;Ils sont arrivés en Angleterre il y a une semaine.;;انكلترا;اِنْكِلْتَرَا;semaine;;;710;F2K;
+أمطرت <b>مطرا</b>ً خفيفاً البارحة;أَمْطَرَتْ <b>مَطَرًا</b> خَفِيفًا الْبَارِحَةَ;Il est tombé une légère pluie hier.;;مطراً;مَطَرَا;pluie;;;711;F2K;
+هل أنت <b>متأكدة</b>؟;هَلٌّ أَنْت <b>مُتَأَكِّدَةٍ</b> ؟;Es-tu sûre ?;;متأكدة;مُتَأَكِّدَةٌ;sûre;;;712;F2K;
+على <b>حد</b> علمي، فإن الشائعات ليست صحيحة;عَلَى <b>حَدِّ</b> عِلْمِي ، فإِنّ الشَّائِعَاتِ لَيْسَت صَحِيحَةٍ;Pour autant que je sache, la rumeur est infondée.;;حد;حَدٌّ;autant;;;713;F2K;
+إنه الخيار الوحيد <b>لديهم</b>;إِنّهُ الْخِيَارَ الْوَحِيدَ <b>لَدَيْهُمْ</b>;C'est leur seul choix.;;لديهم;لَدَيْهُمْ;ils ont;;;714;F2K;
+أن <b>مهتم</b> بالنتيجة;أَنّ <b>مُهْتَمٍّ</b> بِالنَّتِيجَةِ;Je suis soucieux du résultat.;;مهتم;مُهْتَمٌّ;soucieux;;;715;F2K;
+<b>الشيطان</b> هو من جعلني أفعل ذلك;<b>الشَّيْطَانُ</b> هُو مَن جَعَلَنِي أَفَعَلَ ذَلِك;Le diable me l'a fait faire.;;الشيطان;الشَّيْطَانُ;diable;;;716;F2K;
+قال إنه قد كان <b>سعيدا</b> جدا;قَالَ إِنّهُ قَد كَان <b>سَعِيدًا</b> جِدّا;Il a dit qu'il était très heureux.;;سعيدا;سَعِيدَا;qu'il;;;717;F2K;
+الشيطان هو من <b>جعلني</b> أفعل ذلك;الشَّيْطَانُ هُو مَن <b>جَعَلَنِي</b> أَفَعَلَ ذَلِك;Le diable me l'a fait faire.;;جعلني;جَعَلَنِي;diable;;;718;F2K;
+هل <b>توجد</b> مجلّاتٌ إنجليزيّة في هذه المكتبةِ؟;هَل <b>تَوَجُّدِ</b> مَجَلَّاتٌ إنجليزيّة فِي هَذِه الْمَكْتَبَةِ ؟;Y a-t-il de quelconques magazines en langue anglaise dans cette bibliothèque ?;;توجد;تُوجِدُ;quelconques;;;719;F2K;
+أنا ممثل <b>مشهور</b>;أَنَا مُمَثِّلِ <b>مَشْهُورِ</b>;Je suis un acteur célèbre.;;مشهور;مَشْهُورٌ;acteur;;;720;F2K;
+<b>سمعت</b> امرأة تصرخ;<b>سَمِعَتْ</b> اِمْرَأَةُ تَصَرَخْ;J'entendis une femme crier.;;سمعت;سَمِعَتْ;crier;;;721;F2K;
+سمعت <b>امرأة</b> تصرخ;سَمِعَتْ <b>اِمْرَأَةُ</b> تَصَرَخْ;J'ai entendu crier une femme.;;امرأة;اِمْرَأَةٌ;crier;;;722;F2K;
+هذه <b>الخوارزمية</b> لا تتقارب;هَذِه <b>الْخَوَارِزْمِيَّة</b> لَا تَتَقَارَبُ;Cet algorithme ne converge pas.;;الخوارزمية;الْخَوَارِزْمِيَّة;algorithme;;;723;F2K;
+معظم <b>الناس</b> يكتبون عن حياتهم اليومية;مُعْظَمُ <b>النَّاسِ</b> يَكْتُبُونَ عَن حَيَاتِهِمْ الْيَوْمِيَّةِ;La plupart des gens écrivent à propos de leur vie quotidienne.;;الناس;النَّاسُ;plupart;;;724;F2K;
+أحب <b>الشمس</b>;أَحُبُّ <b>الشَّمْسِ</b>;J'aime le soleil.;;الشمس;الشَّمْسُ;soleil;;;725;F2K;
+هذه <b>سيارتي</b>;هَذِه <b>سَيَّارَتِي</b>;C'est ma voiture.;;سيارتي;سَيَّارَتُي;ma;;;726;F2K;
+ليس <b>بإمكاني</b> أن أتحمل الألم أكثر;لِيسَ <b>بِإِمْكَانِيٍّ</b> أَنّ أَتَحْمِلُ الْألَمُ أَكْثَرَ;Je ne supporte plus la douleur.;;بإمكاني;بِإِمْكَانِيٍّ;supporte;;;727;F2K;
+لا <b>تكسر</b> مرآتا;لَا <b>تَكَسُّرِ</b> مرآتَا;Ne brise pas un miroir.;;تكسر;تَكْسِرُ;brise;;;728;F2K;
+أنت <b>جميل</b>;أَنْت <b>جَمِيلٍ</b>;Tu es beau.;;جميل;جَمِيلٌ;beau;;;729;F2K;
+<b>تعلم</b> لغة أجنبية صعب;<b>تَعَلَّمَ</b> لُغَةَ أَجْنَبِيَّةَ صَعْبَ;Apprendre une langue étrangère est difficile.;;تعلم;تَعْلَمُ;Apprendre;;;730;F2K;
+<b>تبدو</b> مشغولاً;<b>تَبْدُو</b> مَشْغُولَا;Vous avez l'air occupé.;;تبدو;تَبْدُو;l'air;;;731;F2K;
+هذا <b>قلم</b> رصاص;هَذَا <b>قَلَمِ</b> رَصَاصٍ;Ceci est un crayon.;;قلم;قَلَمٌ;un;;;732;F2K;
+نحن <b>نعيش</b> على كوكب الأرض;نَحْن <b>نُعَيِّشُ</b> عَلَى كَوْكَبِ الْأَرَضِ;Nous vivons sur Terre.;;نعيش;نُعَيِّشُ;vivons;;;733;F2K;
+لا <b>يعرف</b> كثيراً عن هذا الحيوان;لَا <b>يَعْرُفُ</b> كَثِيرًا عَن هَذَا الْحَيَوَانِ;Il connaît peu de choses sur cet animal.;;يعرف;يَعْرُفُ;connaît;;;734;F2K;
+طلى الباب <b>باللون</b> الأزرق;طَلَى الْبَابُ <b>بِاللَّوْنِ</b> الْأَزْرَقِ;Il a peint la porte en bleue.;;باللون;بِاللَّوْنِ;bleue;;;735;F2K;
+كان <b>إذن</b> طفل يبلغ عشرة سنوات;كَان <b>إِذَن</b> طِفْلٌ يَبْلُغُ عُشُرَةَ سنوَاتٍ;C'était donc un enfant de dix ans.;;إذن;إِذَن;donc;;;736;F2K;
+يحتاج إلى <b>معطف</b>;يَحْتَاجُ إِلَى <b>مِعْطَفٍ</b>;Il lui faut un manteau.;;معطف;مِعْطَفٌ;faut;;;737;F2K;
+إنه يشبه <b>أباه</b> كثيراً;إِنّهُ يُشْبِهُ <b>أَبَاهُ</b> كَثِيرًا;Il ressemble beaucoup à son père.;;أباه;أَبَاهُ;beaucoup;;;738;F2K;
+<b>صبرك</b> يثير غضبي;<b>صَبْرُكَ</b> يُثِيرُ غَضَبِيٌّ;Ta patience m'énerve.;;صبرك;صَبَرَكَ;ta;;;739;F2K;
+هذا <b>السلم</b> مصنوع من المعدن;هَذَا <b>السُّلَّمُ</b> مَصْنُوعٌ مِن الْمَعْدِنِ;Cette échelle est en métal.;;السلم;السُّلَّمُ;échelle;;;740;F2K;
+<b>واصلت</b> العمل;<b>وَاصَلَتْ</b> الْعَمَلُ;Elle a continué de travailler.;;واصلت;وَاصَلَتْ;continué;;;741;F2K;
+أنا <b>مستعد</b> للأسوء;أَنَا <b>مُسْتَعِدِّ</b> لَلَأَسَوْءْ;Je suis prêt pour le pire.;;مستعد;مُسْتَعِدٌّ;prêt;;;742;F2K;
+<b>فسر</b> الهدف المديري لهذا المخطط;<b>فَسِرُّ</b> الْهَدَفِ الْمُدِيرِيِّ لهَذَا الْمُخَطَّطِ;Il a expliqué l'objectif principal de ce plan.;;فسر;فَسِرٌّ;plan;;;743;F2K;
+<b>يسكنون</b> في بيت واحد;<b>يُسَكِّنُونَ</b> فِي بَيْتِ وَاحِدِ;Ils vivent dans une maison.;;يسكنون;يُسَكِّنُونَ;vivent;;;744;F2K;
+<b>سيظهر</b> أبي على التلفاز الصباحة;<b>سَيَظْهَرُ</b> أَبِيٌّ عَلَى التِّلْفَازِ الصَّبَاحَةَ;Mon père doit passer à la télé, ce soir.;;سيظهر;سَيَظْهَرُ;doit;;;745;F2K;
+<b>سألته</b> عما فعله البارحة;<b>سَأَلَتْهُ</b> عَمَّا فِعْلَهُ الْبَارِحَةَ;Je lui demandai ce qu'il avait fait hier.;;سألته;سَأَلَتْهُ;lui;;;746;F2K;
+<b>اريني</b> اياه;<b>اَرِينِي</b> اِيَّاهُ;Montre-le-moi.;;اريني;اَرِينِي;Montre-le-moi;;;747;F2K;
+<b>أرني</b> إيّاه;<b>أَرَنِّيُّ</b> إيّاه;Montre-le-moi.;;أرني;أَرَنِّيٌّ;Montre-le-moi;;;748;F2K;
+إنك تتكلم <b>كأمك</b>;إِنّكَ تَتَكَلَّمُ <b>كَأُمِّكَ</b>;Vous parlez comme votre mère.;;كأمك;كَأُمِّكَ;mère;;;749;F2K;
+تتحدث <b>مثل</b> أمك;تَتَحَدَّثُ <b>مِثْل</b> أُمِّكَ;Vous parlez comme votre mère.;;مثل;مِثْل;comme;;;750;F2K;
+عليك أن تقلع عن <b>التدخين</b>;عَلَيْكَ أَنّ تَقَلُّعٍ عَن <b>التَّدْخِينِ</b>;Tu devrais cesser de fumer.;;التدخين;التَّدْخِينُ;fumer;;;751;F2K;
+عليك أن <b>تدفع</b> مقدماً;عَلَيْكَ أَن <b>تَدْفَعُ</b> مُقَدَّمَا;Il faut payer d'avance.;;تدفع;تَدْفَعُ;payer;;;752;F2K;
+لا <b>تستطيع</b> ركوب حصان;لَا <b>تَسْتَطِيعُ</b> رُكوبُ حِصَانٍ;Vous ne savez pas monter à cheval.;;تستطيع;تَسْتَطِيعُ;cheval;;;753;F2K;
+لا تنس أن <b>ترسل</b> الرسالة;لَا تَنْسَ أَنّ <b>تَرَسُّلِ</b> الرِّسَالَةِ;N'oublie pas de poster la lettre.;;ترسل;تُرْسِلُ;poster;;;754;F2K;
+<b>أهذا</b> صحيح؟ نعم، هذا صحيح;<b>أهَذَا</b> صَحِيحٌ ؟ نَعَم ، هَذَا صَحِيحُ;« C'est vrai ? » « Oui, c'est vrai. »;;أهذا;أهَذَا;c'est;;;755;F2K;
+آمل أن <b>أراك</b> قريباً;آْمَلْ أَنّ <b>أَرَاكِ</b> قَرِيبًا;J'espère vous voir bientôt.;;أراك;أَرَاكَ;j'espère;;;756;F2K;
+لا شكر على <b>واجب</b>;لَا شُكْرٍ عَلَى <b>وَاجِبٍ</b>;De rien.;;واجب;وَاجِبٌ;rien;;;757;F2K;
+<b>أجبرت</b> على الركض كثيرا للحاق بالقطار;<b>أَجْبَرَتْ</b> عَلَى الرَّكْضِ كَثِيرًا لِلِحَاقٍ بِالْقِطَارِ;J'ai dû beaucoup courir pour attraper le train.;;أجبرت;أَجْبَرَتْ;dû;;;758;F2K;
+أهذا <b>صحيح</b>؟ نعم، هذا صحيح;أهَذَا <b>صَحِيحٌ</b> ؟ نَعَم ، هَذَا صَحِيحُ;« C'est vrai ? » « Oui, c'est vrai. »;;صحيح;صَحِيحٌ;vrai;;;759;F2K;
+اليابان <b>مليئة</b> بالمدن الجميلة. على سبيل المثال، كيوتو ونارا;الْيَابَانُ <b>مَلِيئةً</b> بِالْمُدُنِ الْجَمِيلَةِ عَلَى سَبِيلِ الْمِثَالِ ، كِيُوتُوً وَنَارَا;Le Japon est rempli de belle villes. Kyoto et Nara par exemple.;;مليئة;مَلِيئةٌ;rempli;;;760;F2K;
+<b>اثنان</b> وخمسون بالمئة من النساء البريطانيات يفضلن الشوكولاته على الرياضة;<b>اِثْنَان</b> وَخَمْسُونَ بَاْلَمَئَةْ مِن النِّسَاءِ الْبرِيطَانِيَّاتُ يُفْضِلْنَ اْلَشَوْكَوْلَاْتَهْ عَلَى الرِّيَاضَةِ;52 % des femmes britanniques préfèrent le chocolat au sport.;;اثنان;اِثْنَان;52;;;761;F2K;SANITIZE_UNMUSLIM=sexe->sport
+<b>العصفور</b> المبكر يلتقط الدودة;<b>الْعَصْفُورُ</b> الْمُبَكِّرُ يَلْتَقِطُ الدُّودَةُ;L'oiseau en avance attrape le vers.;;العصفور;الْعَصْفُورُ;L'oiseau;;;762;F2K;
+أمّا <b>الروح</b> فنشيطٌ، وأما الجسد فضعيف;أُمَّا <b>الرَّوْحِ</b> فَنَشِيطٌ ، وأَمَّا الْجَسَدَ فَضَعِيفَ;L'esprit est fort mais la chair est faible.;;الروح;الرَّوْحُ;est;;;763;F2K;
+بعض <b>الماء</b>، من فضلك;بَعْضَ <b>الْمَاءِ</b> ، مِن فَضْلِكَ;Un peu d'eau, s'il vous plaît.;;الماء;الْمَاءُ;d'eau;;;764;F2K;
+أحب اللّغة <b>العربية</b>;أَحُبُّ اللُّغَةِ <b>الْعَرَبِيَّةِ</b>;J'adore l'arabe.;;العربية;الْعَرَبِيَّةُ;l'arabe;;;765;F2K;
+هل <b>تفهمني</b>؟;هَل <b>تَفْهَمُنِي</b> ؟;Vous me comprenez ?;;تفهمني;تَفْهَمُنِي;comprenez;;;766;F2K;
+ما هذه <b>الرائحة</b>؟;مَا هَذِه <b>الرَّائِحَةِ</b> ؟;C'est quoi cette odeur ?;;الرائحة;الرَّائِحَةُ;odeur;;;767;F2K;
+<b>والدي</b> في صحة جيدة;<b>وَالِدِيٌّ</b> فِي صِحَّةِ جِيدَةٍ;Mon père est en bonne santé.;;والدي;وَالِدِيٌّ;père;;;768;F2K;
+<b>ستتحدث</b> جودي عن اليابان غداً;<b>سَتَتَحَدَّثُ</b> جَوْدِيٌّ عَن الْيَابَانِ غَدًا;Judy parlera du Japon demain.;;ستتحدث;سَتَتَحَدَّثُ;Judy;;;769;F2K;
+<b>نظف</b> المرايا;<b>نَظُفَ</b> الْمَرَايَا;Nettoie le miroir.;;نظف;نَظُفَ;Nettoie;;;770;F2K;
+<b>بدأت</b> أحس بالجوع;<b>بَدَأَتْ</b> أَحِسٌّ بِالْجُوعِ;Je commence à avoir faim.;;بدأت;بَدَأَتْ;à;;;771;F2K;
+لا <b>تقاطع</b> حديثنا;لَا <b>تَقَاطُعِ</b> حَديثِنَا;N’interrompez pas notre discussion.;;تقاطع;تُقَاطِعُ;N'interrompez;;;772;F2K;
+هل أنت <b>سعودي</b>؟;هَلٌّ أَنْت <b>سُعُودِيٍّ</b> ؟;Es-tu Saoudien ?;;سعودي;سُعُودِيٌّ;Saoudien;;;773;F2K;
+<b>بالتأكيد</b>;<b>بِالتَّأْكِيدِ</b>;Sûrement.;;بالتأكيد;بِالتَّأْكِيدِ;Sûrement;;;774;F2K;
+يحب توم <b>الحياكة</b>;يُحِبُّ تُومَ <b>الْحِيَاكَةِ</b>;Tom aime tricoter.;;الحياكة;الْحِيَاكَةُ;tricoter;;;775;F2K;
+<b>تحسن</b> الوضع;<b>تَحَسُّنُ</b> الْوَضْعِ;Cela s'est amélioré.;;تحسن;تَحَسُّنٌ;Cela;;;776;F2K;
+دعني <b>أراها</b>;دَعْنِي <b>أَرَاهَا</b>;Laisse-moi les voir.;;أراها;أَرَاهَا;Laisse-moi;;;777;F2K;
+كين يريد <b>دراجة</b>;كِيَنَّ يُرِيدُ <b>دَرَّاجَةٌ</b>;Ken désire avoir une bicyclette.;;دراجة;دَرَّاجَةٌ;bicyclette;;;778;F2K;
+<b>أطفئ</b> الضوء;<b>أُطْفِئُ</b> الضَّوْءَ;Éteignez la lumière !;;أطفئ;أُطْفِئُ;Éteignez;;;779;F2K;
+<b>سأفكر</b> في الأمر مجدداً;<b>سَأُفَكِّرُ</b> فِي الْأَمْرِ مُجَدَّدًا;Je vais reconsidérer l'affaire.;;سأفكر;سَأُفَكِّرُ;reconsidérer;;;780;F2K;
+لا أحب <b>أليس</b>;لَا أَحُبٌّ <b>ألَيْس</b>;Je n'aime pas Alice.;;أليس;ألَيْس;pas;;;781;F2K;
+<b>اتصلت</b> بتوم;<b>اِتَّصَلَتْ</b> بِتُومٍ;J'ai passé un coup de fil à Tom.;;اتصلت;اِتَّصَلَتْ;j'ai;;;782;F2K;
+<b>ألم</b> يخطر ببالك أن تغلق النوافذ؟;<b>ألَم</b> يُخْطِرُ بِبَالِكَ أَن تُغْلِقُ النَّوَافِذُ ؟;N'est-il pas venu à ton esprit de fermer les fenêtres ?;;ألم;ألَم;N'est-il;;;783;F2K;
+ينبغي أن <b>تبدأ</b>َ أبكر ما يمكنك;يَنْبَغِي أَن <b>تَبْدَأَ</b> أَبِكَرٍّ مَا يُمْكِنُكَ;Tu devrais commencer aussi tôt que possible.;;تبدأَ;تَبْدَأَ;commencer;;;784;F2K;
+سأرجع <b>حالا</b>ً;سَأَرْجِعُ <b>حَالًا</b>;Je reviens tout de suite.;;حالاً;حَالَا;suite;;;785;F2K;
+إنه قوي <b>كالحصان</b>;إِنّهُ قُوِّيَّ <b>كَالْْحِصَانِ</b>;Il est fort comme un cheval.;;كالحصان;كَالْْحِصَانِ;fort;;;786;F2K;
+ما <b>جبريل</b> إلا أحد ملائكة الله;مَا <b>جِبْرِيل</b> إِلَّا أحَدِ مَلَاَئِكَةِ اللَّهِ;Gabriel n'est qu'un des anges de Allah.;;جبريل;جِبْرِيل;gabriel;;;787;F2K;
+في الواقع، ما <b>أكلت</b> شيئاً منذ الصباح;فِي الْوَاقِعِ ، مَا <b>أَكَلَتْ</b> شَيْئًا مُنْذ الصَّبَاحِ;En fait, je n'ai rien mangé depuis ce matin.;;أكلت;أَكَلَتْ;n'ai;;;788;F2K;
+في الحقيقة لم آكل أي شيء منذ هذا <b>الصباح</b>;فِي الْحَقِيقَةِ لَم آكَلَ أَيُّ شَيْءٍ مُنْذ هَذَا <b>الصَّبَاحِ</b>;En fait, je n'ai rien mangé depuis ce matin.;;الصباح;الصَّبَاحُ;matin;;;789;F2K;
+ماذا <b>ترى</b> في الصورة؟;مَاذَا <b>تَرَى</b> فِي الصُّورَةِ ؟;Qu'est-ce que tu vois dans cette image ?;;ترى;تَرَى;vois;;;790;F2K;
+ماذا <b>ترين</b> في الصورة؟;مَاذَا <b>تَرَيَنَّ</b> فِي الصُّورَةِ ؟;Qu'est-ce que tu vois dans cette image ?;;ترين;تَرَيَنَّ;vois;;;791;F2K;
+... <b>آه</b>، ماذا عساني أن أفعل في حالة كهذه؟;... <b>آهْ</b> ، مَاذَا عَسَّانِي أَنّ أَفِعْلٌ فِي حَالَةٍ كهَذِه ؟;.. Aaah, que suis-je censé faire face à cela ?;;آه;آهْ;Aaah;;;792;F2K;
+<b>تأخرت</b> الطائرة بسبب الطقس السيء;<b>تَأَخَّرَتْ</b> الطَّائِرَةُ بِسَبَبِ الطَّقْسِ السَّيْءِ;L'avion a pris du retard à cause du mauvais temps.;;تأخرت;تَأَخَّرَتْ;du;;;793;F2K;
+حيوانات <b>الباندا</b> الضخمة تعيش في الصين فقط;حَيَوَانَاتُ <b>الْبَانْدَا</b> الضَّخْمَةَ تُعَيِّشُ فِي اِلْصِيَنَّ فَقَط;Les pandas géants vivent seulement en Chine.;;الباندا;الْبَانْدَا;pandas;;;794;F2K;
+أما <b>مسرور</b> برؤيتك;أَمَّا <b>مَسْرُورٌ</b> بِرُؤْيَتِكَ;Je suis content de pouvoir te voir.;;مسرور;مَسْرُورٌ;voir;;;795;F2K;
+إنه يستعد <b>للامتحان</b>;إِنّهُ يَسْتَعِدُّ <b>لِلْاِمْتِحَانُ</b>;Il se prépare pour le test.;;للامتحان;لِلْاِمْتِحَانُ;test;;;796;F2K;
+<b>يتعلم</b> بسرعة;<b>يَتَعَلَّمُ</b> بِسُرْعَةٍ;Il apprend vite.;;يتعلم;يَتَعَلَّمُ;apprend;;;797;F2K;
+هو <b>سريع</b> التعلم;هُو <b>سَرِيعِ</b> التَّعَلُّمِ;Il apprend vite.;;سريع;سَرِيعٌ;apprend;;;798;F2K;
+كَمن <b>يبحث</b> عن إبرة في كومة قَشّ;كَمَنٍّ <b>يَبْحَثُ</b> عَن إِبْرَةٍ فِي كُومَةِ قَشٍّ;C'est comme chercher une aiguille dans une botte de foin.;;يبحث;يَبْحَثُ;une;;;799;F2K;
+<b>طُعِّمتُ</b> من الإنفلونزا;<b>طُعِّمْتُ</b> مِن الْإِنْفْلُونْزَا;J'ai été vacciné contre la grippe.;;طُعِّمتُ;طُعِّمْتُ;contre;;;800;F2K;
+طُعِّمتُ من <b>الإنفلونزا</b>;طُعِّمْتُ مِن <b>الْإِنْفْلُونْزَا</b>;Je me suis fait vacciner contre la grippe.;;الإنفلونزا;الْإِنْفْلُونْزَا;contre;;;801;F2K;
+<b>الموز</b> أصفر;<b>الْمَوْزُ</b> أَصْفَرُ;Les bananes sont jaunes.;;الموز;الْمَوْزُ;jaunes;;;802;F2K;
+هذه <b>التقارير</b> لا تتطابق مع الأحداث;هَذِه <b>التّقَاريرِ</b> لَا تَتَطَابَقُ مَع الْأَحْدَاثِ;Ces rapports ne concordent pas avec les faits.;;التقارير;التّقَاريرُ;rapports;;;803;F2K;
+قالت أن <b>عمرها</b> عشرين سنة لكنها كانت تكذب;قَالَتْ أَنّ <b>عُمَرِهَا</b> عِشْرِينَ سَنَةً لَكِنّهَا كَانَتْ تَكْذِبُ;Elle a dit qu'elle avait vingt ans, ce qui n'était pas vrai.;;عمرها;عَمَّرَهَا;avait;;;804;F2K;
+قالت أن عمرها <b>عشرين</b> سنة لكن هذا غير صحيح;قَالَتْ أَنّ عُمَرِهَا <b>عِشْرِينَ</b> سَنَةً لَكِنّ هَذَا غَيْرِ صَحِيحٍ;Elle a dit qu'elle avait vingt ans, ce qui n'était pas vrai.;;عشرين;عِشْرِينَ;avait;;;805;F2K;
+هل <b>ينام</b>؟;هَلٌّ <b>يُنَامُ</b> ؟;Il dort ?;;ينام;يُنَامُ;dort;;;806;F2K;
+أخبرتني <b>بأنها</b> تعرف أخي;أَخْبَرَتْنِي <b>بأَنّهَا</b> تَعَرُّفَ أَخِي;Elle m'a dit qu'elle connaissait mon frère.;;بأنها;بأَنّهَا;connaissait;;;807;F2K;
+حل <b>المشكلة</b> بسهولة;حَلُّ <b>الْمُشَكَّلَةِ</b> بِسُهولَةٍ;Il résolut le problème avec facilité.;;المشكلة;الْمُشَكَّلَةُ;facilité;;;808;F2K;
+عندي <b>سؤال</b>;عُنَّدُي <b>سُؤَّالٌ</b>;J'ai une question.;;سؤال;سُؤَالٌ;question;;;809;F2K;
+فهو <b>المطلوب</b>;فهُو <b>الْمَطْلُوبِ</b>;CQFD.;;المطلوب;الْمَطْلُوبُ;CQFD;;;810;F2K;
+بيل، <b>افتح</b> الباب;بِيلٌ ، <b>اِفْتَحْ</b> الْبَابَ;Bill, ouvre la porte.;;افتح;اِفْتَحْ;bill;;;811;F2K;
+<b>توقّفت</b> عن الخياطة وترشّقت الشّاي;<b>تَوَقَّفَتْ</b> عَن الْخَيَّاطَةِ وترشّقت الشَّاي;Elle cessa de coudre et but du thé.;;توقّفت;تَوَقَّفَتْ;cessa;;;812;F2K;
+يجِب أن <b>تفكر</b> في عائلتكَ;يَجِبُ أَنّ <b>تَفَكُّرٍ</b> فِي عَائِلَتِكَ;Tu dois penser à ta famille !;;تفكر;تُفَكِّرُ;tu;;;813;F2K;
+ما حسن من العمل أفضل من ما حسن من <b>الكلام</b>;مَا حُسْنٍ مِن الْعَمَلِ أَفَضْلٌ مِن مَا حُسْنٍ مِن <b>الْكِلَاَمِ</b>;Bien fait est mieux que bien dit.;;الكلام;الْكِلَاَمُ;Bien;;;814;F2K;
+في أي <b>ظروف</b> ظهر الخطأ؟;فِي أَيِّ <b>ظُروفِ</b> ظَهَرَ الْخَطَأُ ؟;Dans quelles circonstances le défaut est-il apparu ?;;ظروف;ظُروفٌ;quelles;;;815;F2K;
+كيف <b>يلاحَظ</b> الخطأ؟;كَيْف <b>يُلَاحَظُ</b> الْخَطَأُ ؟;Comment se manifeste le défaut ?;;يلاحَظ;يُلَاحَظُ;manifeste;;;816;F2K;
+في أي ظروف <b>ظهر</b> الخطأ؟;فِي أَيِّ ظُروفِ <b>ظَهَرَ</b> الْخَطَأُ ؟;Dans quelles circonstances le défaut est-il apparu ?;;ظهر;ظُهْرٌ;quelles;;;817;F2K;
+كيف يلاحَظ <b>الخطأ</b>؟;كَيْف يُلَاحَظُ <b>الْخَطَأُ</b> ؟;Comment se manifeste le défaut ?;;الخطأ;الْخَطَأُ;défaut;;;818;F2K;
+لا <b>زلنا</b> نأمل;لَا <b>زَلِّنَا</b> نَأْمُلُ;Nous espérons toujours.;;زلنا;زَلُّنَا;espérons;;;819;F2K;
+أهلاً كيف <b>حالك</b>؟;أهْلًا كَيْف <b>حَالِكَ</b> ؟;Salut. Comment vas-tu ?;;حالك;حَالِكٌ;comment;;;820;F2K;
+أنا أفضل الربيع على <b>الخريف</b>;أَنَا أفْضَلِ الرَّبِيعِ عَلَى <b>الْخَرِيفِ</b>;Je préfère le printemps à l'automne.;;الخريف;الْخَرِيفُ;printemps;;;821;F2K;
+أعتقد أني <b>فهمت</b>;أَعْتَقِدُ أَنِّيَّ <b>فَهِمَتْ</b>;Je crois avoir compris.;;فهمت;فَهِمَتْ;crois;;;822;F2K;
+لا <b>يمكنني</b>;لَا <b>يُمْكِنُنِي</b>;Je ne peux pas.;;يمكنني;يُمْكِنُنِي;peux;;;823;F2K;
+<b>تعبت</b> من سلوكه;<b>تَعْبِتُ</b> مِن سُلُوكِهِ;J'en ai marre de son comportement.;;تعبت;تَعِبَتْ;j'en;;;824;F2K;
+في <b>البداية</b> خلق الله السماء و الأرض;فِي <b>الْبِدَايَةِ</b> خَلْقَ اللَّهِ السَّمَاءَ وْ الْأَرَضُ;Au commencement, Allah créa les cieux et la terre.;;البداية;الْبِدَايَةُ;commencement;;;825;F2K;
+<b>عندما</b> فتحتُ الباب وجدته ينام;<b>عِنْدَمَا</b> فَتَحْتُ الْبَابَ وَجِدَّتَهُ يُنَامُ;Lorsque j'ai ouvert la porte, je l'ai trouvé endormi.;;عندما;عِنْدَمَا;endormi;;;826;F2K;
+<b>صنع</b> في كازخستان;<b>صَنْعٌ</b> فِي كَاْزَخَسَتَاْنْ;C'est fabriqué au Kazakhstan.;;صنع;صَنْعٌ;fabriqué;;;827;F2K;
+هل تستطيع أن <b>تعد</b> بالعربية؟;هَل تَسْتَطِيعُ أَنّ <b>تَعَدٍّ</b> بِالْعَرَبِيَّةِ ؟;Sais-tu compter en arabe ?;;تعد;تُعِدُّ;compter;;;828;F2K;
+<b>الأصدقاء</b> مثل الورود في حديقة الحياة;<b>الْأَصْدِقَاءُ</b> مِثْل الْوُرُودِ فِي حَديقَةِ الْحَيَاةِ;Les amis sont comme les fleurs dans le jardin de la vie.;;الأصدقاء;الْأَصْدِقَاءُ;les;;;829;F2K;
+كادت أن <b>تبكي</b>;كَادَتْ أَن <b>تَبْكِي</b>;Elle était au bord des larmes.;;تبكي;تَبْكِي;bord;;;830;F2K;
+<b>قم</b> بتنصيب لينكس !;<b>قُمْ</b> بِتَنْصِيبٍ لِيَنْكُسُ;Installe Linux !;;قم;قُمْ;Installe;;;831;F2K;
+<b>اخلط</b> الحساء;<b>اِخْلِطْ</b> الْحَسَاءَ;Mélange la soupe.;;اخلط;اِخْلِطْ;Mélange;;;832;F2K;
+<b>بشرة</b> الإنسان حساسةٌ جدا للتغير في الحرارة;<b>بَشَرَةُ</b> الْإِنْسَانِ حَسَّاسَةٌ جِدّا لِلتَّغَيُّرَ فِي الْحَرَارَةِ;La peau humaine est très sensible aux changements de température.;;بشرة;بَشَرَةٌ;peau;;;833;F2K;
+<b>اشتغل</b> في مصر طوال حياته;<b>اِشْتَغَلَ</b> فِي مِصْرِ طُوَّالِ حَيَاتِهِ;Il a travaillé en Égypte toute sa vie.;;اشتغل;اِشْتَغَلَ;travaillé;;;834;F2K;
+<b>مهلا</b> لحظة;<b>مَهَّلَا</b> لَحْظَةُ;Attends une minute.;;مهلا;مَهَّلَا;Attends;;;835;F2K;
+<b>عزف</b> عازف البيانو مقاطع إضافية;<b>عَزَفَ</b> عَازِفُ الْبِيَانُوِ مُقَاطِعَ إضَافِيَّةَ;Le pianiste a joué deux morceaux supplémentaires.;;عزف;عَزَفَ;supplémentaires;;;836;F2K;
+<b>وصلت</b> الحافلة متأخرة بعشرة دقائق;<b>وَصَلَتْ</b> الْحَافِلَةُ مُتَأَخِّرَةٌ بِعُشُرَةِ دَقَائِقِ;Le bus est arrivé dix minutes trop tard.;;وصلت;وَصَلَتْ;tard;;;837;F2K;
+واحد من <b>أصدقائي</b> يعرِفك;وَاحِدٌ مِن <b>أَصْدِقَائِيِّ</b> يَعْرِفُكَ;Un de mes amis te connaît.;;أصدقائي;أَصْدِقَائِيُّ;mes;;;838;F2K;
+<b>بإمكان</b> الكلمات أن تكون شفافة أو غامضة;<b>بِإِمْكَانِ</b> الْكَلِمَاتِ أَنّ تَكَوُّنِ شُفَافَةٍ أَو غَامِضَةٌ;Les mots peuvent être transparents ou opaques.;;بإمكان;بِإِمْكَانٍ;mots;;;839;F2K;
+<b>الفئران</b> تترك السفينة الغارقة;<b>الْفِئْرَانُ</b> تَتْرُكُ السَّفِينَةُ الْغَارِقَةُ;Les rats quittent le navire qui coule.;;الفئران;الْفِئْرَانُ;qui;;;840;F2K;
+<b>اعرض</b> لنا باختصار حالتك;<b>اُعْرُضْ</b> لَنَا بِاِخْتِصَارِ حَالَتِكَ;Exposez brièvement votre cas.;;اعرض;اُعْرُضْ;Exposez;;;841;F2K;
+إذن <b>مرتين</b> على اليمين، أليس كذلك؟;إِذْنُ <b>مَرَّتَيْنِ</b> عَلَى الْيَمِينِ ، ألَيْس كَذَلِك ؟;Alors, deux fois à droite, hein ?;;مرتين;مَرَّتَيْنِ;fois;;;842;F2K;
+زرت <b>باريس</b> مرتين;زُرْتُ <b>بَارِيس</b> مَرَّتَيْنِ;Je me suis rendu deux fois à jeus.;;باريس;بَارِيس;jeus;;;843;F2K;
+ماذا <b>يفعل</b> هذا الكرسي هنا؟;مَاذَا <b>يَفْعَلُ</b> هَذَا الْكُرْسِيِّ هُنَا ؟;Que fait cette chaise ici ?;;يفعل;يَفْعَلُ;chaise;;;844;F2K;
+<b>ستبحر</b> السفينة غدا إلى هونولولو;<b>سَتُبْحِرُ</b> السَّفِينَةُ غَدَا إِلَى هُونُولُولُوٍ;Le bateau fera voile demain pour Honolulu.;;ستبحر;سَتُبْحِرُ;fera;;;845;F2K;
+كان <b>لطيفًا</b> جدًّا مع الجميع;كَان <b>لِطَيْفًا</b> جِدَّا مَع الْجَمِيعِ;Il était très aimable avec tout le monde.;;لطيفًا;لِطَيْفًا;aimable;;;846;F2K;
+ماذا <b>حدث</b>?;مَاذَا <b>حَدَثٍ</b>;Que s'est-il passé ?;;حدث;حَدَثَ;s'est-il;;;847;F2K;
+سوفَ <b>تسبّبُ</b> لنا الضرر;سَوَّفَ <b>تَسَبُّبُ</b> لَنَا الضَّرَرِ;Cela nous fera subir des dommages.;;تسبّبُ;تُسَبِّبُ;Cela;;;848;F2K;
+هذا <b>البلد</b> مدعوم بالصناعة;هَذَا <b>الْبَلَدِ</b> مَدْعُومً بِالصِّنَاعَةِ;Ce pays est soutenu par l'industrie.;;البلد;الْبَلَدُ;pays;;;849;F2K;
+أنا <b>مسلمة</b>;أَنَا <b>مُسْلِمَةٍ</b>;Je suis musulmane.;;مسلمة;مُسْلِمَةٌ;musulmane;;;850;F2K;
+أنا آكل <b>اللحم</b> فقط;أَنَا آكَلَ <b>اللَّحْمُ</b> فَقَط;Je ne mange que de la viande.;;اللحم;اللَّحْمُ;viande;;;851;F2K;
+يا <b>الهي</b>!;يَا <b>اُلْهِي</b>;Mon Allah !;;الهي;اُلْهِي;mon;;;852;F2K;
+لا تتهرّب من <b>سؤالي</b>;لَا تَتَهَرَّبُ مِن <b>سُؤَالِيٍّ</b>;N'élude pas ma question.;;سؤالي;سُؤَالِيٌّ;N'élude;;;853;F2K;
+إنها <b>دراجتي</b>;إِنّهَا <b>دَرَّاجَتَي</b>;C'est mon vélo.;;دراجتي;دَرَّاجَتُي;vélo;;;854;F2K;
+هو <b>حارس</b> مرمى;هُو <b>حَارِسِ</b> مَرْمًى;Il est gardien de but.;;حارس;حَارِسٌ;gardien;;;855;F2K;
+هم <b>يبيعون</b> أبسطة قديمة;هُم <b>يَبِيعُونَ</b> أَبْسَطَةَ قَدِيمَةَ;Ils vendent des tapis anciens.;;يبيعون;يَبِيعُونَ;vendent;;;856;F2K;
+<b>البقر</b> يوفرون لنا الحليب;<b>الْبَقَرُ</b> يُوَفِّرُونَ لَنَا الْحَلِيبِ;Les vaches nous alimentent en lait.;;البقر;الْبَقَرُ;alimentent;;;857;F2K;
+<b>سأندم</b> على ذلك طوال حياتي، أليس كذلك ؟;<b>سَأُنْدِمُ</b> عَلَى ذَلِك طُوَّالِ حَيَاتِي ، ألَيْس كَذَلِك ؟;Je le regretterai toute ma vie, n'est-ce pas !;;سأندم;سَأَنْدَمُ;regretterai;;;858;F2K;
+<b>ادعوني</b> إسماعيل;<b>اُدْعُونِي</b> إَسَمَاْعَيْلْ;Appelez-moi Ishmael.;;ادعوني;اُدْعُونِي;appelez-moi;;;859;F2K;
+ما هو <b>فنك</b> المفضل؟;مَا هُو <b>فَنِّكَ</b> الْمُفَضَّلِ ؟;Quelle est votre type d'art préféré ?;;فنك;فَنِكْ;votre;;;860;F2K;
+ستجد أن هذه <b>الخريطة</b> مفيدة للغاية;سَتَجِدُ أَنّ هَذِه <b>الْخَرِيطَةُ</b> مُفِيدَةٌ لِلَغَاِيَّةً;Tu trouveras cette carte très utile.;;الخريطة;الْخَرِيطَةُ;trouveras;;;861;F2K;
+أعزف <b>الكمان</b>;أَعَزَفَ <b>الْكَمَانُ</b>;Je joue du violon.;;الكمان;اُلْكُمَانِّ;violon;;;862;F2K;
+هي <b>تفهمك</b> الآن;هِي <b>تَفَهُّمِكَ</b> الْآن;Elle te comprend maintenant.;;تفهمك;تَفْهَمُكَ;comprend;;;863;F2K;
+هل <b>تفهم</b>؟;هَل <b>تَفَهُّمٍ</b> ؟;Comprenez-vous ?;;تفهم;تَفْهَمُ;Comprenez-vous;;;864;F2K;
+<b>تسلل</b> السارق الى المنزل بعد أن ألقى الصباح بحلته;<b>تَسَلُّلُ</b> السَّارِقِ اْلَىْ الْمَنْزِلَ بَعْد أَنّ أَلْقَى الصَّبَاحُ بِحَلَّتِهِ;Le cambrioleur s'introduisit dans la maison sous couvert de le matin.;;تسلل;تَسَلُّلٌ;le;;;865;F2K;
+<b>انهض</b>;<b>اِنْهَضْ</b>;Lève-toi.;;انهض;اِنْهَضْ;lève-toi;;;866;F2K;
+<b>ماري</b> جرت;<b>مَارُي</b> جَرَتْ;Marie courut.;;ماري;مَارِيٌّ;marie;;;867;F2K;
+ماري <b>ركضت</b>;مَارُي <b>رَكَضَتْ</b>;Marie courut.;;ركضت;رَكَضَتْ;courut;;;868;F2K;
+إن كنت <b>مجبرا</b>، فأنت مجبر;إِن كَنَّتْ <b>مُجْبَرًا</b> ، فأَنْت مُجْبَرٍ;Si tu dois, tu dois.;;مجبرا;مُجْبَرَا;dois;;;869;F2K;
+<b>أخته</b> جميلة جدا;<b>أُخْتُهُ</b> جَمِيلَةٌ جِدّا;Sa sœur est d'une grande beauté.;;أخته;أَخَتَّهُ;sa;;;870;F2K;
+هذا <b>الوثائقي</b> حول القضية البيئية فتح حقا أعيننا;هَذَا <b>الْوَثَائِقِيِّ</b> حَوْل الْقَضِيَّةِ الْبِيئِيَّةِ فَتَحَ حَقَّا أعَيْننَا;Ce documentaire sur la crise environnementale nous a vraiment ouvert les yeux.;;الوثائقي;الْوَثَائِقِيُّ;documentaire;;;871;F2K;
+كان <b>مستوى</b> الثلج عاليا;كَان <b>مُسْتَوَى</b> الثَّلْجِ عَالِيًا;La neige était haute.;;مستوى;مُسْتَوًى;neige;;;872;F2K;
+<b>هُنَيْهةٌ</b>;<b>هُنَيْهَةٌ</b>;Un instant...;;هُنَيْهةٌ;هُنَيْهَةٌ;instant;;;873;F2K;
+<b>ابتسموا</b> لبعضهم;<b>اِبْتَسَمُوا</b> لِبَعَضَهُمْ;Ils se sourirent les uns aux autres.;;ابتسموا;اِبْتَسَمُوا;autres;;;874;F2K;
+<b>اركض</b>!;<b>اُرْكُضْ</b>;Cours !;;اركض;اُرْكُضْ;cours;;;875;F2K;
+إنها <b>تمطر</b> اليوم، أين مظلتي؟;إِنّهَا <b>تَمَطُّرَ</b> الْيَوْمِ ، أَيْن مِظَلَّتِي ؟;Il pleut aujourd'hui. Où est mon parapluie?;;تمطر;تُمْطِرُ;il;;;876;F2K;
+إنها تمطر اليوم، أين <b>مظلتي</b>؟;إِنّهَا تَمَطُّرَ الْيَوْمِ ، أَيْن <b>مِظَلَّتِي</b> ؟;Il pleut aujourd'hui. Où est mon parapluie?;;مظلتي;مِظَلَّتُي;pleut;;;877;F2K;
+إنه غير <b>متفق</b> معنا بخصوص هذا الموضوع;إِنّهُ غَيْرَ <b>مُتَّفَقِ</b> مَعنَا بَخَصَوْصْ هَذَا الْمَوْضُوعِ;Il n'est pas d'accord avec nous sur ce sujet.;;متفق;مُتَّفَقٌ;d'accord;;;878;F2K;
+لم نرها <b>مطلقا</b>ً;لَم نُرْهَا <b>مُطْلَقًا</b>;On ne l'a vue nulle part.;;مطلقاً;مُطْلَقَا;part;;;879;F2K;
+أنا <b>ممرض</b>;أَنَا <b>مُمَرِّضٍ</b>;Je suis infirmier.;;ممرض;مُمَرِّضٌ;infirmier;;;880;F2K;
+لم <b>ترد</b> أن يبقى هناك لمدة أطول;لَم <b>تُرِدْ</b> أَن يَبْقَى هُنَاك لِمُدَّةُ أَطْوَلُ;Elle ne voulait pas qu'il restât plus longtemps.;;ترد;تَرُدُّ;voulait;;;881;F2K;
+<b>الممثلة</b> تتصفح نصها;<b>الْمُمَثِّلَةُ</b> تَتَصَفَّحُ نَصُّهَا;L'actrice examine son texte.;;الممثلة;الْمُمَثِّلَةُ;L'actrice;;;882;F2K;
+كانت <b>صوفيا</b> شرهة;كَانَتْ <b>صُوفِيًّا</b> شَرِهَةً;Sophie était gourmande.;;صوفيا;صُوفِيَا;Sophie;;;883;F2K;
+<b>المعذره</b> على الإزعاج;<b>الْمَعْذِرَه</b> عَلَى الْإِزْعَاجِ;Désolé pour le dérangement.;;المعذره;الْمَعْذِرَه;Désolé;;;884;F2K;
+<b>ام</b>م;<b>اُمّ</b>;Hum...;;امم;اُمّ;Hum;;;885;F2K;
+بشرة <b>الإنسان</b> حساسةٌ جدا للتغير في الحرارة;بَشَرَةُ <b>الْإِنْسَانِ</b> حَسَّاسَةٌ جِدّا لِلتَّغَيُّرَ فِي الْحَرَارَةِ;La peau humaine est très sensible aux changements de température.;;الإنسان;الْإِنْسَانُ;peau;;;886;F2K;
+<b>أوه</b> لا! لم يعد لدينا بنزين!;<b>أَوَّه</b> لَا لَم يَعُدْ لَدَيْنَا بَنْزِينَ;Oh non ! Nous n'avons plus d'essence !;;أوه;أَوَّه;oh;;;887;F2K;
+<b>يعتبر</b> الفريق أنّه قائد جيّد;<b>يَعْتَبِرُ</b> الْفَرِيقُ أنّه قَائِدَ جَيِّدَ;L'équipe considère que c'est un bon capitaine.;;يعتبر;يَعْتَبِرُ;L'équipe;;;888;F2K;
+قد يكون <b>أو</b> لا يكون صحيحًا;قَد يَكْوُنَّ <b>أَو</b> لَا يُكَوِّنُ صَحِيحًا;C'est peut-être vrai ou pas.;;أو;أَو;ou;;;889;F2K;
+<b>ترك</b> الكتاب على الطاولة;<b>تَرَكَ</b> الْكِتَابَ عَلَى الطَّاوِلَةِ;Il laissa le livre sur la table.;;ترك;تَرَكَ;laissa;;;890;F2K;
+أصبح أخي <b>إماما</b>ً;أَصْبَح أَخِي <b>إمَامًا</b>;Mon frère est devenu imam.;;إمام;إمَامٌ;mon;;;891;F2K;
+<b>المشي</b> تشاط ممتاز;<b>الْمَشْي</b> تَشَاْطْ مُمْتَازٌ;Marcher est une excellente activité.;;المشي;الْمَشْي;marcher;;;892;F2K;
+<b>أعدك</b> أنني لن أتأخر في الخارج;<b>أَعِدْكَ</b> أَنَنِي لَن أَتَأَخَّرَ فِي الْخَارِجِ;Je te promets que je ne resterai pas sorti trop tard.;;أعدك;أَعِدْكَ;promets;;;893;F2K;
+أريد أن أقول <b>لك</b> شيئاً;أُرِيدُ أَنّ أَقُولُ <b>لَك</b> شَيْئًا;Je veux te dire quelque chose.;;لك;لَك;je;;;894;F2K;
+أيمكنني أن أقول <b>شيئا</b>ً؟;أَيُمْكِنُنِي أَنّ أَقُولُ <b>شَيْئًا</b> ؟;Est-ce que je peux dire quelque chose?;;شيئاً;شَيْئًا;quelque;;;895;F2K;
+تريد <b>الشركة</b> توظيف 20 شخصا;تُرِيدُ <b>الشَّرِكَةَ</b> تَوْظِيفَ 20 شَخْصًا;L'entreprise veut embaucher vingt personnes.;;الشركة;الشَّرِكَةُ;L'entreprise;;;896;F2K;
+اتصل <b>بي</b> لو سمحت;اِتَّصَلَ <b>بِي</b> لَو سَمَحَتْ;Appelle-moi s'il te plaît.;;بي;بِي;plaît;;;897;F2K;
+أريد أن أصبح <b>طبيبا</b>ً;أُرِيدُ أَنّ أَصْبَح <b>طَبِيبًا</b>;Je veux être médecin.;;طبيباً;طَبِيبَا;médecin;;;898;F2K;
+بوب هو الذي <b>ضربني</b> و ليس هي;بَوَّبَ هُو الَّذِي <b>ضَرَبَنِي</b> وْ لَيْس هِي;C'est Bob qui m'a frappé, pas elle.;;ضربني;ضَرَبَنِي;frappé;;;899;F2K;
+كنت في <b>الحمام</b> عندما رن الهاتف;كَنَّتْ فِي <b>الْحَمَامِ</b> عِنْدَمَا رَنَّ الْهَاتِفُ;J'étais dans le bain quand le téléphone sonna.;;الحمام;الْحَمَامُ;le;;;900;F2K;
+وجد دراجتي <b>الضائعة</b>;وَجَدَ دَرَّاجَتُي <b>الضَّائِعَةُ</b>;Il a trouvé mon vélo.;;الضائعة;الضَّائِعَةُ;trouvé;;;901;F2K;
+لديه <b>قطان</b>: أحدهما أسود والآخر أبيض;لَدَيْهُ <b>قُطَّانَ</b> أَحَدُّهُمَا أسْوَدُ وَالْآخِرُ أَبْيَضُ;Il a deux chats : l'un est noir et l'autre blanc.;;قطان;قُطَّانٌ;deux;;;902;F2K;
+<b>أحتاج</b> إلى طبيب;<b>أَحْتَاجُ</b> إِلَى طَبِيبٍ;J'ai besoin d'un médecin.;;أحتاج;أَحْتَاجُ;besoin;;;903;F2K;
+هذا قلم <b>رصاص</b>;هَذَا قَلَمِ <b>رَصَاصٍ</b>;Ceci est un crayon.;;رصاص;رَصَاصٌ;crayon;;;904;F2K;
+ترك الكتاب على <b>الطاولة</b>;تَرَكَ الْكِتَابَ عَلَى <b>الطَّاوِلَةِ</b>;Il laissa le livre sur la table.;;الطاولة;الطَّاوِلَةُ;table;;;905;F2K;
+لم <b>أقل</b> كلمتي الأخيرة!;لُمْ <b>أَقَلَّ</b> كَلِمَتِي الْأَخِيرَةِ;Je n'ai pas dit mon dernier mot !;;أقل;أَقَلَّ;dit;;;906;F2K;
+أنا أنتظر منذ <b>ساعات</b>;أَنَا أَنْتَظِرُ مُنْذ <b>سَاعَاتٍ</b>;J'attends depuis des heures.;;ساعات;سَاعَاتٌ;j'attends;;;907;F2K;
+عندما <b>فتحت</b>ُ الباب وجدته ينام;عِنْدَمَا <b>فَتَحْتُ</b> الْبَابَ وَجِدَّتَهُ يُنَامُ;Lorsque j'ai ouvert la porte, je l'ai trouvé endormi.;;فتحتُ;فَتَحْتُ;Lorsque;;;908;F2K;
+استيقظت في الساعة <b>الخامسة</b> في الصباح;اِسْتَيْقَظَتْ فِي السَّاعَةِ <b>الْخَامسَةِ</b> فِي الصَّبَاحِ;Je me suis levé à cinq heures du matin.;;الخامسة;الْخَامِسَةُ;cinq;;;909;F2K;
+تعال الى <b>هنا</b> من فضلك;تَعَالَ اْلَىْ <b>هُنَا</b> مِن فَضْلِكَ;Venez ici, je vous prie.;;هنا;هُنَا;ici;;;910;F2K;
+<b>تمنيت</b> لو كان عندي المزيد من الوقت;<b>تَمَنَّيْتُ</b> لَو كَان عَنَدِيِّ الْمَزِيدِ مِن الْوَقْتِ;Si j'avais encore eu du temps !;;تمنيت;تَمَنَّيْتُ;si;;;911;F2K;
+كل هذه <b>المنازل</b> أحرقها العدو;كُلّ هَذِه <b>الْمُنَازِلِ</b> أَحْرَقَهَا الْعَدُوُّ;Ces maisons ont été entièrement brûlées par l'ennemi.;;المنازل;الْمُنَازِلُ;maisons;;;912;F2K;
+انت <b>مخطئ</b> في هذه الحالة;اُنْتُ <b>مُخْطِئٌ</b> فِي هَذِه الْحَالَةِ;Dans ce cas tu as tort.;;مخطئ;مُخْطِئٌ;cas;;;913;F2K;
+هناك الكثير من <b>الجُزُر</b> في اليونان;هُنَاك الْكَثِيرِ مِن <b>الْجُزُرِ</b> فِي الْيُونَانِ;En Grèce, il y a beaucoup d'îles.;;الجُزُر;الْجُزُرُ;grèce;;;914;F2K;
+<b>جهاز</b> الكمبيوتر المحمول الخاص بي يشتغل على نظام لينكس;<b>جِهَازُ</b> الْكَمْبِيُوتِرِ الْمَحْمُولِ اْلَخَاْصْ بِي يَشْتَغِلُ عَلَى نِظَامٍ لِيَنْكُسُ;Mon ordinateur portable tourne sous Linux.;;جهاز;جِهَازٌ;ordinateur;;;915;F2K;
+<b>أوبونتو</b> هي توزيعة لينكس مشهورة;<b>أُوبُونْتُو</b> هِي تَوْزِيعَةٍ لِيَنْكُسُ مَشْهُورَةٌ;Ubuntu est une distribution Linux populaire.;;أوبونتو;أُوبُونْتُو;Ubuntu;;;916;F2K;
+هل <b>تنام</b>؟;هَل <b>تَنَامٍ</b> ؟;Est-ce qu'elle dort ?;;تنام;تَنَامٍ;qu'elle;;;917;F2K;
+<b>صعب</b> جدا علي أن أترجم هذه القصيدة;<b>صَعْبٌ</b> جِدّا عَلِيُّ أَنّ أَتَرْجَمَ هَذِه الْقَصِيدَةِ;Il m'est trop difficile de traduire ce poème-ci.;;صعب;صَعْبٌ;difficile;;;918;F2K;
+ألا تعرف <b>أختك</b> السباحة؟;ألَا تَعَرُّفِ <b>أَخَتِكَ</b> السَّبَّاحَةِ ؟;Ta sœur ne sait-elle pas nager ?;;أختك;أَخَتَّكَ;sœur;;;919;F2K;
+بدأت <b>أحس</b> بالجوع;بَدَأَتْ <b>أَحِسٌّ</b> بِالْجُوعِ;Je commence à avoir faim.;;أحس;أَحِسٌّ;commence;;;920;F2K;
+هي <b>تعلمنا</b> العربية;هِي <b>تَعَلَّمْنَا</b> الْعَرَبِيَّةَ;Elle nous enseigne l'arabe.;;تعلمنا;تَعْلَمُنَا;enseigne;;;921;F2K;
+<b>الوضع</b> يزداد سوءا;<b>الْوَضْعُ</b> يَزْدَادُ سُوءَا;La situation ne fait qu'empirer.;;الوضع;الْوَضْعُ;qu'empirer;;;922;F2K;
+<b>أتريد</b> قصاصات صغيرة أم كعصير؟;<b>أَتُرِيدُ</b> قَصَّاصَاتُ صَغِيرَةُ أَم كَعَصِيرٍ ؟;Voulez-vous de petites ou de grosses coupures ?;;أتريد;أَتُرِيدُ;de;;;923;F2K;
+اسمي <b>شو</b>;اِسْمُي <b>شَوِّ</b>;Je m'appelle Shuu.;;شو;شَوِّ;shuu;;;924;F2K;
+الساعة السادسة و <b>الربع</b> مساء;السَّاعَةُ السَّادسَةُ وْ <b>الرُّبُعُ</b> مَسَاء;Il est dix-huit heures quinze.;;الربع;الرُّبُعُ;dix-huit;;;925;F2K;
+<b>الكل</b>ّ يستحقّ فرصة ثانية;<b>الْكَلُّ</b> يَسْتَحِقُّ فُرْصَةُ ثَانِيَةٍ;Tout le monde a le droit à une deuxième chance.;;الكلّ;الْكَلُّ;tout;;;926;F2K;
+<b>ويكيبيديا</b> هي أفضل موسوعة على الإنترنت;<b>وِيكِيبِيدِيَا</b> هِي أفْضَلِ مَوْسُوعَةٍ عَلَى اْلَإَنَتَرَنَتْ;Wikipedia est la meilleure encyclopédie sur Internet.;;ويكيبيديا;وِيكِيبِيدِيَا;Wikipedia;;;927;F2K;
+<b>كي</b> تكون التجربة مقبولة يجب أن تكون قابلة للإعادة;<b>كَي</b> تَكْوِنَّ التَّجْرِبَةَ مَقْبُولَةٌ يَجِبُ أَنّ تَكَوُّنِ قَابِلَةِ لِلْإِعَادَةَ;Pour être qualifiée de valide, une expérience doit être reproductible.;;كي;كَي;pour que;;;928;F2K;
+في البداية <b>خلق</b> الله السماء و الأرض;فِي الْبِدَايَةِ <b>خَلْقَ</b> اللَّهِ السَّمَاءَ وْ الْأَرَضُ;Au commencement, Allah créa le ciel et la terre.;;خلق;خَلْقٌ;commencement;;;929;F2K;
+<b>مصائب</b> قوم عند قوم فوائد;<b>مَصَائِبُ</b> قَوْمِ عِنْد قَوْمِ فَوَائِدِ;Le malheur des uns fait le bonheur des autres.;;مصائب;مَصَائِبُ;le;;;930;F2K;
+<b>ياله</b> من كتاب مفيد !;<b>يَالَهُ</b> مِن كِتَابِ مُفِيدِ;Quel livre intéressant !;;ياله;يَالَهُ;intéressant;;;931;F2K;
+على تؤمن <b>بوجود</b> الله ?;عَلَى تُؤَمِّنُ <b>بِوُجُودِ</b> اللهِ;Crois-tu en l'existence de Allah ?;;بوجود;بِوُجُودٍ;Crois-tu;;;932;F2K;
+تزداد <b>جمالا</b>ً يوماً بعد يوم;تَزْدَادُ <b>جَمَالَا</b> يَوْمَا بَعْد يَوْمٍ;Elle devient de plus en plus jolie.;;جمالاً;جَمَالَا;elle;;;933;F2K;
+<b>تعالي</b> وساعدينا;<b>تَعَالَيْ</b> وَسَاعِدِينَا;Viens nous aider.;;تعالي;تَعَالَيْ;Viens;;;934;F2K;
+أعتقد أنّه لن <b>يأتي</b>;أَعْتَقِدُ أنّه لَن <b>يَأْتِي</b>;Je pense qu'il ne viendra pas.;;يأتي;يَأْتِي;je;;;935;F2K;
+لا يجب عليك أن <b>تقول</b> كلاما فاحشا على التلفاز;لَا يُجِبْ عَلِيُّكَ أَنّ <b>تَقُولُ</b> كَلَاَمَا فَاحِشَا عَلَى التِّلْفَازِ;On ne peut pas dire de grossièretés à la télé.;;تقول;تَقُولُ;grossièretés;;;936;F2K;
+<b>محظوظ</b> لأنه لدي أصدقاء صادقون;<b>مَحْظُوظٌ</b> لأَنّهُ لُدَّي أَصْدِقَاءُ صَادِقُونَ;J'ai la chance d'avoir des amis sincères.;;محظوظ;مَحْظُوظٌ;sincères;;;937;F2K;
+ليس معي <b>العنوان</b> الآن;لَيْس مَعْي <b>الْعُنْوَانِ</b> الْآن;Je n'ai pas l'adresse maintenant.;;العنوان;الْعُنْوَانُ;l'adresse;;;938;F2K;
+ابحث <b>عنها</b> في قاموسك;اِبْحَثْ <b>عَنهَا</b> فِي قَامُوسِكَ;Cherche-le dans ton dictionnaire.;;عنها;عَنهَا;Cherche-le;;;939;F2K;
+بعض الأطفال <b>يسبحون</b> في البحر;بَعْضَ الْأَطْفَالِ <b>يُسَبِّحُونَ</b> فِي الْبَحْرِ;Quelques enfants nagent dans la mer.;;يسبحون;يُسَبِّحُونَ;nagent;;;940;F2K;
+هل بإمكاني الاحتفاظ <b>بهذا</b>؟;هِلْ بِإِمْكَانِيِّ الْاِحْتِفَاظِ <b>بهَذَا</b> ؟;Puis-je garder ceci ?;;بهذا;بهَذَا;garder;;;941;F2K;
+هذه <b>الدار</b> ليست كعصير;هَذِه <b>الدَّارِ</b> لَيْسَت كَعَصِيرٍ;Cette maison n’est pas très grande.;;الدار;الدَّارُ;maison;;;942;F2K;
+هذا المنزل ليس <b>بالفسيح</b>;هَذَا الْمَنْزِلِ لَيْس <b>بِالْفَسِيحِ</b>;Cette maison n’est pas très grande.;;بالفسيح;بِالْفَسِيحِ;grande;;;943;F2K;
+هذه هي الساعة التي <b>اشتريتها</b> امس;هَذِه هِي السَّاعَةِ الَّتِي <b>اِشْتَرَيْتُهَا</b> اِمْسِ;Voici la montre que j'ai achetée hier.;;اشتريتها;اِشْتَرَيْتُهَا;Voici;;;944;F2K;
+لديه <b>صوت</b> حلو;لَدَيْهُ <b>صَوْتَ</b> حلْوَ;Il a la voix douce.;;صوت;صَوْتٌ;douce;;;945;F2K;
+لديه صوت <b>حلو</b>;لَدَيْهُ صَوْتَ <b>حلْوَ</b>;Il a la voix douce.;;حلو;حَلُوَ;douce;;;946;F2K;
+كان عليك <b>اخباره</b> بالحقيقة;كَان عَلَيْك <b>اِخْبَارُهُ</b> بِالْحَقِيقَةِ;Vous auriez dû lui dire la vérité.;;اخباره;اِخْبَارُهُ;auriez;;;947;F2K;
+لا يمكنك أن تفعل <b>شيئين</b> في وقت واحد;لَا يُمْكِنُكَ أَن تَفْعَلُ <b>شَيْئَيْن</b> فِي وَقْتِ وَاحِدٍ;Tu ne peux pas faire deux choses à la fois.;;شيئين;شَيْئَيْن;choses;;;948;F2K;
+من <b>الطّبيعي</b> أن يكون فخورا بولده;مِن <b>الطَّبِيعِيِّ</b> أَن يَكْوُنَّ فَخُورًا بِوَلَدِهِ;Il est naturel qu'il soit fier de son fils.;;الطّبيعي;الطَّبِيعِيُّ;naturel;;;949;F2K;
+رأيته منذ <b>أسبوع</b>;رَأَيْتُهُ مُنْذ <b>أُسْبُوعٍ</b>;Je l'ai vu il y a une semaine.;;أسبوع;أُسْبُوعٌ;semaine;;;950;F2K;
+هل <b>يعود</b> من مدريد ؟;هَلٌّ <b>يَعُودُ</b> مِن مَدْرِيدٍ ؟;Il revient de Madrid ?;;يعود;يَعُودُ;de;;;951;F2K;
+توم <b>مسلم</b>;تُومُ <b>مُسْلِمُ</b>;Tom est musulman.;;مسلم;مُسْلِمٌ;musulman;;;952;F2K;
+عليك أن تعلم أنني <b>أشخر</b>;عَلَيْكَ أَنّ تَعَلُّمٍ أَنَنِي <b>أَشَخْرٌ</b>;Tu dois savoir que je ronfle.;;أشخر;أَشَخْرٌ;ronfle;;;953;F2K;
+أنا <b>مجتهد</b> في العلوم;أَنَا <b>مُجْتَهِدٍ</b> فِي الْعُلُومِ;Je suis bon en Sciences.;;مجتهد;مُجْتَهِدٌ;bon;;;954;F2K;
+<b>كيت</b> ذكية أكثر من أي طالب آخر في فصلنا;<b>كَيْت</b> ذَكِيَّةُ أَكْثَرِ مِن أَيِّ طَالِبِ آخِرِ فِي فَصْلِنَا;Kate est plus maligne que n'importe quel autre élève de notre classe.;;كيت;كَيْت;Kate;;;955;F2K;
+هو <b>موجود</b>;هُو <b>مَوْجُودٍ</b>;Il est là.;;موجود;مَوْجُودٌ;là;;;956;F2K;
+هل <b>صحتك</b> جيدة؟;هَل <b>صِحَّتِكَ</b> جَيِّدَةً ؟;Êtes-vous en bonne santé ?;;صحتك;صِحَّتُكَ;êtes-vous;;;957;F2K;
+هل <b>لديكم</b> ما يكفي من البطانيات؟;هَل <b>لَدَيْكُمْ</b> مَا يَكْفِي مِن الْبَطَّانِيَّاتِ ؟;Disposez-vous d'assez de couvertures ?;;لديكم;لَدَيْكُمْ;Disposez-vous;;;958;F2K;
+متى <b>سينتهي</b> العالم؟;مَتَى <b>سَيَنْتَهِي</b> الْعَالَمُ ؟;Pour quand la fin du monde est-elle ?;;سينتهي;سَيَنْتَهِي;est-elle;;;959;F2K;
+نحن <b>ذاهبون</b> إلى المقبرة;نَحْن <b>ذَاهِبُونَ</b> إِلَى الْمُقْبِرَةِ;Nous nous rendons au cimetière.;;ذاهبون;ذَاهِبُونَ;rendons;;;960;F2K;
+إنها <b>أثقل</b> منه بكثير;إِنّهَا <b>أَثْقَلَ</b> مِنهُ بِكَثِيرٍ;Elle est beaucoup plus lourde que lui.;;أثقل;أَثْقَلَ;beaucoup;;;961;F2K;
+<b>فستان</b> سهرتها الوردي استقطب جميع الأنظار;<b>فُسْتَانُ</b> سَهْرَتِهَا الْوَرْدِيِّ اِسْتَقْطَبَ جَمِيعُ الْأَنْظَارِ;Sa robe du soir rose attirait tous les regards.;;فستان;فُسْتَانٌ;sa;;;962;F2K;
+<b>مغفل</b>!;<b>مُغَفَّلٌ</b>;Idiot !;;مغفل;مُغَفَّلٌ;Idiot;;;963;F2K;
+إلى من <b>يهمه</b> الأمر;إِلَى مِن <b>يُهْمِهِ</b> الْأَمْرَ;À qui de droit.;;يهمه;يُهِمُّهُ;droit;;;964;F2K;
+إلى من يهمه <b>الأمر</b>;إِلَى مِن يُهْمِهِ <b>الْأَمْرَ</b>;À qui de droit.;;الأمر;الْأَمْرُ;droit;;;965;F2K;
+هذا <b>سيئ</b>;هَذَا <b>سَيِّئُ</b>;Ce n'est pas bon.;;سيئ;سَيِّئٌ;bon;;;966;F2K;
+لست مجبرا على <b>فعل</b> ذلك;لُسْتُ مُجْبَرًا عَلَى <b>فعَلّ</b> ذَلِك;Vous n'êtes pas obligé de faire ça.;;فعل;فعَلّ;obligé;;;967;F2K;
+<b>اتركه</b> لي;<b>اُتْرُكْهُ</b> لِي;Laissez-le-moi.;;اتركه;اُتْرُكْهُ;Laissez-le-moi;;;968;F2K;
+فقدت <b>قواي</b>;فَقُدْتُ <b>قُوَاَي</b>;J'ai perdu ma force.;;قواي;قُوَاُي;ma;;;969;F2K;
+هل تمتلك <b>كمبيوتر</b>؟;هَل تَمْتَلِكُ <b>كَمْبِيُوتِرٌ</b> ؟;Possèdes-tu un ordinateur ?;;كمبيوتر;كَمْبِيُوتِرٌ;possèdes-tu;;;970;F2K;
+لدي <b>أخوات</b>;لِدِي <b>أُخُوَّاتٍ</b>;J'ai des sœurs.;;أخوات;أُخُوَّاتٌ;sœurs;;;971;F2K;
+<b>فكر</b> فيما قلته لك;<b>فِكْرٌ</b> فِيمَا قِلَّتِهِ لَك;Pense à ce que je t'ai dit.;;فكر;فِكْرٌ;Pense;;;972;F2K;
+لم <b>يسلم</b> أحد من مصيره;لَم <b>يُسَلِّمُ</b> أحَدٌ مِن مَصِيرِهِ;Personne n'a encore échappé à son sort.;;يسلم;يُسَلِّمُ;échappé;;;973;F2K;
+إغلق كل <b>النوافذ</b> والأبواب!;إِغْلق كُلّ <b>النَّوَافِذِ</b> وَالْأَبْوَابِ;Ferme toutes les portes et fenêtres !;;النوافذ;النَّوَافِذُ;fenêtres;;;974;F2K;
+هل تعرف شيئا عن <b>عائلتك</b> ؟;هَل تُعَرِّفُ شَيْئًا عَن <b>عَائِلَتِكَ</b> ؟;Sais-tu quelque chose de ta famille ?;;عائلتك;عَائِلَتُكَ;quelque;;;975;F2K;
+أنا لست <b>جائعا</b> الآن;أَنَا لَسْت <b>جَائِعَا</b> الْآن;Je n'ai pas faim maintenant.;;جائعا;جَائِعَا;faim;;;976;F2K;
+<b>بنيت</b>ُ مضخّمًا بالأمس;<b>بَنَيْتُ</b> مُضَخِّمًا بِالْأَمْسِ;Hier j'ai construit un amplificateur.;;بنيتُ;بَنَيْتُ;construit;;;977;F2K;
+هي <b>ماكرة</b> بقدر ما هي لطيفة;هِي <b>مَاكِرَةٍ</b> بِقَدْرٍ مَا هِي لَطِيفَةٍ;Elle est aussi rusée qu'aimable.;;ماكرة;مَاكِرَةٌ;rusée;;;978;F2K;
+<b>نهارك</b> سعيد، هل تغديت؟;<b>نَهَارُكَ</b> سَعِيدٌ ، هَل تَغَدَّيْتُ ؟;Bonjour, avez-vous déjà déjeuné ?;;نهارك;نَهَارُكَ;Bonjour;;;979;F2K;
+<b>الرجاء</b> أن تبقوا على اتصال;<b>الرَّجَاءُ</b> أَن تُبْقُوا عَلَى اِتِّصَالٍ;Veuillez rester en contact.;;الرجاء;الرَّجَاءُ;Veuillez;;;980;F2K;
+ما جبريل إلا أحد <b>ملائكة</b> الله;مَا جِبْرِيل إِلَّا أحَدِ <b>مَلَاَئِكَةِ</b> اللَّهِ;Gabriel n'est qu'un des anges de Allah.;;ملائكة;مَلَاَئِكَةٌ;Gabriel;;;981;F2K;
+قام توم <b>بنفس</b> الخطأ مرة أخرى;قَام تُومٍ <b>بنَفْس</b> الْخَطَأِ مَرَّة أُخْرَى;Tom a récidivé.;;بنفس;بنَفْس;récidivé;;;982;F2K;
+<b>كرر</b> توم الخطأ نفسه;<b>كَرَّرَ</b> تُومُ الْخَطَأِ نَفْسهُ;Tom a récidivé.;;كرر;كَرَّرَ;récidivé;;;983;F2K;
+<b>قسمنا</b> صغير;<b>قِسْمُنَا</b> صَغِيرٌ;Notre classe est une petite classe.;;قسمنا;قَسَّمَنَا;classe;;;984;F2K;
+قمت بهذا <b>بدون</b> أن تفكر;قُمْتُ بهَذَا <b>بِدُون</b> أَنّ تَفَكُّرٍ;Tu as fait cela sans réfléchir.;;بدون;بِدُون;fait;;;985;F2K;
+في أي <b>دور</b> تسكن؟;فِي أَيِّ <b>دَوْرِ</b> تَسَكُّنٍ ؟;À quel étage loges-tu ?;;دور;دَوْرٌ;étage;;;986;F2K;
+<b>هلا</b> قدمتلي خدمة من فضلك؟;<b>هَلّا</b> قدمتلِي خِدْمَةً مِن فَضْلِكَ ؟;Me ferais-tu une faveur ?;;هلا;هَلّا;ferais-tu;;;987;F2K;
+أنا <b>مشغولة</b> جداً;أَنَا <b>مَشْغُولَةٍ</b> جِدًّا;Je suis très occupée.;;مشغولة;مَشْغُولَةٌ;occupée;;;988;F2K;
+كيف هي <b>الأخبار</b>؟;كَيْف هِي <b>الْأَخْبَارِ</b> ؟;Comment sont les nouvelles ?;;الأخبار;الْأَخْبَارُ;nouvelles;;;989;F2K;
+<b>مر</b>َّ بالقرب من بيتي;<b>مَرٌّ</b> بِالْقُرْبِ مِن بَيْتِيٍّ;Il est passé à côté de ma maison.;;مرَّ;مَرَّ;passé;;;990;F2K;
+<b>أجد</b> أن فكرته غبيّة;<b>أَجِدٌّ</b> أَنّ فِكْرَتِهِ غَبِيَّةً;Je trouve son idée idiote.;;أجد;أَجِدُ;trouve;;;991;F2K;
+<b>محكم</b> عليه بالإعدام;<b>مُحْكَمٌ</b> عَلَيْهِ بِالْإِعْدَامِ;Condamné à mort.;;محكم;مُحْكَمٌ;à;;;992;F2K;
+محكم <b>عليها</b> بالإعدام;مُحْكَمٌ <b>عَلَيْهَا</b> بِالْإِعْدَامِ;Condamnée à mort.;;عليها;عَلَيْهَا;Condamnée;;;993;F2K;
+محكم عليها <b>بالإعدام</b>;مُحْكَمٌ عَلَيْهَا <b>بِالْإِعْدَامِ</b>;Condamnée à mort.;;بالإعدام;بِالْإِعْدَامِ;à;;;994;F2K;
+محكم <b>عليه</b> بالإعدام;مُحْكَمٌ <b>عَلَيْهِ</b> بِالْإِعْدَامِ;Condamné à mort.;;عليه;عَلَيْهِ;Condamné;;;995;F2K;
+<b>أحلف</b> لكم بأنها كانت الحقيقة;<b>أَحِلْفٌ</b> لَكُم بأَنّهَا كَانَتْ الْحَقِيقَةَ;Je vous jure que c'est la vérité.;;أحلف;أَحِلْفٌ;vérité;;;996;F2K;
+<b>اقرئي</b>!;<b>اِقْرَئِي</b>;Lis !;;اقرئي;اِقْرَئِي;Lis;;;997;F2K;
+بنفس <b>الطريقة</b>;بنَفْس <b>الطَّرِيقَةِ</b>;De la même manière ?;;الطريقة;الطَّرِيقَةُ;manière;;;998;F2K;
+إلى أين تريد أن <b>تذهب</b>؟;إِلَى أَيْن تُرِيدُ أَن <b>تَذْهَبُ</b> ؟;Où désires-tu te rendre ?;;تذهب;تَذْهَبُ;désires-tu;;;999;F2K;
+إلى أين <b>تريدين</b> أن تذهبي؟;إِلَى أَيْن <b>تُرِيدِينَ</b> أَن تَذْهَبِي ؟;Où désires-tu te rendre ?;;تريدين;تُرِيدِينَ;désires-tu;;;1000;F2K;

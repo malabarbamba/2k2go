@@ -1,0 +1,104 @@
+# Anki - Options du paquet (extraites du screenshot)
+# Format: YAML "raw" structuré par catégories.
+
+limites_journalieres:
+  description: "Contrôle combien de nouvelles cartes et de révisions Anki te propose par jour. Peut être appliqué au préréglage, au paquet, ou juste pour aujourd’hui."
+  nouvelles_cartes_par_jour:
+    valeur: 21
+    portee_ui: "Préréglage"
+  quota_revisions_journalieres:
+    valeur: 9999
+    portee_ui: "Préréglage"
+  nouvelles_cartes_ignorent_limite_revisions: false
+  limites_commencent_a_partir_du_paquet_parent: false
+
+nouvelles_cartes:
+  description: "Réglages appliqués aux cartes neuves et aux cartes en apprentissage. Définit notamment les étapes et l’ordre d’insertion."
+  etapes_apprentissage: ["1m", "10m"]
+  ordre_insertion: "Séquentiel (les plus anciennes ca...)"
+
+echecs:
+  description: "Réglages appliqués quand tu rates une carte (Again) sur une carte déjà apprise. Gère le ré-apprentissage et le traitement des 'pénibles' (leeches)."
+  etapes_re_apprentissage: ["10m"]
+  seuil_de_penibilite: 6
+  traitement_des_penibles: "Suspendre la carte"
+
+ordre_d_affichage:
+  description: "Définit dans quel ordre Anki collecte et affiche nouvelles cartes, apprentissages (interjour) et révisions. Ces options sont prises depuis le paquet que tu lances en étude."
+  ordre_collecte_nouvelles_cartes: "Paquet"
+  ordre_classement_nouvelles_cartes: "Modèle de carte, puis dans l'ordr..."
+  ordre_nouveau_a_reviser: "Afficher après les cartes à réviser"
+  ordre_apprentissage_revision_interjournalier: "Mélanger avec les cartes à réviser"
+  ordre_classement_cartes_a_reviser: "Retrouvabilité descendante"
+
+enfouissement:
+  description: "Évite de voir des cartes 'sœurs' (même note) trop proches dans la même session, en les repoussant au lendemain."
+  enfouir_nouvelles_cartes_soeurs: false
+  enfouir_cartes_soeurs_a_reviser: false
+  enfouir_cartes_soeurs_en_cours_apprentissage: false
+
+audio:
+  description: "Contrôle la lecture automatique de l’audio et le comportement du bouton de relecture."
+  ne_pas_lire_audio_automatiquement: false
+  passer_question_quand_reponse_rejouee: false
+
+chronometre:
+  description: "Paramètres de mesure/affichage du temps de réponse. N’influence pas l’algorithme, surtout les stats et l’UI."
+  temps_de_reponse_maximum_secondes: 60
+  afficher_le_chronometre: false
+  arreter_le_chronometre_avec_la_reponse: false
+
+avance_automatique:
+  description: "Permet d’automatiser des actions après X secondes (question/réponse). Ici, les temps sont à 0s donc l’avance auto n’est pas active tant que tu ne mets pas une valeur > 0."
+  temps_affichage_question_secondes: 0.0
+  temps_affichage_reponse_secondes: 0.0
+  attendre_l_audio: true
+  action_de_la_question: "Afficher la réponse"
+  action_de_la_reponse: "Enfouir la carte"
+
+jours_faciles:
+  description: "Ajuste légèrement les dates d’échéance selon le jour de la semaine pour alléger certains jours. Ne modifie pas rétroactivement les cartes déjà planifiées."
+  lundi: "Normal"
+  mardi: "Normal"
+  mercredi: "Normal"
+  jeudi: "Normal"
+  vendredi: "Normal"
+  samedi: "Normal"
+  dimanche: "Normal"
+
+fsrs:
+  description: "Active l’algorithme FSRS et ses paramètres (rétention souhaitée + paramètres optimisés). Peut replanifier ou non les dates si on change les réglages."
+  active: true
+  retention_souhaitee:
+    valeur: "85%"
+    portee_ui: "Préréglage"
+  parametres_fsrs:
+    - 0.4026
+    - 1.1839
+    - 3.1730
+    - 15.6910
+    - 7.1949
+    - 0.5345
+    - 1.4604
+    - 0.0046
+    - 1.5458
+    - 0.1192
+    - 1.0193
+    - 1.9395
+    - 0.1100
+    - 0.2961
+    - 2.2698
+    - 0.2315
+    - 2.9898
+    - 0.5166
+    - 0.6621
+  filtre_optimisation: 'preset:"ARUR-STYLE" -is:suspended'
+  replanifier_les_cartes_lors_d_un_changement: false
+  check_health_when_optimizing_slow: true
+
+avance:
+  description: "Plafonds et hypothèses globales liées à l’intervalle et à l’historique, surtout utile avec FSRS."
+  intervalle_maximum_jours: 36500
+  retention_historique: "90%"
+  ignorer_les_revisions_avant: "01/01/1970"
+  planification_personnalisee: "(repliée / non visible sur le screenshot)"

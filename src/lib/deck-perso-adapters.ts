@@ -1,0 +1,419 @@
+/**
+ * Deck-Perso Adapters
+ *
+ * Adapter functions and types for the deck-perso migration.
+ * Transforms Supabase records to VocabCard format for review components.
+ */
+
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { foundation2kDeck } from "@/data/foundation2kDeck";
+import { buildCollectedCardSourceLinkPath } from "@/data/immersionVideoRouting";
+import type { Database } from "@/integrations/supabase/types";
+import { resolveFoundationDeckMedia } from "@/lib/foundationDeckMedia";
+import type { GetDueCardsV2Row } from "@/lib/supabase/rpc";
+import { repairMojibake } from "@/lib/textEncoding";
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+/**
+ * Record structure returned by Supabase RPC for due cards.
+ */
+export type DueCardRecord = GetDueCardsV2Row;
+
+/**
+ * Review type for deck-perso modes.
+ * - "foundation": Cards from the foundation vocabulary
+ * - "collected": Cards collected by the user (mined vocabulary)
+ * - "sent": Cards from sentences shared with the user
+ * Note: Alphabet deck has its own dedicated mini-deck UX, not FSRS reviews.
+ */
+export type ReviewType = "foundation" | "collected" | "sent";
+
+/**
+ * Scope values for Supabase RPC calls.
+ */
+export type ReviewScope = string;
+
+/**
+ * VocabCard interface for review components.
+ * Extended with Supabase tracking fields.
+ */
+export interface VocabCard {
+	id: number | string;
+	focus?: string;
+	tags: string[];
+	sentBase: string;
+	sentFull: string;
+	sentFrench: string;
+	vocabBase: string;
+	vocabFull: string;
+	vocabDef: string;
+	image?: string;
+	vocabAudioUrl?: string;
+	sentenceAudioUrl?: string;
+	defaultImageUrl?: string | null;
+	defaultVocabAudioUrl?: string | null;
+	defaultSentenceAudioUrl?: string | null;
+	hasCustomImage?: boolean;
+	hasCustomVocabAudio?: boolean;
+	hasCustomSentenceAudio?: boolean;
+	imageHidden?: boolean;
+	vocabAudioHidden?: boolean;
+	sentenceAudioHidden?: boolean;
+	// Additional fields for Supabase tracking
+	source?: "foundation" | "vocabulary";
+	sourceType?: "foundation" | "collected" | "sent" | "alphabet";
+	remoteId?: string;
+	vocabularyCardId?: string;
+	foundationCardId?: string;
+	sourceVideoId?: string | null;
+	sourceVideoIsShort?: boolean | null;
+	sourceCueId?: string | null;
+	sourceWordIndex?: number | null;
+	sourceWordStartSeconds?: number | null;
+	sourceWordEndSeconds?: number | null;
+	sourceLinkUrl?: string | null;
+	nextReviewAt?: string | null;
+	status?: string;
+}
+
+// ============================================================================
+// CONSTANTS
+// ============================================================================
+
+/**
+ * Maps ReviewType to Supabase RPC scope parameter values.
+ * Note: Alphabet deck has its own dedicated mini-deck UX, not FSRS reviews.
+ */
+export const SCOPE_MAP: Record<ReviewType, ReviewScope> = {
+	foundation: "foundation",
+	collected: "personal",
+	sent: "personal_sent",
+};
+
+// ============================================================================
+// UTILITIES
+// ============================================================================
+
+/**
+ * Strips Arabic diacritics (harakat) from input string.
+ */
+export function stripHarakat(input: string | null | undefined): string {
+	return (input ?? "")
+		.replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED]/g, "")
+		.replace(/ـ/g, "");
+}
+
+const normalizeFocusWord = (value: string | null | undefined): string =>
+	stripHarakat((value ?? "").replace(/<[^>]*>/g, ""))
+		.replace(/\s+/g, " ")
+		.trim();
+
+const FOUNDATION_FOCUS_BY_WORD = new Map<string, number>();
+foundation2kDeck.forEach((card) => {
+	const key = normalizeFocusWord(card.wordAr);
+	if (!key || FOUNDATION_FOCUS_BY_WORD.has(key)) {
+		return;
+	}
+	const focusRank = Number.isFinite(card.focus)
+		? card.focus
+		: card.frequencyRank;
+	FOUNDATION_FOCUS_BY_WORD.set(key, focusRank);
+});
+
+const coerceFocusValue = (value: unknown): string | undefined => {
+	if (typeof value === "number" && Number.isFinite(value)) {
+		return String(value);
+	}
+	if (typeof value === "string") {
+		const trimmed = value.trim();
+		return trimmed.length > 0 ? trimmed : undefined;
+	}
+	return undefined;
+};
+
+const resolveFocusValue = (
+	record: GetDueCardsV2Row,
+	baseWord: string | null | undefined,
+	isFoundation: boolean,
+): string | undefined => {
+	const focusCandidate = coerceFocusValue(
+		(record as { focus?: unknown }).focus ??
+			(record as { frequency_rank?: unknown }).frequency_rank ??
+			(record as { frequencyRank?: unknown }).frequencyRank,
+	);
+	if (focusCandidate) {
+		return focusCandidate;
+	}
+
+	if (!isFoundation) {
+		return undefined;
+	}
+
+	const key = normalizeFocusWord(baseWord);
+	const focusFromDeck = key ? FOUNDATION_FOCUS_BY_WORD.get(key) : undefined;
+	return focusFromDeck != null ? String(focusFromDeck) : undefined;
+};
+
+const readOptionalNumber = (value: unknown): number | null => {
+	if (typeof value === "number" && Number.isFinite(value)) {
+		return value;
+	}
+
+	return null;
+};
+
+/**
+ * Transforms a Supabase DueCardRecord to VocabCard format.
+ */
+export function supabaseCardToVocabCard(
+	record: DueCardRecord,
+	index: number,
+): VocabCard {
+	const readOptionalString = (value: unknown): string | undefined => {
+		if (typeof value !== "string") {
+			return undefined;
+		}
+
+		const trimmed = value.trim();
+		return trimmed.length > 0 ? trimmed : undefined;
+	};
+
+	const readOptionalBoolean = (value: unknown): boolean | undefined => {
+		if (typeof value !== "boolean") {
+			return undefined;
+		}
+
+		return value;
+	};
+
+	const vocabularyCardId = readOptionalString(record.vocabulary_card_id);
+	const foundationCardId = readOptionalString(record.foundation_card_id);
+	const id = vocabularyCardId ?? foundationCardId ?? `due-${index}`;
+	const sourceRaw = readOptionalString(record.source)?.toLowerCase();
+	const normalizedSource: "foundation" | "vocabulary" | undefined =
+		sourceRaw === "foundation"
+			? "foundation"
+			: sourceRaw === "vocabulary"
+				? "vocabulary"
+				: undefined;
+	const sourceTypeRaw = (record as { source_type?: unknown }).source_type;
+	const normalizedSourceTypeRaw =
+		typeof sourceTypeRaw === "string" ? sourceTypeRaw.trim().toLowerCase() : "";
+	const hasFoundationCardId = (foundationCardId ?? "").length > 0;
+	const isFoundationMediaCard =
+		normalizedSource === "foundation" ||
+		hasFoundationCardId ||
+		normalizedSourceTypeRaw === "foundation";
+	const effectiveSource: "foundation" | "vocabulary" | undefined =
+		normalizedSource === "foundation" || hasFoundationCardId
+			? "foundation"
+			: normalizedSource;
+	const baseArabic = repairMojibake(
+		record.word_ar ?? record.example_sentence_ar ?? "",
+	);
+	const rawSentence = repairMojibake(record.example_sentence_ar ?? baseArabic);
+	const sentenceWithFocus =
+		!rawSentence || rawSentence.includes("<b>") || !baseArabic
+			? rawSentence
+			: rawSentence.replace(baseArabic, `<b>${baseArabic}</b>`);
+	const sentenceAr = sentenceWithFocus || baseArabic;
+	const sentenceFr = repairMojibake(
+		record.example_sentence_fr ?? record.word_fr ?? "",
+	);
+	const categoryLabel = repairMojibake(record.category ?? "").trim();
+	const normalizedCategory = categoryLabel.toLowerCase();
+	const sourceType: "foundation" | "collected" | "sent" | "alphabet" =
+		isFoundationMediaCard
+			? "foundation"
+			: normalizedSourceTypeRaw === "sent"
+				? "sent"
+				: normalizedSourceTypeRaw === "alphabet" ||
+						normalizedCategory === "alphabet_arabe"
+					? "alphabet"
+					: "collected";
+	const foundationMedia = isFoundationMediaCard
+		? resolveFoundationDeckMedia(
+				baseArabic,
+				stripHarakat(baseArabic),
+				sentenceAr,
+			)
+		: {};
+	const vocabAudioUrl =
+		foundationMedia.vocabAudioUrl ?? readOptionalString(record.audio_url);
+	const sentenceAudioUrl =
+		foundationMedia.sentenceAudioUrl ??
+		readOptionalString(
+			(record as { sentence_audio_url?: unknown }).sentence_audio_url,
+		);
+	const imageUrl =
+		foundationMedia.imageUrl ??
+		readOptionalString((record as { image_url?: unknown }).image_url);
+	const defaultImageUrl = readOptionalString(
+		(record as { default_image_url?: unknown }).default_image_url,
+	);
+	const defaultVocabAudioUrl = readOptionalString(
+		(record as { default_audio_url?: unknown }).default_audio_url,
+	);
+	const defaultSentenceAudioUrl = readOptionalString(
+		(record as { default_sentence_audio_url?: unknown })
+			.default_sentence_audio_url,
+	);
+	const hasCustomImage = readOptionalBoolean(
+		(record as { has_custom_image?: unknown }).has_custom_image,
+	);
+	const hasCustomVocabAudio = readOptionalBoolean(
+		(record as { has_custom_vocab_audio?: unknown }).has_custom_vocab_audio,
+	);
+	const hasCustomSentenceAudio = readOptionalBoolean(
+		(record as { has_custom_sentence_audio?: unknown })
+			.has_custom_sentence_audio,
+	);
+	const imageHidden = readOptionalBoolean(
+		(record as { image_hidden?: unknown }).image_hidden,
+	);
+	const vocabAudioHidden = readOptionalBoolean(
+		(record as { vocab_audio_hidden?: unknown }).vocab_audio_hidden,
+	);
+	const sentenceAudioHidden = readOptionalBoolean(
+		(record as { sentence_audio_hidden?: unknown }).sentence_audio_hidden,
+	);
+	const focusTag = isFoundationMediaCard ? "Vocab. Fondation" : "Vocab. Minage";
+	const focusValue = resolveFocusValue(
+		record,
+		record.word_ar ?? baseArabic,
+		isFoundationMediaCard,
+	);
+	const tags = [categoryLabel || undefined, focusTag].filter(
+		Boolean,
+	) as string[];
+	const sourceVideoId = readOptionalString(
+		(record as { source_video_id?: unknown }).source_video_id,
+	);
+	const sourceVideoIsShortRaw = (record as { source_video_is_short?: unknown })
+		.source_video_is_short;
+	const sourceVideoIsShort =
+		typeof sourceVideoIsShortRaw === "boolean" ? sourceVideoIsShortRaw : null;
+	const sourceCueIdValue = (record as { source_cue_id?: unknown })
+		.source_cue_id;
+	const sourceCueId =
+		typeof sourceCueIdValue === "number" && Number.isFinite(sourceCueIdValue)
+			? String(sourceCueIdValue)
+			: readOptionalString(sourceCueIdValue);
+	const sourceWordIndex = readOptionalNumber(
+		(record as { source_word_index?: unknown }).source_word_index,
+	);
+	const sourceWordStartSeconds = readOptionalNumber(
+		(record as { source_word_start_seconds?: unknown })
+			.source_word_start_seconds,
+	);
+	const sourceWordEndSeconds = readOptionalNumber(
+		(record as { source_word_end_seconds?: unknown }).source_word_end_seconds,
+	);
+	const sourceLinkUrl =
+		readOptionalString(
+			(record as { source_link_url?: unknown }).source_link_url,
+		) ??
+		buildCollectedCardSourceLinkPath({
+			sourceVideoId,
+			sourceVideoIsShort,
+			sourceWordStartSeconds,
+		});
+
+	return {
+		id,
+		focus: focusValue,
+		tags: tags.length > 0 ? tags : ["Vocab"],
+		sentBase: stripHarakat(sentenceAr),
+		sentFull: sentenceAr,
+		sentFrench: sentenceFr,
+		vocabBase: stripHarakat(baseArabic),
+		vocabFull: baseArabic,
+		vocabDef: repairMojibake(record.word_fr ?? sentenceFr),
+		image: imageUrl,
+		vocabAudioUrl,
+		sentenceAudioUrl,
+		defaultImageUrl: defaultImageUrl ?? null,
+		defaultVocabAudioUrl: defaultVocabAudioUrl ?? null,
+		defaultSentenceAudioUrl: defaultSentenceAudioUrl ?? null,
+		hasCustomImage,
+		hasCustomVocabAudio,
+		hasCustomSentenceAudio,
+		imageHidden,
+		vocabAudioHidden,
+		sentenceAudioHidden,
+		source: effectiveSource,
+		sourceType,
+		remoteId: id,
+		vocabularyCardId,
+		foundationCardId,
+		sourceVideoId,
+		sourceVideoIsShort,
+		sourceCueId,
+		sourceWordIndex,
+		sourceWordStartSeconds,
+		sourceWordEndSeconds,
+		sourceLinkUrl,
+		nextReviewAt: record.next_review_at,
+		status: record.status ?? undefined,
+	};
+}
+
+// ============================================================================
+// SUPABASE CLIENT
+// ============================================================================
+
+type RuntimeSupabaseConfig = {
+	SUPABASE_URL?: string;
+	SUPABASE_PUBLISHABLE_KEY?: string;
+	DECK_PERSO_REAL_MODE_ENABLED?: boolean;
+	PROGRESSION_REAL_MODE_ENABLED?: boolean;
+	DECK_PERSO_FORCE_MODE?: "preview" | "real" | null;
+	PROGRESSION_FORCE_MODE?: "preview" | "real" | null;
+	DECK_PERSO_ROLLBACK_TO_PREVIEW?: boolean;
+	PROGRESSION_ROLLBACK_TO_PREVIEW?: boolean;
+};
+
+type WindowWithSupabaseConfig = Window & {
+	__SUPABASE_CONFIG__?: RuntimeSupabaseConfig;
+};
+
+let cachedSupabaseLoose: SupabaseClient<Database> | null = null;
+
+/**
+ * Returns a cached Supabase client.
+ * Supports runtime config from window.__SUPABASE_CONFIG__.
+ */
+export function getSupabaseLoose(): SupabaseClient<Database> | null {
+	if (cachedSupabaseLoose) return cachedSupabaseLoose;
+	if (typeof window === "undefined") return null;
+
+	const runtimeConfig = (window as WindowWithSupabaseConfig)
+		.__SUPABASE_CONFIG__;
+
+	const SUPABASE_URL =
+		runtimeConfig?.SUPABASE_URL ?? import.meta.env.VITE_SUPABASE_URL;
+	const SUPABASE_PUBLISHABLE_KEY =
+		runtimeConfig?.SUPABASE_PUBLISHABLE_KEY ??
+		import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+	if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+		return null;
+	}
+
+	cachedSupabaseLoose = createClient<Database>(
+		SUPABASE_URL,
+		SUPABASE_PUBLISHABLE_KEY,
+		{
+			auth: {
+				storage: typeof localStorage !== "undefined" ? localStorage : undefined,
+				persistSession: typeof localStorage !== "undefined",
+				autoRefreshToken: true,
+			},
+		},
+	);
+
+	return cachedSupabaseLoose;
+}

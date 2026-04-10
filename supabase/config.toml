@@ -1,0 +1,223 @@
+project_id = "ewpzgzbettvxqcpejkrc"
+
+[functions.import-personal-youtube-video]
+verify_jwt = false
+
+[functions.delete-personal-youtube-video]
+verify_jwt = false
+
+# Local ports are pinned outside common Windows excluded 5432x ranges.
+[api]
+port = 55431
+
+[db]
+port = 55432
+shadow_port = 55430
+
+[studio]
+port = 55433
+
+[inbucket]
+port = 55434
+smtp_port = 55435
+pop3_port = 55436
+
+[analytics]
+port = 55437
+vector_port = 55438
+
+[auth]
+site_url = "https://www.arabeimmersion.fr"
+additional_redirect_urls = [
+  "https://arabeimmersion.fr/auth/callback",
+  "https://www.arabeimmersion.fr/auth/callback",
+  "https://arabeimmersion.pages.dev/auth/callback",
+  "https://*.arabeimmersion.pages.dev/auth/callback",
+  "http://localhost:3000/auth/callback",
+  "http://127.0.0.1:3000/auth/callback"
+]
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[auth.email]
+enable_confirmations = true
+max_frequency = "1m0s"
+otp_length = 8
+
+# =============================================================================
+# SECURITY: JWT Verification Configuration
+# Updated: 2026-02-24 - T11 matrix normalization
+# 
+# verify_jwt = true  = Gateway JWT required (anon/user/service JWT accepted)
+# verify_jwt = false = Gateway JWT bypassed (webhook/internal only, with in-code secret/signature checks)
+# =============================================================================
+
+# Public/User Functions - keep gateway JWT verification enabled
+[functions.youtube-playlist]
+verify_jwt = true
+
+[functions.preview-youtube-recommendations]
+verify_jwt = false
+
+[functions.deck-download]
+verify_jwt = true
+
+[functions.send-deck-email]
+verify_jwt = true
+
+# Stripe webhook ingress only - signature is verified in-code via stripe-signature + STRIPE_WEBHOOK_SECRET
+[functions.stripe-webhook]
+verify_jwt = false
+
+# Payment Functions - Require authentication
+[functions.create-checkout]
+verify_jwt = true
+
+[functions.check-subscription]
+verify_jwt = true
+
+[functions.customer-portal]
+verify_jwt = true
+
+[functions.cancel-subscription]
+verify_jwt = true
+
+# Admin Functions - Require authentication (server must verify admin role)
+[functions.admin-create-suggestion]
+verify_jwt = false
+
+[functions.admin-update-suggestion]
+verify_jwt = false
+
+[functions.create-admin-user]
+verify_jwt = true
+
+[functions.admin-create-user]
+verify_jwt = false
+
+[functions.admin-promote-suggestion]
+verify_jwt = false
+
+[functions.admin-2fa-send]
+verify_jwt = false
+
+[functions.admin-2fa-verify]
+verify_jwt = false
+
+[functions.get-analytics-data]
+verify_jwt = false
+
+[functions.get-facebook-pixel-config]
+verify_jwt = true
+
+[functions.admin-delete-user]
+verify_jwt = false
+
+[functions.admin-toggle-user-admin]
+verify_jwt = false
+
+[functions.admin-video-manager]
+verify_jwt = false
+
+[functions.admin-delete-suggestion]
+verify_jwt = false
+
+[functions.admin-update-user-role]
+verify_jwt = false
+
+[functions.generate-vocab-cards]
+verify_jwt = true
+
+[functions.user-activity]
+verify_jwt = true
+
+[functions.user-stats]
+verify_jwt = true
+
+[functions.scheduler-due-v1]
+verify_jwt = false
+
+[functions.scheduler-review-v1]
+verify_jwt = false
+
+[functions.review-reminder-web-push-v1]
+verify_jwt = true
+
+[functions.scheduler-optimize-enqueue-v1]
+verify_jwt = true
+
+# Internal scheduler runner ingress only - shared secret is verified in-code via Authorization/apikey
+[functions.scheduler-optimize-runner-v1]
+verify_jwt = false
+
+# Review reminder config is user-authenticated; dispatch/calendar use token/secret access.
+[functions.review-reminders-config-v1]
+verify_jwt = false
+
+[functions.review-reminders-calendar-v1]
+verify_jwt = false
+
+[functions.review-reminder-calendar-v1]
+verify_jwt = false
+
+[functions.review-reminders-dispatch-v1]
+verify_jwt = false
+
+[functions.review-reminder-dispatch-v1]
+verify_jwt = false
+
+[functions.suggestion-screenshot-retention]
+verify_jwt = true
+
+# User Functions - Require authentication
+[functions.send-suggestion-email]
+verify_jwt = true
+
+[functions.send-feedback-email]
+verify_jwt = false
+
+[functions.submit-data]
+verify_jwt = false
+
+[functions.collected-card-media]
+verify_jwt = false
+
+[functions.vocab-grid-stats]
+verify_jwt = true
+
+[functions.import-manual-words-v1]
+verify_jwt = true
+
+# GDPR Functions - Require authentication
+[functions.gdpr-export]
+verify_jwt = true
+
+[functions.gdpr-delete]
+verify_jwt = true
+
+[functions.gdpr-cleanup]
+verify_jwt = true
+
+# Public pre-auth + onboarding/public analytics functions
+# Keep verify_jwt disabled to avoid treating publishable keys as JWTs.
+[functions.signup-otp-send]
+verify_jwt = false
+
+[functions.signup-otp-verify]
+verify_jwt = false
+
+[functions.signup-complete]
+verify_jwt = false
+
+[functions.password-reset-request]
+verify_jwt = false
+
+# Public keyboard helper used pre-auth from website pages.
+[functions.arabic-keyboard-actions-v1]
+verify_jwt = false
+
+# Backfill/Migration - admin-auth flow
+[functions.backfill-deck-download-email-hash]
+verify_jwt = true

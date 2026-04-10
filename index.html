@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr" data-boot-shell>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2000togo | App V2</title>
+    <meta
+      name="description"
+      content="Extraction standalone de l'experience app-v2 et de son backend associe."
+    />
+    <style>
+      html,
+      body,
+      #root {
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: #f7f6f2;
+        color: #000000;
+        font-family: Arial, sans-serif;
+      }
+
+      #root[data-booting="true"] {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        font-size: 13.3333px;
+      }
+    </style>
+    <script type="module">
+      window.__SUPABASE_CONFIG__ = undefined;
+
+      void (async () => {
+        try {
+          const response = await fetch("/runtime-config.json", { cache: "no-store" });
+          if (response.ok) {
+            const config = await response.json();
+            if (config && typeof config === "object") {
+              window.__SUPABASE_CONFIG__ = config;
+            }
+          }
+        } catch {
+          // Fallback to Vite env vars if runtime-config.json is unavailable.
+        }
+
+        await import("/src/main.tsx");
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root" data-booting="true">chargement...</div>
+  </body>
+</html>
