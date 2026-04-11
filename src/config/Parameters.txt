@@ -1,0 +1,52 @@
+# Anki Parameters
+
+## Options Group
+- **Group:** `Sentence cards`
+- **Scope warning:** Changes affect multiple decks. To change only the current deck, add a new options group first.
+
+## Tab: New Cards
+- **Steps (in minutes):** `1 10 360`
+- **Order:** `Show new cards in order added`
+- **New cards/day:** `0`
+- **Parent limit:** `99`
+- **Graduating interval:** `2 days`
+- **Easy interval:** `4 days`
+- **Starting ease:** `131%`
+- **Bury related new cards until the next day:** `No`
+
+## Tab: New Cards (New UI)
+- **Learning steps:** `2m 14m`
+- **Graduating interval:** `1`
+- **Easy interval:** `3`
+- **Insertion order:** `Sequential (oldest cards first)`
+
+## Tab: Reviews
+- **Options group:** `Sentence cards`
+- **Maximum reviews/day:** `9999`
+- **Parent limit:** `9999`
+- **Easy bonus:** `100%`
+- **Interval modifier:** `192%`
+- **Maximum interval:** `36500 days`
+- **Hard interval:** `120%`
+- **Bury related reviews until the next day:** `No`
+
+## Tab: Lapses
+- **Options group:** `Sentence cards`
+- **Steps (in minutes):** `15 720`
+- **New interval:** `55%`
+- **Minimum interval:** `2 days`
+- **Leech threshold:** `6 lapses`
+- **Leech action:** `Suspend Card`
+
+## Section: Lapses (New UI)
+- **Relearning steps:** `16m 1h`
+- **Minimum interval:** `1`
+- **Leech threshold:** `6`
+- **Leech action:** `Suspend Card`
+
+## Section: Display Order (New UI)
+- **New card gather order:** `Deck`
+- **New card sort order:** `Card type, then order gathered`
+- **New/review order:** `Show before reviews`
+- **Interday learning/review order:** `Mix with reviews`
+- **Review sort order:** `Descending retrievability`

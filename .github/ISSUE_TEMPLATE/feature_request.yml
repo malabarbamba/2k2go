@@ -1,0 +1,44 @@
+name: Feature request
+description: Suggest an improvement
+title: "feat: "
+labels:
+  - enhancement
+body:
+  - type: input
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What user problem does this solve?
+      placeholder: As a user, I need...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the expected behavior and UX
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What did you evaluate and reject?
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and risks
+      description: Mention breaking changes, migration, or rollout impact
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-flight checks
+      options:
+        - label: I searched existing issues and discussions.
+          required: true
+        - label: I understand maintainers may reject features that do not fit project scope.
+          required: true
