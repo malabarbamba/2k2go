@@ -2,6 +2,12 @@
 
 Open-source vocab cards for the 2,000 most frequent Arabic words, in order, with spaced repetition and real-content exposure.
 
+## open-source scope
+
+- This public repository is open source for the frontend and the foundation deck.
+- Backend implementation (database schema, migrations, edge functions, and operations) is proprietary for now.
+- We will make backend components open source if the community demands it.
+
 ## what it does
 
 - 2,000-word deck based on frequency data for Modern Standard Arabic

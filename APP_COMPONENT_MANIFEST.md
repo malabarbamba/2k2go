@@ -63,29 +63,29 @@ why: runtime configuration for Supabase
 who: auth and service layer
 type: config
 
-`supabase/functions/preview-youtube-recommendations/`
+`preview-youtube-recommendations` (private backend)
 why: immersion recommendation backend used by app
 who: `src/features/preview-new-concept/services.ts`
 type: backend
 
-`supabase/functions/review-reminders-config-v1/`, `supabase/functions/review-reminder-web-push-v1/`
+`review-reminders-config-v1`, `review-reminder-web-push-v1` (private backend)
 why: reminder settings and web-push endpoints
 who: `src/services/reviewRemindersService.ts`
 type: backend
 
-`supabase/functions/scheduler-due-v1/`, `supabase/functions/scheduler-review-v1/`
+`scheduler-due-v1`, `scheduler-review-v1` (private backend)
 why: runtime scheduler path used by current deck service
 who: `src/services/deckPersoService.ts`
 type: backend
 
-`supabase/functions/collected-card-media/`
+`collected-card-media` (private backend)
 why: custom media overlay support used by current card/session flow
 who: `src/lib/collectedCardMedia.ts`, `src/services/deckPersoService.ts`
 type: backend
 
-`supabase/migrations/`
-why: schema and RPC history required by the frontend/backend surface
-who: Supabase project bootstrap and audit trail
+`database schema, migrations, and RPC definitions` (private backend)
+why: schema and RPC contracts required by the frontend/backend surface
+who: private Supabase backend repository and live infrastructure
 type: backend
 
 ## Shell and Tooling

@@ -4,7 +4,8 @@
 
 2k2go is an arabic language learning website based on the fact : 2000 words = 80% comprehension, documented on more than 9 languages, including Arabic (English, French, Russian, Japanese, Greek, Spanish, Italian...).
 
-This repo contains the `/app` experience and the backend code paths it currently depends on.
+This repo contains the public frontend experience and foundation deck assets.
+The backend implementation is maintained separately in a private repository and live infrastructure.
 
 ## Frontend Shell
 
@@ -23,16 +24,18 @@ This repo contains the `/app` experience and the backend code paths it currently
 
 ## Backend Surface
 
-- `supabase/functions/preview-youtube-recommendations/`
-- `supabase/functions/review-reminders-config-v1/`
-- `supabase/functions/review-reminder-web-push-v1/`
-- `supabase/functions/scheduler-due-v1/`
-- `supabase/functions/scheduler-review-v1/`
-- `supabase/functions/collected-card-media/`
+- `preview-youtube-recommendations`
+- `review-reminders-config-v1`
+- `review-reminder-web-push-v1`
+- `scheduler-due-v1`
+- `scheduler-review-v1`
+- `collected-card-media`
+
+These backend services are consumed by the public frontend but their source code is not published in this repository.
 
 ## Database Scope
 
-The migrations are curated for the current preview app feature set:
+The frontend depends on a database surface that supports:
 
 - deck/session/search/review RPCs
 - auth-linked daily activity and progression RPCs
