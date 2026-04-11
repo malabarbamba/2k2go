@@ -45,7 +45,7 @@
 		"eslint": "^9.39.4",
 		"eslint-plugin-react-hooks": "^7.0.1",
 		"eslint-plugin-react-refresh": "^0.4.26",
-		"globals": "^15.15.0",
+		"globals": "^17.4.0",
 		"jsdom": "^25.0.1",
 		"opencode-ai": "^1.4.3",
 		"tailwindcss": "^4.2.2",
