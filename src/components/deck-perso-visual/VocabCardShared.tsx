@@ -40,9 +40,9 @@ import { buildCollectedCardSourceLinkPath } from "@/data/immersionVideoRouting";
 import type { VocabCard as AnkiCard } from "@/data/vocabCards";
 import { readActiveUserId } from "@/lib/authPersistence";
 import {
-	resolveFoundationDeckMedia,
-	resolveFoundationDeckMediaByFrequencyRank,
+	resolvePreferredFoundationMedia,
 } from "@/lib/foundationDeckMedia";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 import {
 	deleteLocalFoundationCardMediaSlot,
 	type LocalFoundationCardMediaOverlayRecord,
@@ -296,7 +296,7 @@ const SourceChip = ({
 	);
 };
 
-const FocusBadge = ({ card }: { card: AnkiCard }) => {
+export const FocusBadge = ({ card }: { card: AnkiCard }) => {
 	const focusLabel = resolveCardFocusLabel(card);
 	if (!focusLabel) {
 		return null;
@@ -311,7 +311,7 @@ const FocusBadge = ({ card }: { card: AnkiCard }) => {
 				fontFamily: "Arial, sans-serif",
 				fontSize: "13.3333px",
 				lineHeight: 1,
-				color: "rgba(0,0,0,0.72)",
+				color: "rgba(0,0,0,0.24)",
 			}}
 		>
 			{focusLabel}
@@ -742,33 +742,32 @@ const buildCardMediaUrls = (
 	const numericFocus =
 		typeof card.focus === "string" ? Number.parseInt(card.focus, 10) : null;
 	const foundationMedia = isFoundationCard
-		? {
-				...resolveFoundationDeckMediaByFrequencyRank(
-					Number.isFinite(numericFocus) ? numericFocus : null,
-				),
-				...resolveFoundationDeckMedia(
-					card.vocabFull,
-					card.vocabBase,
-					card.sentFull,
-				),
-		  }
+		? resolvePreferredFoundationMedia({
+				frequencyRank: Number.isFinite(numericFocus) ? numericFocus : null,
+				vocabFull: card.vocabFull,
+				vocabBase: card.vocabBase,
+				sentence: card.sentFull,
+		  })
 		: {};
 
 	return {
-		imageUrl:
+		imageUrl: resolveMediaUrl(
 			card.image ?? card.defaultImageUrl ?? foundationMedia.imageUrl ?? null,
-		vocabAudioUrl:
+		),
+		vocabAudioUrl: resolveMediaUrl(
 			card.vocabAudioUrl ??
-			card.defaultVocabAudioUrl ??
-			foundationMedia.vocabAudioUrl ??
-			audioUrls[`vocab-${card.id}`] ??
-			null,
-		sentenceAudioUrl:
+				card.defaultVocabAudioUrl ??
+				foundationMedia.vocabAudioUrl ??
+				audioUrls[`vocab-${card.id}`] ??
+				null,
+		),
+		sentenceAudioUrl: resolveMediaUrl(
 			card.sentenceAudioUrl ??
-			card.defaultSentenceAudioUrl ??
-			foundationMedia.sentenceAudioUrl ??
-			audioUrls[`sentence-${card.id}`] ??
-			null,
+				card.defaultSentenceAudioUrl ??
+				foundationMedia.sentenceAudioUrl ??
+				audioUrls[`sentence-${card.id}`] ??
+				null,
+		),
 	};
 };
 
@@ -3263,6 +3262,7 @@ export const ReviewMainCardSurface = ({
 					shortsExtraControl={shortsExtraControl}
 					hideShortsUtilityControls={hideShortsUtilityControls}
 				/>
+				<FocusBadge card={card} />
 			</div>
 		);
 	}
@@ -3307,6 +3307,7 @@ export const ReviewMainCardSurface = ({
 					shortsExtraControl={shortsExtraControl}
 					hideShortsUtilityControls={hideShortsUtilityControls}
 				/>
+				<FocusBadge card={card} />
 			</div>
 
 			<div
@@ -3354,7 +3355,6 @@ export const ReviewMainCardSurface = ({
 					audioMuted={audioMuted}
 				/>
 			</div>
-			<FocusBadge card={card} />
 		</div>
 	);
 };

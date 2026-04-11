@@ -1088,19 +1088,6 @@ serve(async (req) => {
 		);
 	}
 
-	const computeBaseUrl = resolveComputeBaseUrl(requestBody.compute_base_url);
-	if (!computeBaseUrl) {
-		return jsonResponse(
-			req,
-			{
-				error: "Scheduler compute endpoint is not configured",
-				code: "MISSING_SCHEDULER_COMPUTE_URL",
-			},
-			500,
-			CORS_OPTIONS,
-		);
-	}
-
 	const supabaseAdmin = createServiceClient();
 	const auth = await resolveRequestAuth(req, supabaseAdmin);
 	if (!auth.isAuthenticated || !auth.token) {
@@ -1201,6 +1188,14 @@ serve(async (req) => {
 			blocker_reasons: dueAdapterContractRequestResult.blocker_codes,
 			shadow_reason: "DUE_PROJECTION_MISSING_INPUTS",
 		});
+	}
+
+	const computeBaseUrl = resolveComputeBaseUrl(requestBody.compute_base_url);
+	if (!computeBaseUrl) {
+		logDueAdapterFallback("MISSING_SCHEDULER_COMPUTE_URL", {
+			projection_blockers: dueAdapterContractRequest.projection.blocker_codes,
+		});
+		return jsonResponse(req, legacyDueV1Envelope, 200, CORS_OPTIONS);
 	}
 
 	const dueComputeRequest = mapDueAdapterContractRequestToComputeRequest(

@@ -475,7 +475,7 @@ const GUEST_AUDIO_ACTIVITY_PROMPT =
 const IS_VITEST_RUNTIME = Boolean(
 	(import.meta as ImportMeta & { vitest?: unknown }).vitest,
 );
-const SESSION_DUE_CARDS_CACHE_VERSION = "media-v2";
+const SESSION_DUE_CARDS_CACHE_VERSION = "media-focus-v6";
 
 type SessionDueCardsCacheEntry = {
 	cards: VocabCard[];
@@ -3243,9 +3243,9 @@ export const CardsReview = ({
 												hideShortsUtilityControls={isSessionLayout}
 												hideShortsActionZone={isSessionLayout}
 												muteFlipAudio={isSessionLayout && isFlipAudioMuted}
-												audioMuted={isSessionLayout && isFlipAudioMuted}
-											/>
-										</div>
+													audioMuted={isSessionLayout && isFlipAudioMuted}
+												/>
+											</div>
 									)}
 
 									{isDragActive && (
@@ -3261,9 +3261,10 @@ export const CardsReview = ({
 														: "transform 0.2s ease",
 											}}
 										>
-											{cardData && (
-												<ReviewMainCardSurface
-													card={cardData}
+									{cardData && (
+										<>
+											<ReviewMainCardSurface
+												card={cardData}
 													{...reviewSourceChipProps}
 													isFlipped={cardFlipped}
 													showVowels={showVowels}
@@ -3288,10 +3289,11 @@ export const CardsReview = ({
 													hideShortsUtilityControls={isSessionLayout}
 													hideShortsActionZone={isSessionLayout}
 													muteFlipAudio={isSessionLayout && isFlipAudioMuted}
-													audioMuted={isSessionLayout && isFlipAudioMuted}
-												/>
-											)}
-										</div>
+												audioMuted={isSessionLayout && isFlipAudioMuted}
+											/>
+										</>
+									)}
+									</div>
 									)}
 								</>
 							)}

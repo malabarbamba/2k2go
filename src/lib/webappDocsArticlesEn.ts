@@ -493,74 +493,228 @@ You listen, notice, extract, review, then meet the same material again in new co
 	"/start/one-target-sentence": {
 		slug: "/start/one-target-sentence",
 		title: "The One-Target Sentence",
-		subtitle: "One word per card, with context",
+		subtitle: "One unknown word per card, inside a real sentence",
 		content: `# The One-Target Sentence
 
-**Why do my flashcards stop working after a few weeks?**
+**Why do standard flashcards stop working after a few weeks?**
 
-You're probably testing too much at once, or testing words in isolation. One sentence, one target word. That's the format that actually builds durable recognition. Here's why.
-
----
-
-## The problem with standard flashcards
-
-Most people learn vocabulary by memorizing word-to-translation pairs. That works for a test, then falls apart in real use.
-
-Words without context have no anchors. Your brain stores them in a vacuum. Isolated words don't prepare you for actual audio or text, where words show up inside sentences. And testing too many things at once (whole sentence, meaning, grammar, pronunciation) makes each review cognitively exhausting.
-
-The result: reviews pile up, become a chore, and you stop doing them.
+Because the card format is wrong. The format you use matters more than the deck, more than the app, more than the hours you put in. One sentence, one target word, with the whole sensory package around it. That's not a detail. It's the entire game.
 
 ---
 
-## The one-target format
+## The format
 
-Instead of testing an isolated word or an entire sentence, you highlight **one target word** inside a real, authentic sentence. Everything else in the sentence you ideally already know (or can tolerate not knowing yet).
+A one-target sentence card contains:
 
-| Element | Front of card | Back of card |
-|---|---|---|
-| Sentence | Real Arabic sentence with target word highlighted | Same sentence |
-| Your job | Recognize the highlighted word immediately | See definition or translation of target word |
-| Grading | Only the target word matters | Optional: image, native audio |
+- one real Arabic sentence
+- one **target word** inside it, the word being learned on this card
+- everything else in the sentence already known
 
-The grading rule is binary. **Pass** = instant recognition. **Fail** = any hesitation, any slow recall, any uncertainty.
+The card tests one thing: can you recall the target word the moment you see the sentence. If yes, pass. If no, fail. The rest of the sentence is not being tested.
 
----
-
-## Why context changes everything
-
-Your brain doesn't memorize words in lists. It memorizes words in situations. The sentence provides the situation. When you later hear that word in real Arabic content, the surrounding context activates the memory, not just the word-to-translation mapping.
-
-This is why cards made from content you actually consumed perform better than pre-made decks. You remember not just the word but the moment you heard it.
+There is a rule that comes with this format: do not fail a card because you could not recall a word that is not the target word. If the target came back, the card is a pass. The other words will get their own cards later.
 
 ---
 
-## How spaced repetition schedules your reviews
+## Why one target and not more
 
-The underlying system that schedules your cards is called **FSRS**. You don't need to understand it deeply, but the core idea is worth knowing.
+Having to recall several unknown words at once lowers retention. When a card has two or three unknowns, retrieval gets tangled. You fail the card, you review it, you fail it again. The memory never forms cleanly because the brain is trying to rebuild too much at the same time.
 
-Every card has three invisible properties:
-- **Stability**: how anchored the word is. A word you've reviewed many times over months is very stable.
-- **Difficulty**: how hard this particular word is for *you* specifically.
-- **Recall probability**: a real-time estimate of whether you'd remember it right now.
+Splitting the same material into separate one-target cards is counterintuitively faster. Each retrieval is clean. The memory forms on one word at a time. The scheduler can do its job.
 
-FSRS uses these to predict exactly when each card is about to slip below your retention threshold, and schedules a review right then. Easy cards stretch out to weeks or months between reviews. Hard cards come back more often. The system calibrates itself to your memory automatically.
+The AJATT community calls the underlying strategy *picking low-hanging fruit*. Learn what is one lookup away from being learnable right now. Leave the rest for later, when it will also be one lookup away.
 
-The result: 9 minutes of reviews per day covers far more vocabulary than you'd expect, because most cards are only shown when they actually need reinforcement.
+The system self-sorts. A sentence that is too hard today becomes a one-target sentence later, after you have learned one of its words elsewhere. Nothing has to be forced.
 
 ---
 
-## What not to do
+## The 2k2go card format
 
-**Don't test full sentences.** If you have to recall a whole sentence to know if you passed, you're grading the wrong thing.
+A 2k2go card is not just a sentence and a translation. Each card contains five elements built around one target word:
 
-**Don't add too many new cards at once.** Adding 20+ new cards per day creates a review debt that compounds and becomes unmanageable within a week.
+- **Target word**: highlighted in the sentence, the one word being learned on this card
+- **Target word audio**: native-voice recording of the target word alone
+- **Sentence audio**: native-voice recording of the full sentence
+- **Arabic script**: the sentence written in Arabic script
+- **Image**: an image that matches the meaning of the sentence
 
-**Don't translate word-by-word during review.** If you're translating the whole sentence to find the target word, you're skipping the recognition test.
+<figure style="text-align: center;">
+<img src="/images/docs/one-target-sentence-card.png" alt="A one-target sentence card showing an Arabic sentence with the target word highlighted, the target word alone with audio, its translation, and a matching image" style="display: block; margin: 0 auto; outline: none; border: none;" />
+<figcaption><em>Figure: One-target sentence card layout.</em></figcaption>
+</figure>
+
+All five elements point at the same target word during the review. The eye sees the script and the image. The ear hears the word and the sentence. Attention is concentrated on one meaning at a time.
+
+This is different from a printed vocabulary list, which gives one written form and one translation, decoded in silence. The one-target sentence card gives multiple sensory inputs tied to a single meaning, reviewed on a schedule that matches how memory consolidates. Sight, sound, and meaning arrive together, which is the condition memories need to anchor in a target language.
+
+---
+
+## The grading rule
+
+- **Pass**: the target word came back instantly. No pause, no translation step, no uncertainty.
+- **Fail**: anything else.
+
+The scheduler (FSRS) can only work if grading is honest. A generous pass today becomes a dead review next week.
+
+---
+
+## How FSRS uses the grades
+
+FSRS tracks three values for every card: stability (how anchored the memory is), difficulty (how hard the word is for you), and recall probability (its current estimate of whether you would remember it right now).
+
+It uses these to schedule the next review at the moment the card is about to slip below your target retention. Easy cards stretch out to weeks or months between reviews. Hard cards come back more often.
+
+The result: 9 minutes of daily reviews covers more vocabulary than a longer session on a worse schedule, because most cards are only shown when they actually need reinforcement.
+
+---
+
+## Common mistakes
+
+- Adding cards that contain two or more unknown words
+- Failing a card because of a word that is not the target
+- Adding too many new cards per day (new-card load compounds fast)
+- Translating the full sentence in your head during review instead of recognizing the target word
 
 ---
 
 ## Next reading
 
+- [How to Do Your Reviews](/start/reviews)
+- [Reproducing This in Anki](/start/anki-setup)
+- [The Arabic Roadmap](/understand/arabic-roadmap)
+`,
+	},
+
+	"/start/anki-setup": {
+		slug: "/start/anki-setup",
+		title: "Reproducing This in Anki",
+		subtitle: "The settings 2k2go uses, adapted for Anki",
+		content: `# Reproducing This in Anki
+
+**Can I run this method in Anki instead of 2k2go?**
+
+Yes. The parameters below are the ones behind this method, adapted for Anki's SM-2 scheduler (2k2go runs FSRS directly). They work if, and only if, your cards are [one-target sentences](/start/one-target-sentence). The scheduler cannot fix a bad card format. Fix the format first, then apply the settings.
+
+---
+
+## The prerequisite
+
+The most important part of this article is not the numbers below. It is this:
+
+Without one-target sentences, no Anki settings will produce the results you are looking for. The scheduler schedules what you give it. Good cards on good settings work. Bad cards on good settings produce a very precise timer for forgetting.
+
+If your cards are word-to-translation pairs or multi-target sentences, rebuild the card format before touching deck options.
+
+---
+
+## Credit
+
+These parameters come from the **AJATT** community (All Japanese All The Time), founded by Khatzumoto. AJATT is the original source of the immersion-first approach to language learning. Thousands of people have used it to reach fluency in Japanese and other languages. The method behind 2k2go is an adaptation of that work for Arabic learners.
+
+The work belongs to them. We pass it forward here.
+
+---
+
+## The settings
+
+Open Anki and create an options group called **Sentence cards**. Apply the values below. Two versions are listed for each section: the classic UI and the new UI (Anki 23.10+).
+
+### New Cards
+
+**Classic UI (Tab: New Cards)**
+
+| Setting | Value |
+|---|---|
+| Steps (in minutes) | \`1 10 360\` |
+| Order | Show new cards in order added |
+| New cards/day | \`0\` (set per deck as needed) |
+| Parent limit | \`99\` |
+| Graduating interval | \`2\` days |
+| Easy interval | \`4\` days |
+| Starting ease | \`131%\` |
+| Bury related new cards until the next day | No |
+
+**New UI (Tab: New Cards)**
+
+| Setting | Value |
+|---|---|
+| Learning steps | \`2m 14m\` |
+| Graduating interval | \`1\` day |
+| Easy interval | \`3\` days |
+| Insertion order | Sequential (oldest cards first) |
+
+### Reviews
+
+**Classic UI (Tab: Reviews)**
+
+| Setting | Value |
+|---|---|
+| Maximum reviews/day | \`9999\` |
+| Parent limit | \`9999\` |
+| Easy bonus | \`100%\` |
+| Interval modifier | \`192%\` |
+| Maximum interval | \`36500\` days |
+| Hard interval | \`120%\` |
+| Bury related reviews until the next day | No |
+
+The interval modifier at **192%** is the value most people never change. Anki's default is 100%. At 192%, review intervals grow close to twice as fast, which trades a small amount of retention for a large reduction in daily review count. Daily reviews stay short enough to maintain consistently.
+
+### Lapses
+
+**Classic UI (Tab: Lapses)**
+
+| Setting | Value |
+|---|---|
+| Steps (in minutes) | \`15 720\` |
+| New interval | \`55%\` |
+| Minimum interval | \`2\` days |
+| Leech threshold | \`6\` lapses |
+| Leech action | Suspend Card |
+
+**New UI (Section: Lapses)**
+
+| Setting | Value |
+|---|---|
+| Relearning steps | \`16m 1h\` |
+| Minimum interval | \`1\` day |
+| Leech threshold | \`6\` lapses |
+| Leech action | Suspend Card |
+
+A card that fails six times usually has something wrong with it, most often two unknown words hidden inside what was supposed to be a one-target sentence. Suspend it and rebuild it from a cleaner example.
+
+### Display Order
+
+**New UI only (Section: Display Order)**
+
+| Setting | Value |
+|---|---|
+| New card gather order | Deck |
+| New card sort order | Card type, then order gathered |
+| New/review order | Show before reviews |
+| Interday learning/review order | Mix with reviews |
+| Review sort order | Descending retrievability |
+
+*Descending retrievability* means reviews come back in the order of which card is closest to being forgotten. The most fragile memories come up first, while attention is still fresh.
+
+---
+
+## What the cards themselves need to contain
+
+The settings only work on cards built in the one-target sentence format. A minimum viable card has:
+
+- one target word, visibly marked in the sentence (bold, color, highlight)
+- the full Arabic sentence
+- audio of the target word, isolated
+- audio of the full sentence
+- an image matching the meaning of the sentence
+
+Tools for building this pipeline include Yomitan-style browser pop-up dictionaries, mpv with subtitle extraction, and subs2srs for converting video subtitles into batches of sentence cards. Card templates are available in AJATT documentation and can be adapted for Arabic.
+
+---
+
+## Next reading
+
+- [The One-Target Sentence](/start/one-target-sentence)
 - [How to Do Your Reviews](/start/reviews)
 - [The Arabic Roadmap](/understand/arabic-roadmap)
 `,

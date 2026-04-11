@@ -10,9 +10,9 @@ import { foundation2kDeck } from "@/data/foundation2kDeck";
 import { buildCollectedCardSourceLinkPath } from "@/data/immersionVideoRouting";
 import type { Database } from "@/integrations/supabase/types";
 import {
-	resolveFoundationDeckMedia,
-	resolveFoundationDeckMediaByFrequencyRank,
+	resolvePreferredFoundationMedia,
 } from "@/lib/foundationDeckMedia";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 import type { GetDueCardsV2Row } from "@/lib/supabase/rpc";
 import { repairMojibake } from "@/lib/textEncoding";
 
@@ -256,32 +256,31 @@ export function supabaseCardToVocabCard(
 		(record as { frequency_rank?: unknown }).frequency_rank,
 	);
 	const foundationMedia = isFoundationMediaCard
-		? {
-				...resolveFoundationDeckMediaByFrequencyRank(foundationFrequencyRank),
-				...resolveFoundationDeckMedia(
-					baseArabic,
-					stripHarakat(baseArabic),
-					sentenceAr,
-				),
-		  }
+		? resolvePreferredFoundationMedia({
+				frequencyRank: foundationFrequencyRank,
+				vocabFull: baseArabic,
+				vocabBase: stripHarakat(baseArabic),
+				sentence: sentenceAr,
+		  })
 		: {};
 	const vocabAudioUrl =
-		foundationMedia.vocabAudioUrl ?? readOptionalString(record.audio_url);
+		resolveMediaUrl(foundationMedia.vocabAudioUrl) ??
+		resolveMediaUrl(readOptionalString(record.audio_url));
 	const sentenceAudioUrl =
-		foundationMedia.sentenceAudioUrl ??
-		readOptionalString(
+		resolveMediaUrl(foundationMedia.sentenceAudioUrl) ??
+		resolveMediaUrl(
 			(record as { sentence_audio_url?: unknown }).sentence_audio_url,
 		);
 	const imageUrl =
-		foundationMedia.imageUrl ??
-		readOptionalString((record as { image_url?: unknown }).image_url);
-	const defaultImageUrl = readOptionalString(
+		resolveMediaUrl(foundationMedia.imageUrl) ??
+		resolveMediaUrl((record as { image_url?: unknown }).image_url);
+	const defaultImageUrl = resolveMediaUrl(
 		(record as { default_image_url?: unknown }).default_image_url,
 	);
-	const defaultVocabAudioUrl = readOptionalString(
+	const defaultVocabAudioUrl = resolveMediaUrl(
 		(record as { default_audio_url?: unknown }).default_audio_url,
 	);
-	const defaultSentenceAudioUrl = readOptionalString(
+	const defaultSentenceAudioUrl = resolveMediaUrl(
 		(record as { default_sentence_audio_url?: unknown })
 			.default_sentence_audio_url,
 	);

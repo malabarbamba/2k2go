@@ -38,6 +38,12 @@
 - **Leech threshold:** `6 lapses`
 - **Leech action:** `Suspend Card`
 
+## Section: Lapses (New UI)
+- **Relearning steps:** `16m 1h`
+- **Minimum interval:** `1`
+- **Leech threshold:** `6`
+- **Leech action:** `Suspend Card`
+
 ## Section: Display Order (New UI)
 - **New card gather order:** `Deck`
 - **New card sort order:** `Card type, then order gathered`

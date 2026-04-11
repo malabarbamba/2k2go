@@ -15,11 +15,11 @@ import { getWebappDocsArticleBySlug } from "@/lib/webappDocsArticles";
 
 type MarkdownBlock =
 	| { type: "heading"; level: 1 | 2 | 3; text: string; id: string }
-	| { type: "paragraph"; text: string }
-	| { type: "list"; ordered: boolean; items: string[] }
-	| { type: "table"; headers: string[]; rows: string[][] }
-	| { type: "quote"; lines: string[] }
-	| { type: "image"; src: string; alt: string; caption: string | null }
+	| { type: "paragraph"; text: string; id: string }
+	| { type: "list"; ordered: boolean; items: string[]; id: string }
+	| { type: "table"; headers: string[]; rows: string[][]; id: string }
+	| { type: "quote"; lines: string[]; id: string }
+	| { type: "image"; src: string; alt: string; caption: string | null; id: string }
 	| { type: "rule"; id: string };
 
 const APP_DOCS_BASE_PATH = "/app/why-it-works";
@@ -170,6 +170,7 @@ function parseMarkdownBlocks(content: string): MarkdownBlock[] {
 	const blocks: MarkdownBlock[] = [];
 	const headingCounts = new Map<string, number>();
 	let ruleCount = 0;
+	let blockCount = 0;
 	let index = 0;
 
 	const assignHeadingId = (headingText: string): string => {
@@ -177,6 +178,11 @@ function parseMarkdownBlocks(content: string): MarkdownBlock[] {
 		const count = (headingCounts.get(base) ?? 0) + 1;
 		headingCounts.set(base, count);
 		return count === 1 ? base : `${base}-${count}`;
+	};
+
+	const assignBlockId = (prefix: string): string => {
+		blockCount += 1;
+		return `${prefix}-${blockCount}`;
 	};
 
 	while (index < lines.length) {
@@ -227,7 +233,10 @@ function parseMarkdownBlocks(content: string): MarkdownBlock[] {
 
 			const imageBlock = parseImageBlock(figureLines.join("\n"));
 			if (imageBlock) {
-				blocks.push(imageBlock);
+				blocks.push({
+					...imageBlock,
+					id: assignBlockId("image"),
+				});
 			}
 			continue;
 		}
@@ -251,7 +260,12 @@ function parseMarkdownBlocks(content: string): MarkdownBlock[] {
 					.slice(2)
 					.map((tableLine) => splitTableCells(tableLine))
 					.filter((row) => row.length > 0);
-				blocks.push({ type: "table", headers, rows });
+				blocks.push({
+					type: "table",
+					headers,
+					rows,
+					id: assignBlockId("table"),
+				});
 			}
 			continue;
 		}
@@ -270,7 +284,12 @@ function parseMarkdownBlocks(content: string): MarkdownBlock[] {
 				items.push(normalizeText(match[1]));
 				index += 1;
 			}
-			blocks.push({ type: "list", ordered, items: items.filter(Boolean) });
+			blocks.push({
+				type: "list",
+				ordered,
+				items: items.filter(Boolean),
+				id: assignBlockId("list"),
+			});
 			continue;
 		}
 
@@ -284,7 +303,11 @@ function parseMarkdownBlocks(content: string): MarkdownBlock[] {
 				quoteLines.push(normalizeText(candidate.replace(/^>\s?/, "")));
 				index += 1;
 			}
-			blocks.push({ type: "quote", lines: quoteLines.filter(Boolean) });
+			blocks.push({
+				type: "quote",
+				lines: quoteLines.filter(Boolean),
+				id: assignBlockId("quote"),
+			});
 			continue;
 		}
 
@@ -310,7 +333,11 @@ function parseMarkdownBlocks(content: string): MarkdownBlock[] {
 
 		const paragraph = normalizeText(paragraphLines.join(" "));
 		if (paragraph) {
-			blocks.push({ type: "paragraph", text: paragraph });
+			blocks.push({
+				type: "paragraph",
+				text: paragraph,
+				id: assignBlockId("paragraph"),
+			});
 		}
 	}
 
@@ -472,7 +499,7 @@ function renderArticleBlocks(blocks: MarkdownBlock[]): ReactNode {
 		if (block.type === "paragraph") {
 			return (
 				<p
-					key={`paragraph-${slugify(block.text).slice(0, 48) || "text"}`}
+					key={block.id}
 					style={{ ...BASE_TEXT_STYLE, margin: "0 0 8px 0" }}
 				>
 					{renderInline(block.text)}
@@ -484,7 +511,7 @@ function renderArticleBlocks(blocks: MarkdownBlock[]): ReactNode {
 			const stableLines = createStableEntries(block.lines);
 			return (
 				<blockquote
-					key={`quote-${stableLines.map((entry) => entry.key).join("-")}`}
+					key={block.id}
 					style={{
 						...BASE_TEXT_STYLE,
 						margin: "0 0 8px 0",
@@ -508,7 +535,7 @@ function renderArticleBlocks(blocks: MarkdownBlock[]): ReactNode {
 			const stableItems = createStableEntries(block.items);
 			return (
 				<ListTag
-					key={`list-${stableItems.map((entry) => entry.key).join("-")}`}
+					key={block.id}
 					style={{
 						...BASE_TEXT_STYLE,
 						margin: "0 0 8px 0",
@@ -529,7 +556,7 @@ function renderArticleBlocks(blocks: MarkdownBlock[]): ReactNode {
 			const stableRows = block.rows.map((row) => createStableEntries(row));
 			return (
 				<table
-					key={`table-${stableHeaders.map((entry) => entry.key).join("-")}`}
+					key={block.id}
 					style={{
 						...BASE_TEXT_STYLE,
 						width: "100%",
@@ -554,11 +581,11 @@ function renderArticleBlocks(blocks: MarkdownBlock[]): ReactNode {
 						</tr>
 					</thead>
 					<tbody>
-						{stableRows.map((rowEntries) => (
-							<tr key={rowEntries.map((entry) => entry.key).join("-")}>
-								{rowEntries.map((cell) => (
+						{stableRows.map((rowEntries, rowIndex) => (
+							<tr key={`row-${rowIndex}-${rowEntries.map((entry) => entry.key).join("-")}`}>
+								{rowEntries.map((cell, cellIndex) => (
 									<td
-										key={cell.key}
+										key={`cell-${rowIndex}-${cellIndex}-${cell.key}`}
 										style={{
 											border: "1px solid #000000",
 											padding: "4px",
@@ -578,7 +605,7 @@ function renderArticleBlocks(blocks: MarkdownBlock[]): ReactNode {
 		if (block.type === "image") {
 			const imageKey = `image-${slugify(block.src) || "figure"}`;
 			return (
-				<figure key={imageKey} style={{ margin: "0 0 10px 0" }}>
+				<figure key={`${block.id}-${imageKey}`} style={{ margin: "0 0 10px 0" }}>
 					<img
 						src={block.src}
 						alt={block.alt}
@@ -781,7 +808,7 @@ export default function WhyItWorksPage() {
 					</p>
 					<DocsToc activeSlug={activeSlug} />
 				</aside>
-				<section style={{ padding: "12px 16px", overflowWrap: "anywhere" }}>
+				<section key={activeSlug} style={{ padding: "12px 16px", overflowWrap: "anywhere" }}>
 					{article ? (
 						<>
 							<p style={{ ...BASE_TEXT_STYLE, margin: "0 0 8px 0" }}>

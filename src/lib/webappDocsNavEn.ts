@@ -43,6 +43,7 @@ const WEBAPP_DOCS_NAV_CATEGORIES_EN: readonly WebappDocsCategory[] = [
 			{ label: "The Arabic Roadmap", slug: "/understand/arabic-roadmap" },
 			{ label: "The One-Target Sentence", slug: "/start/one-target-sentence" },
 			{ label: "How to Do Your Reviews", slug: "/start/reviews" },
+			{ label: "Reproducing This in Anki", slug: "/start/anki-setup" },
 		],
 	},
 	{

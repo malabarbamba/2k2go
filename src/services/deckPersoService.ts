@@ -23,7 +23,7 @@ import {
 	supabaseCardToVocabCard,
 	type VocabCard,
 } from "@/lib/deck-perso-adapters";
-import { resolveFoundationDeckMedia } from "@/lib/foundationDeckMedia";
+import { resolvePreferredFoundationMedia } from "@/lib/foundationDeckMedia";
 import {
 	deleteGuestCollectedCardMediaSlot,
 	saveGuestCollectedCardMediaAssets,
@@ -1369,15 +1369,11 @@ function compareCardsByFocus(
 	left: VocabCard,
 	right: VocabCard,
 ): number {
-	const leftIsNew = left.status?.toLowerCase() === "new";
-	const rightIsNew = right.status?.toLowerCase() === "new";
-
-	if (!leftIsNew || !rightIsNew) {
-		return 0;
-	}
-
 	const leftFocus = parseFoundationFocus(left.focus);
 	const rightFocus = parseFoundationFocus(right.focus);
+	if (leftFocus === null && rightFocus === null) {
+		return 0;
+	}
 
 	if (leftFocus !== null && rightFocus !== null && leftFocus !== rightFocus) {
 		return leftFocus - rightFocus;
@@ -1395,24 +1391,33 @@ function compareCardsByFocus(
 }
 
 function orderFoundationCardsByFocus(cards: VocabCard[]): VocabCard[] {
-	const newCardPositions: number[] = [];
-	const newCards: VocabCard[] = [];
+	const focusCardPositions: number[] = [];
+	const focusCards: VocabCard[] = [];
 
 	cards.forEach((card, index) => {
-		if (card.status?.toLowerCase() !== "new") {
+		if (parseFoundationFocus(card.focus) === null) {
 			return;
 		}
-		newCardPositions.push(index);
-		newCards.push(card);
+		focusCardPositions.push(index);
+		focusCards.push(card);
 	});
 
-	if (newCards.length < 2) {
+	if (focusCards.length < 2) {
 		return cards;
 	}
 
-	const sortedFoundationCards = [...newCards]
+	const sortedFoundationCards = [...focusCards]
 		.map((card, index) => ({ card, index }))
 		.sort((left, right) => {
+			const leftIsNew = left.card.status?.toLowerCase() === "new";
+			const rightIsNew = right.card.status?.toLowerCase() === "new";
+			if (leftIsNew && rightIsNew) {
+				const focusComparison = compareCardsByFocus(left.card, right.card);
+				if (focusComparison !== 0) {
+					return focusComparison;
+				}
+			}
+
 			const focusComparison = compareCardsByFocus(left.card, right.card);
 			if (focusComparison !== 0) {
 				return focusComparison;
@@ -1422,7 +1427,7 @@ function orderFoundationCardsByFocus(cards: VocabCard[]): VocabCard[] {
 		.map((entry) => entry.card);
 	const orderedCards = [...cards];
 
-	newCardPositions.forEach((position, index) => {
+	focusCardPositions.forEach((position, index) => {
 		orderedCards[position] = sortedFoundationCards[index];
 	});
 
@@ -5189,11 +5194,16 @@ export async function fetchDeckContentPage(
 				const foundationId = toOptionalNonEmptyString(card.id);
 				const wordAr = toOptionalNonEmptyString(card.word_ar) ?? "";
 				const wordFr = toOptionalNonEmptyString(card.word_fr) ?? "";
-				const foundationMedia = resolveFoundationDeckMedia(
-					wordAr,
-					wordAr,
-					null,
-				);
+				const foundationMedia = resolvePreferredFoundationMedia({
+					frequencyRank:
+						typeof card.frequency_rank === "number" &&
+						Number.isFinite(card.frequency_rank)
+							? card.frequency_rank
+							: null,
+					vocabFull: wordAr,
+					vocabBase: wordAr,
+					sentence: null,
+				});
 				const progress = foundationId
 					? progressByFoundationId.get(foundationId)
 					: undefined;

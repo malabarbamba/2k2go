@@ -7,7 +7,7 @@ import {
 import { getFoundation2kDeck, type Foundation2kCard } from "@/data/foundation2kDeck";
 import { useAppLocale } from "@/contexts/AppLocaleContext";
 import type { VocabCard } from "@/lib/deck-perso-adapters";
-import { resolveFoundationDeckMedia } from "@/lib/foundationDeckMedia";
+import { resolvePreferredFoundationMedia } from "@/lib/foundationDeckMedia";
 
 const RAIL_SIZE = 18;
 const RAIL_BASE_CARD_WIDTH = 248;
@@ -107,7 +107,12 @@ const buildRailCard = (
 	index: number,
 ): VocabCard => {
 	const sentence = card.exampleSentenceAr || card.wordAr;
-	const media = resolveFoundationDeckMedia(card.wordAr, card.wordAr, sentence);
+	const media = resolvePreferredFoundationMedia({
+		frequencyRank: card.focus,
+		vocabFull: card.wordAr,
+		vocabBase: card.wordAr,
+		sentence,
+	});
 
 	return {
 		id: `foundation-${index}`,

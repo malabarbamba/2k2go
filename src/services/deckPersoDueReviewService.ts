@@ -1,9 +1,9 @@
 import type { PostgrestError } from "@supabase/supabase-js";
 import { foundation2kDeck } from "@/data/foundation2kDeck";
 import {
-	resolveFoundationDeckMediaByFrequencyRank,
-	resolveFoundationDeckMedia,
+	resolvePreferredFoundationMedia,
 } from "@/lib/foundationDeckMedia";
+import { resolveMediaUrl } from "@/lib/mediaUrl";
 import {
 	stripHarakat,
 	type ReviewType,
@@ -35,14 +35,12 @@ const {
 	isBrowserOffline,
 	getOrCreateClientReviewId,
 	enqueueReviewSubmission,
-	fetchDueVocabularyRowsById,
 	fetchResolvedUserVocabularyCardMediaById,
 	fetchCollectedSourceOccurrencesByVocabularyCardId,
 	resolveDueVocabularyCardId,
 	isAlphabetDueRecord,
 	applyCollectedSourceOccurrenceToDueRecord,
 	applyUserVocabularyCardMediaToDueVocabularyRow,
-	mergeDueRecordWithVocabularyRow,
 	orderFoundationCardsByFocus,
 	mapCardToReviewType,
 	resolveSchedulerShadowDiffContext,
@@ -64,12 +62,9 @@ const {
 	parseSchedulerDueResponse,
 } = deckPersoDueReviewInternals;
 
-type FoundationDeckMediaRow = {
-	id: string;
-	word_ar: string | null;
-	word_fr: string | null;
-	frequency_rank?: number | null;
-};
+type ReviewDataClient = Parameters<
+	typeof fetchResolvedUserVocabularyCardMediaById
+>[0];
 
 type CanonicalReviewCardRow = {
 	id: string;
@@ -158,10 +153,43 @@ const buildResolvedMediaValue = ({
 	}
 
 	return (
-		toOptionalNonEmptyString(existingValue) ??
-		toOptionalNonEmptyString(overlayValue) ??
-		toOptionalNonEmptyString(fallbackValue)
+		resolveMediaUrl(existingValue) ??
+		resolveMediaUrl(overlayValue) ??
+		resolveMediaUrl(fallbackValue)
 	);
+};
+
+const resolveHydratedFocusValue = ({
+	canonicalFrequencyRank,
+	existingFocus,
+	foundationFrequencyRank,
+}: {
+	canonicalFrequencyRank: number | null | undefined;
+	existingFocus: string | null | undefined;
+	foundationFrequencyRank: number | null | undefined;
+}): string | undefined => {
+	const normalizedExistingFocus = toOptionalNonEmptyString(existingFocus);
+	if (normalizedExistingFocus) {
+		return normalizedExistingFocus;
+	}
+
+	if (
+		typeof canonicalFrequencyRank === "number" &&
+		Number.isFinite(canonicalFrequencyRank) &&
+		canonicalFrequencyRank > 0
+	) {
+		return String(Math.floor(canonicalFrequencyRank));
+	}
+
+	if (
+		typeof foundationFrequencyRank === "number" &&
+		Number.isFinite(foundationFrequencyRank) &&
+		foundationFrequencyRank > 0
+	) {
+		return String(Math.floor(foundationFrequencyRank));
+	}
+
+	return undefined;
 };
 
 const chunkIds = (ids: string[], chunkSize = 200): string[][] => {
@@ -177,27 +205,17 @@ const chunkIds = (ids: string[], chunkSize = 200): string[][] => {
 	return chunks;
 };
 
-const countAvailableMediaFields = (row: {
-	image_url?: string | null;
-	audio_url?: string | null;
-	sentence_audio_url?: string | null;
-}): number => {
-	let total = 0;
-	if (toOptionalNonEmptyString(row.image_url)) {
-		total += 1;
-	}
-	if (toOptionalNonEmptyString(row.audio_url)) {
-		total += 1;
-	}
-	if (toOptionalNonEmptyString(row.sentence_audio_url)) {
-		total += 1;
-	}
-
-	return total;
-};
+const normalizeDistinctIds = (values: Array<string | null | undefined>): string[] =>
+	Array.from(
+		new Set(
+			values.filter(
+				(value): value is string => typeof value === "string" && value.length > 0,
+			),
+		),
+	);
 
 const fetchCanonicalReviewCardRowsById = async (
-	client: Parameters<typeof fetchDueVocabularyRowsById>[0],
+	client: ReviewDataClient,
 	cardIds: string[],
 ): Promise<Map<string, CanonicalReviewCardRow>> => {
 	const rowsById = new Map<string, CanonicalReviewCardRow>();
@@ -249,217 +267,48 @@ const fetchCanonicalReviewCardRowsById = async (
 };
 
 const enrichDueRowsWithResolvedMedia = async (
-	client: Parameters<typeof fetchDueVocabularyRowsById>[0],
+	client: ReviewDataClient,
 	rows: GetDueCardsV2Row[],
 ): Promise<GetDueCardsV2Row[]> => {
 	if (rows.length === 0) {
 		return rows;
 	}
 
-	const vocabularyCardIds = rows
-		.map((record) => resolveDueVocabularyCardId(record))
-		.filter(
-			(value): value is string => typeof value === "string" && value.length > 0,
-		);
-	const vocabularyRowsById = await fetchDueVocabularyRowsById(
-		client,
-		vocabularyCardIds,
+	// Keep row-level enrichment limited to live-public data: due contracts plus
+	// user-specific overlays/source occurrences. Canonical card fallback happens
+	// later via cards_v1 so this path does not depend on hidden legacy tables.
+
+	const vocabularyCardIds = normalizeDistinctIds(
+		rows.map((record) => resolveDueVocabularyCardId(record)),
 	);
 	const userMediaRowsById = await fetchResolvedUserVocabularyCardMediaById(
 		client,
-		Array.from(vocabularyRowsById.keys()),
+		vocabularyCardIds,
 	);
 	const sourceOccurrencesById =
 		await fetchCollectedSourceOccurrencesByVocabularyCardId(
 			client,
-			Array.from(vocabularyRowsById.keys()),
+			vocabularyCardIds,
 		);
-
-	const foundationCardIds = Array.from(
-		new Set(
-			rows
-				.map((record) =>
-					toOptionalNonEmptyString(
-						(record as { foundation_card_id?: unknown }).foundation_card_id,
-					),
-				)
-				.filter((value): value is string => value !== null),
-		),
-	);
-
-	const fromMethod = (client as unknown as {
-		from?: (table: string) => any;
-	}).from;
-	const from = typeof fromMethod === "function" ? fromMethod.bind(client) : null;
-
-	const foundationRowsById = new Map<string, FoundationDeckMediaRow>();
-	const mediaCardByWordAr = new Map<string, Record<string, unknown>>();
-	const mediaCardByVocabularyId = new Map<string, Record<string, unknown>>();
-
-	if (from && foundationCardIds.length > 0) {
-		for (const idChunk of chunkIds(foundationCardIds)) {
-			const { data, error } = await from("foundation_deck")
-				.select("id,word_ar,word_fr")
-				.in("id", idChunk);
-			if (error) {
-				console.error("Unable to load foundation rows for due media:", error);
-				break;
-			}
-
-			(data ?? []).forEach((row: FoundationDeckMediaRow) => {
-				const foundationId = toOptionalNonEmptyString(row.id);
-				if (foundationId) {
-					foundationRowsById.set(foundationId, row);
-				}
-			});
-		}
-
-		const foundationWords = Array.from(
-			new Set(
-				Array.from(foundationRowsById.values())
-					.map((row) => toOptionalNonEmptyString(row.word_ar))
-					.filter((value): value is string => value !== null),
-			),
-		);
-
-		for (const wordChunk of chunkIds(foundationWords)) {
-			const { data, error } = await from("vocabulary_cards")
-				.select(
-					"id,word_ar,word_fr,transliteration,example_sentence_ar,example_sentence_fr,audio_url,sentence_audio_url,image_url,category",
-				)
-				.in("word_ar", wordChunk);
-			if (error) {
-				console.error("Unable to load vocabulary media rows for foundation due cards:", error);
-				break;
-			}
-
-			(data ?? []).forEach((row: Record<string, unknown>) => {
-				const vocabularyCardId = toOptionalNonEmptyString(row.id);
-				const wordAr = toOptionalNonEmptyString(row.word_ar);
-				if (!vocabularyCardId || !wordAr) {
-					return;
-				}
-
-				mediaCardByVocabularyId.set(vocabularyCardId, row);
-				const currentMediaRow = mediaCardByWordAr.get(wordAr);
-				if (
-					!currentMediaRow ||
-					countAvailableMediaFields(row) >
-						countAvailableMediaFields(currentMediaRow)
-				) {
-					mediaCardByWordAr.set(wordAr, row);
-				}
-			});
-		}
-	}
-
-	const foundationUserMediaByVocabularyId =
-		mediaCardByVocabularyId.size > 0
-			? await fetchResolvedUserVocabularyCardMediaById(
-					client,
-					Array.from(mediaCardByVocabularyId.keys()),
-				)
-			: new Map();
 
 	return rows.map((record) => {
 		const vocabularyCardId = resolveDueVocabularyCardId(record);
 		const baseEnrichedRecord = vocabularyCardId
 			? applyCollectedSourceOccurrenceToDueRecord(
 					applyUserVocabularyCardMediaToDueVocabularyRow(
-						mergeDueRecordWithVocabularyRow(
-							record,
-							vocabularyRowsById.get(vocabularyCardId),
-						),
+						record,
 						userMediaRowsById.get(vocabularyCardId),
 					),
 					sourceOccurrencesById.get(vocabularyCardId),
 				)
 			: record;
 
-		const foundationCardId = toOptionalNonEmptyString(
-			(record as { foundation_card_id?: unknown }).foundation_card_id,
-		);
-		if (!foundationCardId) {
-			return baseEnrichedRecord;
-		}
-
-		const foundationRow = foundationRowsById.get(foundationCardId);
-		const wordArFromRecord = toOptionalNonEmptyString(
-			(baseEnrichedRecord as { word_ar?: unknown }).word_ar,
-		);
-		const foundationWordAr =
-			wordArFromRecord ?? toOptionalNonEmptyString(foundationRow?.word_ar);
-		if (!foundationWordAr) {
-			return baseEnrichedRecord;
-		}
-
-		const fallbackMediaRow = mediaCardByWordAr.get(foundationWordAr);
-		if (!fallbackMediaRow) {
-			return {
-				...(baseEnrichedRecord as Record<string, unknown>),
-				word_ar: wordArFromRecord ?? foundationWordAr,
-				word_fr:
-					toOptionalNonEmptyString(
-						(baseEnrichedRecord as { word_fr?: unknown }).word_fr,
-					) ?? toOptionalNonEmptyString(foundationRow?.word_fr),
-			} as GetDueCardsV2Row;
-		}
-
-		const fallbackVocabularyCardId = toOptionalNonEmptyString(fallbackMediaRow.id);
-		const fallbackUserMedia = fallbackVocabularyCardId
-			? foundationUserMediaByVocabularyId.get(fallbackVocabularyCardId)
-			: null;
-
-		const mergedWithFoundationMedia = {
-			...(baseEnrichedRecord as Record<string, unknown>),
-			word_ar: wordArFromRecord ?? foundationWordAr,
-			word_fr:
-				toOptionalNonEmptyString(
-					(baseEnrichedRecord as { word_fr?: unknown }).word_fr,
-				) ??
-				toOptionalNonEmptyString(foundationRow?.word_fr) ??
-				toOptionalNonEmptyString(fallbackMediaRow.word_fr),
-			example_sentence_ar:
-				toOptionalNonEmptyString(
-					(baseEnrichedRecord as { example_sentence_ar?: unknown })
-						.example_sentence_ar,
-				) ?? toOptionalNonEmptyString(fallbackMediaRow.example_sentence_ar),
-			example_sentence_fr:
-				toOptionalNonEmptyString(
-					(baseEnrichedRecord as { example_sentence_fr?: unknown })
-						.example_sentence_fr,
-				) ?? toOptionalNonEmptyString(fallbackMediaRow.example_sentence_fr),
-			audio_url:
-				toOptionalNonEmptyString(
-					(baseEnrichedRecord as { audio_url?: unknown }).audio_url,
-				) ??
-				fallbackUserMedia?.vocabAudioUrl ??
-				toOptionalNonEmptyString(fallbackMediaRow.audio_url),
-			sentence_audio_url:
-				toOptionalNonEmptyString(
-					(baseEnrichedRecord as { sentence_audio_url?: unknown })
-						.sentence_audio_url,
-				) ??
-				fallbackUserMedia?.sentenceAudioUrl ??
-				toOptionalNonEmptyString(fallbackMediaRow.sentence_audio_url),
-			image_url:
-				toOptionalNonEmptyString(
-					(baseEnrichedRecord as { image_url?: unknown }).image_url,
-				) ??
-				fallbackUserMedia?.imageUrl ??
-				toOptionalNonEmptyString(fallbackMediaRow.image_url),
-			category:
-				toOptionalNonEmptyString(
-					(baseEnrichedRecord as { category?: unknown }).category,
-				) ?? toOptionalNonEmptyString(fallbackMediaRow.category),
-		} as GetDueCardsV2Row;
-
-		return mergedWithFoundationMedia;
+		return baseEnrichedRecord;
 	});
 };
 
 const hydrateReviewCardsWithResolvedMedia = async (
-	client: Parameters<typeof fetchDueVocabularyRowsById>[0],
+	client: ReviewDataClient,
 	cards: VocabCard[],
 ): Promise<VocabCard[]> => {
 	const cardsNeedingHydration = cards.filter(hasMissingReviewCardMedia);
@@ -474,115 +323,14 @@ const hydrateReviewCardsWithResolvedMedia = async (
 			.filter((value): value is string => value !== null),
 	);
 
-	const vocabularyCardIds = Array.from(
-		new Set(
-			cardsNeedingHydration
-				.map((card) => toOptionalNonEmptyString(card.vocabularyCardId))
-				.filter((value): value is string => value !== null),
+	const vocabularyCardIds = normalizeDistinctIds(
+		cardsNeedingHydration.map((card) =>
+			toOptionalNonEmptyString(card.vocabularyCardId),
 		),
 	);
-	const vocabularyRowsById = await fetchDueVocabularyRowsById(
-		client,
-		vocabularyCardIds,
-	);
-	const vocabularyUserMediaById = await fetchResolvedUserVocabularyCardMediaById(
-		client,
-		Array.from(vocabularyRowsById.keys()),
-	);
-
-	const foundationCardIds = Array.from(
-		new Set(
-			cardsNeedingHydration
-				.filter(isFoundationReviewCard)
-				.map((card) => toOptionalNonEmptyString(card.foundationCardId))
-				.filter((value): value is string => value !== null),
-		),
-	);
-
-	const fromMethod = (client as unknown as {
-		from?: (table: string) => any;
-	}).from;
-	const from = typeof fromMethod === "function" ? fromMethod.bind(client) : null;
-
-	const foundationRowsById = new Map<string, FoundationDeckMediaRow>();
-	const foundationMediaCardByWordKey = new Map<string, Record<string, unknown>>();
-	const foundationMediaCardByVocabularyId = new Map<string, Record<string, unknown>>();
-
-	if (from && foundationCardIds.length > 0) {
-		for (const idChunk of chunkIds(foundationCardIds)) {
-			const { data, error } = await from("foundation_deck")
-				.select("id,word_ar,word_fr,frequency_rank")
-				.in("id", idChunk);
-			if (error) {
-				console.error("Unable to hydrate foundation review cards:", error);
-				break;
-			}
-
-			(data ?? []).forEach((row: FoundationDeckMediaRow) => {
-				const foundationId = toOptionalNonEmptyString(row.id);
-				if (foundationId) {
-					foundationRowsById.set(foundationId, row);
-				}
-			});
-		}
-
-		const foundationWords = Array.from(
-			new Set(
-				cardsNeedingHydration
-					.filter(isFoundationReviewCard)
-					.map((card) => {
-						const foundationRow = card.foundationCardId
-							? foundationRowsById.get(card.foundationCardId)
-							: undefined;
-						return (
-							toOptionalNonEmptyString(foundationRow?.word_ar) ??
-							toOptionalNonEmptyString(card.vocabFull) ??
-							toOptionalNonEmptyString(card.vocabBase)
-						);
-					})
-					.filter((value): value is string => value !== null),
-			),
-		);
-
-		for (const wordChunk of chunkIds(foundationWords)) {
-			const { data, error } = await from("vocabulary_cards")
-				.select(
-					"id,word_ar,word_fr,transliteration,example_sentence_ar,example_sentence_fr,audio_url,sentence_audio_url,image_url,category",
-				)
-				.in("word_ar", wordChunk);
-			if (error) {
-				console.error(
-					"Unable to load fallback vocabulary media for foundation review cards:",
-					error,
-				);
-				break;
-			}
-
-			(data ?? []).forEach((row: Record<string, unknown>) => {
-				const vocabularyCardId = toOptionalNonEmptyString(row.id);
-				const wordKey = normalizeFoundationWordKey(row.word_ar);
-				if (!vocabularyCardId || !wordKey) {
-					return;
-				}
-
-				foundationMediaCardByVocabularyId.set(vocabularyCardId, row);
-				const currentRow = foundationMediaCardByWordKey.get(wordKey);
-				if (
-					!currentRow ||
-					countAvailableMediaFields(row) > countAvailableMediaFields(currentRow)
-				) {
-					foundationMediaCardByWordKey.set(wordKey, row);
-				}
-			});
-		}
-	}
-
-	const foundationUserMediaByVocabularyId =
-		foundationMediaCardByVocabularyId.size > 0
-			? await fetchResolvedUserVocabularyCardMediaById(
-					client,
-					Array.from(foundationMediaCardByVocabularyId.keys()),
-				)
+	const vocabularyUserMediaById =
+		vocabularyCardIds.length > 0
+			? await fetchResolvedUserVocabularyCardMediaById(client, vocabularyCardIds)
 			: new Map();
 
 	return cards.map((card) => {
@@ -595,13 +343,10 @@ const hydrateReviewCardsWithResolvedMedia = async (
 			: null;
 
 		if (isFoundationReviewCard(card)) {
-			const foundationRow = card.foundationCardId
-				? foundationRowsById.get(card.foundationCardId)
-				: undefined;
 			const foundationWordAr =
 				toOptionalNonEmptyString(card.vocabFull) ??
 				toOptionalNonEmptyString(card.vocabBase) ??
-				toOptionalNonEmptyString(foundationRow?.word_ar);
+				null;
 			if (!foundationWordAr) {
 				return card;
 			}
@@ -612,27 +357,21 @@ const hydrateReviewCardsWithResolvedMedia = async (
 			const foundationSentenceAr =
 				toOptionalNonEmptyString(card.sentFull) ??
 				toOptionalNonEmptyString(foundationContent?.exampleSentenceAr);
-			const foundationMedia = resolveFoundationDeckMedia(
-				foundationWordAr,
-				stripHarakat(foundationWordAr),
-				foundationSentenceAr,
+			const focusFromCard = Number.parseInt(
+				toOptionalNonEmptyString(card.focus) ?? "",
+				10,
 			);
-			const foundationMediaByRank = resolveFoundationDeckMediaByFrequencyRank(
-				typeof foundationRow?.frequency_rank === "number"
-					? foundationRow.frequency_rank
-					: typeof canonicalCardRow?.frequency_rank === "number"
-						? canonicalCardRow.frequency_rank
-					: null,
-			);
-			const fallbackMediaRow = foundationMediaCardByWordKey.get(
-				normalizeFoundationWordKey(foundationWordAr),
-			);
-			const fallbackVocabularyCardId = toOptionalNonEmptyString(
-				fallbackMediaRow?.id,
-			);
-			const fallbackUserMedia = fallbackVocabularyCardId
-				? (foundationUserMediaByVocabularyId.get(fallbackVocabularyCardId) ?? null)
-				: null;
+			const foundationMedia = resolvePreferredFoundationMedia({
+				frequencyRank:
+					Number.isFinite(focusFromCard) && focusFromCard > 0
+						? focusFromCard
+						: typeof canonicalCardRow?.frequency_rank === "number"
+							? canonicalCardRow.frequency_rank
+							: null,
+				vocabFull: foundationWordAr,
+				vocabBase: stripHarakat(foundationWordAr),
+				sentence: foundationSentenceAr,
+			});
 			const resolvedVocabFull =
 				toOptionalNonEmptyString(card.vocabFull) ??
 				foundationWordAr ??
@@ -641,20 +380,22 @@ const hydrateReviewCardsWithResolvedMedia = async (
 			const resolvedSentFull =
 				toOptionalNonEmptyString(card.sentFull) ??
 				toOptionalNonEmptyString(foundationContent?.exampleSentenceAr) ??
-				toOptionalNonEmptyString(fallbackMediaRow?.example_sentence_ar) ??
 				card.sentFull;
 
 			return {
 				...card,
+				focus: resolveHydratedFocusValue({
+					canonicalFrequencyRank: canonicalCardRow?.frequency_rank ?? null,
+					existingFocus: card.focus,
+					foundationFrequencyRank: null,
+				}),
 				vocabFull: resolvedVocabFull,
 				vocabBase:
 					toOptionalNonEmptyString(card.vocabBase) ?? stripHarakat(resolvedVocabFull),
 				vocabDef:
 					toOptionalNonEmptyString(card.vocabDef) ??
 					toOptionalNonEmptyString(canonicalCardRow?.translation) ??
-					toOptionalNonEmptyString(foundationRow?.word_fr) ??
 					toOptionalNonEmptyString(foundationContent?.wordFr) ??
-					toOptionalNonEmptyString(fallbackMediaRow?.word_fr) ??
 					card.vocabDef,
 				sentFull: resolvedSentFull,
 				sentBase:
@@ -663,90 +404,70 @@ const hydrateReviewCardsWithResolvedMedia = async (
 					toOptionalNonEmptyString(card.sentFrench) ??
 					toOptionalNonEmptyString(canonicalCardRow?.example_translation) ??
 					toOptionalNonEmptyString(foundationContent?.exampleSentenceFr) ??
-					toOptionalNonEmptyString(fallbackMediaRow?.example_sentence_fr) ??
 					card.sentFrench,
 				image: buildResolvedMediaValue({
 					existingValue: card.image,
 					fallbackValue:
 						toOptionalNonEmptyString(canonicalCardRow?.image_url) ??
-						toOptionalNonEmptyString(fallbackMediaRow?.image_url) ??
-						foundationMediaByRank.imageUrl ??
 						foundationMedia.imageUrl ??
 						null,
-					hidden: fallbackUserMedia?.imageHidden ?? false,
-					overlayValue: fallbackUserMedia?.imageUrl ?? null,
+					hidden: false,
+					overlayValue: null,
 				}),
 				vocabAudioUrl: buildResolvedMediaValue({
 					existingValue: card.vocabAudioUrl,
 					fallbackValue:
 						toOptionalNonEmptyString(canonicalCardRow?.audio_url) ??
-						toOptionalNonEmptyString(fallbackMediaRow?.audio_url) ??
-						foundationMediaByRank.vocabAudioUrl ??
 						foundationMedia.vocabAudioUrl ??
 						null,
-					hidden: fallbackUserMedia?.vocabAudioHidden ?? false,
-					overlayValue: fallbackUserMedia?.vocabAudioUrl ?? null,
+					hidden: false,
+					overlayValue: null,
 				}),
 				sentenceAudioUrl: buildResolvedMediaValue({
 					existingValue: card.sentenceAudioUrl,
 					fallbackValue:
 						toOptionalNonEmptyString(canonicalCardRow?.sentence_audio_url) ??
-						toOptionalNonEmptyString(fallbackMediaRow?.sentence_audio_url) ??
-						foundationMediaByRank.sentenceAudioUrl ??
 						foundationMedia.sentenceAudioUrl ??
 						null,
-					hidden: fallbackUserMedia?.sentenceAudioHidden ?? false,
-					overlayValue: fallbackUserMedia?.sentenceAudioUrl ?? null,
+					hidden: false,
+					overlayValue: null,
 				}),
 				defaultImageUrl:
 					card.defaultImageUrl ??
 					toOptionalNonEmptyString(canonicalCardRow?.image_url) ??
-					toOptionalNonEmptyString(fallbackMediaRow?.image_url) ??
-					foundationMediaByRank.imageUrl ??
 					foundationMedia.imageUrl ??
 					null,
 				defaultVocabAudioUrl:
 					card.defaultVocabAudioUrl ??
 					toOptionalNonEmptyString(canonicalCardRow?.audio_url) ??
-					toOptionalNonEmptyString(fallbackMediaRow?.audio_url) ??
-					foundationMediaByRank.vocabAudioUrl ??
 					foundationMedia.vocabAudioUrl ??
 					null,
 				defaultSentenceAudioUrl:
 					card.defaultSentenceAudioUrl ??
 					toOptionalNonEmptyString(canonicalCardRow?.sentence_audio_url) ??
-					toOptionalNonEmptyString(fallbackMediaRow?.sentence_audio_url) ??
-					foundationMediaByRank.sentenceAudioUrl ??
 					foundationMedia.sentenceAudioUrl ??
 					null,
-				hasCustomImage:
-					card.hasCustomImage ?? (fallbackUserMedia?.hasCustomImage ?? false),
-				hasCustomVocabAudio:
-					card.hasCustomVocabAudio ??
-					(fallbackUserMedia?.hasCustomVocabAudio ?? false),
-				hasCustomSentenceAudio:
-					card.hasCustomSentenceAudio ??
-					(fallbackUserMedia?.hasCustomSentenceAudio ?? false),
-				imageHidden:
-					card.imageHidden ?? (fallbackUserMedia?.imageHidden ?? false),
-				vocabAudioHidden:
-					card.vocabAudioHidden ?? (fallbackUserMedia?.vocabAudioHidden ?? false),
-				sentenceAudioHidden:
-					card.sentenceAudioHidden ??
-					(fallbackUserMedia?.sentenceAudioHidden ?? false),
+				hasCustomImage: card.hasCustomImage,
+				hasCustomVocabAudio: card.hasCustomVocabAudio,
+				hasCustomSentenceAudio: card.hasCustomSentenceAudio,
+				imageHidden: card.imageHidden,
+				vocabAudioHidden: card.vocabAudioHidden,
+				sentenceAudioHidden: card.sentenceAudioHidden,
 			};
 		}
 
 		const vocabularyCardId = toOptionalNonEmptyString(card.vocabularyCardId);
-		if (!vocabularyCardId) {
-			return card;
-		}
-
-		const vocabularyRow = vocabularyRowsById.get(vocabularyCardId);
-		const userMedia = vocabularyUserMediaById.get(vocabularyCardId);
+		const userMedia = vocabularyCardId
+			? (vocabularyUserMediaById.get(vocabularyCardId) ?? null)
+			: null;
 
 		return {
 			...card,
+			focus: resolveHydratedFocusValue({
+				canonicalFrequencyRank: canonicalCardRow?.frequency_rank ?? null,
+				existingFocus: card.focus,
+				foundationFrequencyRank: null,
+			}),
 			vocabFull:
 				toOptionalNonEmptyString(card.vocabFull) ??
 				toOptionalNonEmptyString(canonicalCardRow?.term) ??
@@ -772,40 +493,31 @@ const hydrateReviewCardsWithResolvedMedia = async (
 				card.sentFrench,
 			image: buildResolvedMediaValue({
 				existingValue: card.image,
-				fallbackValue:
-					toOptionalNonEmptyString(canonicalCardRow?.image_url) ??
-					toOptionalNonEmptyString(vocabularyRow?.image_url),
+				fallbackValue: toOptionalNonEmptyString(canonicalCardRow?.image_url),
 				hidden: userMedia?.imageHidden ?? false,
 				overlayValue: userMedia?.imageUrl ?? null,
 			}),
 			vocabAudioUrl: buildResolvedMediaValue({
 				existingValue: card.vocabAudioUrl,
-				fallbackValue:
-					toOptionalNonEmptyString(canonicalCardRow?.audio_url) ??
-					toOptionalNonEmptyString(vocabularyRow?.audio_url),
+				fallbackValue: toOptionalNonEmptyString(canonicalCardRow?.audio_url),
 				hidden: userMedia?.vocabAudioHidden ?? false,
 				overlayValue: userMedia?.vocabAudioUrl ?? null,
 			}),
 			sentenceAudioUrl: buildResolvedMediaValue({
 				existingValue: card.sentenceAudioUrl,
-				fallbackValue:
-					toOptionalNonEmptyString(canonicalCardRow?.sentence_audio_url) ??
-					toOptionalNonEmptyString(vocabularyRow?.sentence_audio_url),
+				fallbackValue: toOptionalNonEmptyString(canonicalCardRow?.sentence_audio_url),
 				hidden: userMedia?.sentenceAudioHidden ?? false,
 				overlayValue: userMedia?.sentenceAudioUrl ?? null,
 			}),
 			defaultImageUrl:
 				card.defaultImageUrl ??
-				toOptionalNonEmptyString(canonicalCardRow?.image_url) ??
-				toOptionalNonEmptyString(vocabularyRow?.image_url),
+				toOptionalNonEmptyString(canonicalCardRow?.image_url),
 			defaultVocabAudioUrl:
 				card.defaultVocabAudioUrl ??
-				toOptionalNonEmptyString(canonicalCardRow?.audio_url) ??
-				toOptionalNonEmptyString(vocabularyRow?.audio_url),
+				toOptionalNonEmptyString(canonicalCardRow?.audio_url),
 			defaultSentenceAudioUrl:
 				card.defaultSentenceAudioUrl ??
-				toOptionalNonEmptyString(canonicalCardRow?.sentence_audio_url) ??
-				toOptionalNonEmptyString(vocabularyRow?.sentence_audio_url),
+				toOptionalNonEmptyString(canonicalCardRow?.sentence_audio_url),
 			hasCustomImage:
 				card.hasCustomImage ?? (userMedia?.hasCustomImage ?? false),
 			hasCustomVocabAudio:
@@ -897,9 +609,10 @@ export async function fetchDueCardsByReviewTypes(
 				});
 			});
 
-			const orderedCards = orderFoundationCardsByFocus(cards);
+			const hydratedCards = await hydrateReviewCardsWithResolvedMedia(client, cards);
+			const orderedCards = orderFoundationCardsByFocus(hydratedCards);
 			return {
-				cards: await hydrateReviewCardsWithResolvedMedia(client, orderedCards),
+				cards: orderedCards,
 				rowsByReviewType,
 			};
 		};
@@ -1163,11 +876,11 @@ export async function fetchDueCardsByReviewTypes(
 				runtimeCards.push(card);
 			});
 
-			const orderedRuntimeCards = orderFoundationCardsByFocus(runtimeCards);
 			const hydratedRuntimeCards = await hydrateReviewCardsWithResolvedMedia(
 				client,
-				orderedRuntimeCards,
+				runtimeCards,
 			);
+			const orderedRuntimeCards = orderFoundationCardsByFocus(hydratedRuntimeCards);
 
 			if (shadowDiffContext.enabled && shadowDiffContext.userId) {
 				let legacyCards: VocabCard[] = [];
@@ -1191,10 +904,10 @@ export async function fetchDueCardsByReviewTypes(
 					? {
 							matches: false,
 							reason: SHADOW_DIFF_REASON_CODES.LEGACY_DUE_SHADOW_FAILED,
-							runtime_count: hydratedRuntimeCards.length,
+							runtime_count: orderedRuntimeCards.length,
 							legacy_error: serializeShadowError(legacyShadowError),
 						}
-					: summarizeDueCardsDiff(hydratedRuntimeCards, legacyCards);
+					: summarizeDueCardsDiff(orderedRuntimeCards, legacyCards);
 
 				await insertSchedulerShadowDiffEvent(client, {
 					userId: shadowDiffContext.userId,
@@ -1211,7 +924,7 @@ export async function fetchDueCardsByReviewTypes(
 					},
 					runtimeOutput: serializeShadowOutput({
 						invoke_response: runtimeResponse,
-						selected_cards: hydratedRuntimeCards,
+						selected_cards: orderedRuntimeCards,
 					}),
 					legacyOutput: serializeShadowOutput(
 						{
@@ -1224,7 +937,7 @@ export async function fetchDueCardsByReviewTypes(
 				});
 			}
 
-			return { ok: true, data: hydratedRuntimeCards };
+			return { ok: true, data: orderedRuntimeCards };
 		}
 
 		const legacyResult = await fetchLegacyDueCards();

@@ -7,6 +7,33 @@ type FoundationMedia = {
 	vocabAudioUrl?: string;
 };
 
+type ResolveFoundationMediaInput = {
+	frequencyRank?: number | null;
+	vocabFull?: string | null;
+	vocabBase?: string | null;
+	sentence?: string | null;
+};
+
+export function mergeFoundationMedia(
+	...sources: FoundationMedia[]
+): FoundationMedia {
+	const merged: FoundationMedia = {};
+
+	for (const source of sources) {
+		if (!merged.imageUrl && source.imageUrl) {
+			merged.imageUrl = source.imageUrl;
+		}
+		if (!merged.vocabAudioUrl && source.vocabAudioUrl) {
+			merged.vocabAudioUrl = source.vocabAudioUrl;
+		}
+		if (!merged.sentenceAudioUrl && source.sentenceAudioUrl) {
+			merged.sentenceAudioUrl = source.sentenceAudioUrl;
+		}
+	}
+
+	return merged;
+}
+
 type FoundationMediaRecord = {
 	frequencyRank: number;
 	vocabFull: string;
@@ -275,4 +302,17 @@ export function resolveFoundationDeckMedia(
 	}
 
 	return {};
+}
+
+export function resolvePreferredFoundationMedia(
+	input: ResolveFoundationMediaInput,
+): FoundationMedia {
+	return mergeFoundationMedia(
+		resolveFoundationDeckMediaByFrequencyRank(input.frequencyRank),
+		resolveFoundationDeckMedia(
+			input.vocabFull,
+			input.vocabBase,
+			input.sentence,
+		),
+	);
 }
