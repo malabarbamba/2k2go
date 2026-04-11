@@ -9,3 +9,4 @@ public/runtime-config.local.json
 
 .DS_Store
 npm-debug.log*
+ai-skills/reddit-expert/
