@@ -3586,12 +3586,31 @@ export const CardsReview = ({
 
 					{/* Error state with retry */}
 					{fetchError && (
-						<div className="mb-4 p-4 rounded-lg bg-red-500/10 border border-red-500/30 max-w-sm text-center">
-							<p className="text-red-400 text-sm mb-2">{fetchError}</p>
+						<div
+							role="alert"
+							className="mb-4 max-w-sm border border-border bg-background p-4 text-left"
+							style={{
+								fontFamily: "Arial, sans-serif",
+								fontSize: "13.3333px",
+								lineHeight: 1.4,
+								color: "#000000",
+							}}
+						>
+							<p className="mb-2">{fetchError}</p>
 							<button
 								type="button"
 								onClick={() => void fetchCards()}
-								className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 text-sm rounded-lg transition-colors"
+								className="inline-flex items-center gap-2"
+								style={{
+									fontFamily: "Arial, sans-serif",
+									fontSize: "13.3333px",
+									color: "#0000ee",
+									background: "none",
+									border: 0,
+									padding: 0,
+									textDecoration: "underline",
+									cursor: "pointer",
+								}}
 							>
 								<RefreshCw className="w-3.5 h-3.5" />
 								Retry

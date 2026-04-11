@@ -30,6 +30,8 @@ type GetDueCardsV2Args = any;
 type GetDueCardsV2Row = any;
 type SubmitReviewFsrsV2Args = any;
 type SubmitReviewFsrsV2Row = any;
+type StartReviewSessionV1Args = any;
+type StartReviewSessionV1Row = any;
 type LogCardFlipV2Args = any;
 type StartReviewPreviewSessionV1Args = any;
 type StartReviewPreviewSessionV1Row = any;
@@ -80,6 +82,11 @@ export interface GetDueCardsV2Response {
 
 export interface SubmitReviewFsrsV2Response {
 	data: SubmitReviewFsrsV2Row | null;
+	error: PostgrestError | null;
+}
+
+export interface StartReviewSessionV1Response {
+	data: StartReviewSessionV1Row | null;
 	error: PostgrestError | null;
 }
 
@@ -226,6 +233,20 @@ export async function submitReviewFsrsV2(
 	};
 }
 
+export async function startReviewSessionV1(
+	supabase: AppSupabaseClient,
+	args?: StartReviewSessionV1Args,
+): Promise<StartReviewSessionV1Response> {
+	const { data, error } = await (supabase as any).rpc(
+		"start_review_session_v1",
+		args ?? {},
+	);
+	return {
+		data: normalizeSubmitReviewData<StartReviewSessionV1Row>(data),
+		error,
+	};
+}
+
 export async function logCardFlipV2(
 	supabase: AppSupabaseClient,
 	args: LogCardFlipV2Args,
@@ -279,6 +300,7 @@ export async function getUserThemeDistributionV1(
 export type {
 	SearchCardsV2Row,
 	GetDueCardsV2Row,
+	StartReviewSessionV1Row,
 	StartReviewPreviewSessionV1Row,
 	CompleteReviewPreviewSessionV1Row,
 	GetUserThemeDistributionV1Row,

@@ -1940,12 +1940,12 @@ export const CardBack = ({
 			typeof navigator === "undefined" ||
 			!navigator.mediaDevices?.getUserMedia
 		) {
-			toast.error("Microphone indisponible.");
+			toast.error("Microphone unavailable.");
 			return;
 		}
 
 		if (typeof MediaRecorder === "undefined") {
-			toast.error("Enregistrement audio non supporte.");
+			toast.error("Audio recording is not supported here.");
 			return;
 		}
 
@@ -2342,7 +2342,7 @@ export const CardBack = ({
 							uploadedMediaResult.vocabAudioUrl ?? nextUrls.vocabAudioUrl,
 					};
 					nextOverrides.vocabAudio = true;
-					toast.success("Audio du vocabulaire mis a jour.");
+					toast.success("Vocabulary audio updated.");
 				}
 				if (mediaDraft.sentenceAudioFile) {
 					nextUrls = {
@@ -2351,7 +2351,7 @@ export const CardBack = ({
 							uploadedMediaResult.sentenceAudioUrl ?? nextUrls.sentenceAudioUrl,
 					};
 					nextOverrides.sentenceAudio = true;
-					toast.success("Audio de la phrase mis a jour.");
+					toast.success("Sentence audio updated.");
 				}
 			}
 
@@ -2378,12 +2378,12 @@ export const CardBack = ({
 						imageUrl: imageDeleteResult.imageUrl,
 					};
 					nextOverrides.image = true;
-					toast.success("Image de la carte supprimee.");
+					toast.success("Card image deleted.");
 				} catch (error) {
 					toast.error(
 						error instanceof Error
 							? error.message
-							: "Impossible de supprimer l'image.",
+						: "Unable to delete the image.",
 					);
 					hadError = true;
 				}
@@ -2415,12 +2415,12 @@ export const CardBack = ({
 						vocabAudioUrl: vocabDeleteResult.vocabAudioUrl,
 					};
 					nextOverrides.vocabAudio = true;
-					toast.success("Audio du vocabulaire supprime.");
+					toast.success("Vocabulary audio deleted.");
 				} catch (error) {
 					toast.error(
 						error instanceof Error
 							? error.message
-							: "Impossible de supprimer l'audio du vocabulaire.",
+						: "Unable to delete the vocabulary audio.",
 					);
 					hadError = true;
 				}
@@ -2455,12 +2455,12 @@ export const CardBack = ({
 						sentenceAudioUrl: sentenceDeleteResult.sentenceAudioUrl,
 					};
 					nextOverrides.sentenceAudio = true;
-					toast.success("Audio de la phrase supprime.");
+					toast.success("Sentence audio deleted.");
 				} catch (error) {
 					toast.error(
 						error instanceof Error
 							? error.message
-							: "Impossible de supprimer l'audio de la phrase.",
+						: "Unable to delete the sentence audio.",
 					);
 					hadError = true;
 				}
@@ -2510,7 +2510,7 @@ export const CardBack = ({
 				setMediaUrls(defaultUrls);
 				setMediaDraft(buildEditableCardMediaDraft(defaultUrls));
 				setPersistedMediaOverrides(EMPTY_MEDIA_OVERRIDE_STATE);
-				toast.success("Médias réinitialisés.");
+				toast.success("Media reset.");
 				return;
 			}
 
@@ -2543,12 +2543,12 @@ export const CardBack = ({
 			setMediaUrls(defaultUrls);
 			setMediaDraft(buildEditableCardMediaDraft(defaultUrls));
 			setPersistedMediaOverrides(EMPTY_MEDIA_OVERRIDE_STATE);
-			toast.success("Médias réinitialisés.");
+			toast.success("Media reset.");
 		} catch (error) {
 			toast.error(
 				error instanceof Error
 					? error.message
-					: "Impossible de réinitialiser les médias.",
+					: "Unable to reset the media.",
 			);
 		} finally {
 			setIsSaving(false);

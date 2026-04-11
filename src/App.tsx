@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AppLocaleProvider } from "@/contexts/AppLocaleContext";
+import FeedbackPage from "@/pages/FeedbackPage";
 import HomePage from "@/pages/HomePage";
 
 const AppRuntime = lazy(() => import("@/AppRuntime"));
@@ -43,6 +44,7 @@ export default function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/home" element={<HomePage />} />
+					<Route path="/feedback" element={<FeedbackPage />} />
 					<Route path="/home-v2" element={<Navigate to="/home" replace />} />
 					<Route
 						path="/app/home"

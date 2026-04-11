@@ -960,7 +960,7 @@ export async function submitReviewForCard(
 	rating: BinaryReviewRating,
 	options: ReviewMutationOptions,
 ): Promise<ServiceResult<SubmitReviewSchedulerPayload | null>> {
-	const previewGuard = guardPreviewMode("Soumettre une revue", options?.mode);
+	const previewGuard = guardPreviewMode("Submit review", options?.mode);
 	if (previewGuard) {
 		return { ok: false, error: previewGuard };
 	}
@@ -971,7 +971,7 @@ export async function submitReviewForCard(
 			ok: false,
 			error: createServiceError(
 				"UNKNOWN",
-				"Carte introuvable côté serveur.",
+				"This card could not be found on the server.",
 				false,
 			),
 		};
@@ -987,7 +987,7 @@ export async function submitReviewForCard(
 			ok: false,
 			error: createServiceError(
 				"RPC_ERROR",
-				"Connexion indisponible. Revue mise en attente pour synchronisation.",
+				"Connection unavailable. Review queued and will sync automatically.",
 				true,
 			),
 		};

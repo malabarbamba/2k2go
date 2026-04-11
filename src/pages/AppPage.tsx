@@ -2193,7 +2193,8 @@ function AppV2ProfilePage({
 			</div>
 
 			{isOwnDisplayedProfile ? (
-				<div
+				<>
+					<div
 					style={{
 						marginTop: "10px",
 						marginBottom: "18px",
@@ -2229,17 +2230,19 @@ function AppV2ProfilePage({
 							</p>
 						) : null}
 						{isBankGridEmpty ? (
-							<p style={{ ...baseTextStyle, margin: "0 0 6px 0", textAlign: "center", color: "#7a7a7a" }}>
-								{isEnglish ? (
-									<>
-										your bank of vocabulary is empty.
-										<br />
-										start reviewing cards to fill it.
-									</>
-								) : (
-									"ta banque de vocabulaire est vide."
-								)}
-							</p>
+							<div style={{ textAlign: "center" }}>
+								<p style={{ ...baseTextStyle, margin: "0 0 6px 0", color: "#7a7a7a" }}>
+									{isEnglish ? (
+										<>
+											your bank of vocabulary is empty.
+											<br />
+											start reviewing cards to fill it.
+										</>
+									) : (
+										"ta banque de vocabulaire est vide."
+									)}
+								</p>
+							</div>
 						) : null}
 						<Suspense fallback={<AppV2SectionLoading />}>
 							<LazyVocabGrid
@@ -2256,7 +2259,22 @@ function AppV2ProfilePage({
 							/>
 						</Suspense>
 					</div>
-				</div>
+					</div>
+					<div style={{ display: "flex", justifyContent: "flex-end", marginTop: "-10px", marginBottom: "18px" }}>
+						<Link
+							to="/feedback"
+							style={{
+								...baseTextStyle,
+								fontSize: "13px",
+								color: "#000000",
+								textDecoration: "underline",
+								display: "inline-block",
+							}}
+						>
+							bug report/feedback
+						</Link>
+					</div>
+				</>
 			) : null}
 		</div>
 	);

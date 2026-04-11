@@ -41,6 +41,7 @@ import {
 	logCardFlipV2,
 	type SearchCardsV2Row,
 	searchCardsV2,
+	startReviewSessionV1,
 	startReviewPreviewSessionV1,
 	submitReviewFsrsV2,
 } from "@/lib/supabase/rpc";
@@ -220,15 +221,24 @@ const FSRS_RATING_BY_RATING: Record<BinaryReviewRating, 1 | 3> = {
 
 const CLIENT_UNAVAILABLE_ERROR: DeckServiceError = {
 	code: "CLIENT_UNAVAILABLE",
-	message: "Supabase n'est pas configuré côté client.",
+	message: "Supabase is not configured in the client.",
 	retryable: true,
 };
 
-const UNKNOWN_ERROR_MESSAGE = "Une erreur inattendue est survenue. Réessayez.";
+const UNKNOWN_ERROR_MESSAGE = "Something went wrong. Please try again.";
 const DUE_SUNSET_GUARD_BLOCKED_ERROR_MESSAGE =
-	"Le fallback SQL du scheduler due est retire. Activez le sunset guard explicite ou le rollback global.";
+	"The SQL fallback for scheduler due is disabled. Enable the explicit sunset guard or the global rollback.";
 const REVIEW_SUNSET_GUARD_BLOCKED_ERROR_MESSAGE =
-	"Le fallback SQL du scheduler review est retire. Activez le sunset guard explicite ou le rollback global.";
+	"The review scheduler is temporarily unavailable. Please try again in a moment.";
+const ACTIVE_SESSION_LOCKED_MESSAGE =
+	"Another review session is already active on this account. Close the other review tab or wait a moment and try again.";
+const CARD_NOT_FOUND_MESSAGE = "This card could not be found on the server.";
+const RECENT_REVIEW_MESSAGE =
+	"This card was just reviewed. Please wait a few seconds and try again.";
+const DUPLICATE_REVIEW_MESSAGE =
+	"This card was already reviewed in another tab.";
+const DUPLICATE_IN_FLIGHT_MESSAGE =
+	"A review is already in progress for this card.";
 
 type MutationMode = "preview" | "real";
 
@@ -239,6 +249,7 @@ interface MutationOptions {
 const CLIENT_REVIEW_ID_STORAGE_KEY = "deck_perso_review_client_ids";
 const RECENT_REVIEW_STORAGE_KEY = "deck_perso_recent_review_keys";
 const REVIEW_SESSION_ID_STORAGE_KEY = "deck_perso_review_session_id_v1";
+const REVIEW_SESSION_IDS_STORAGE_KEY = "deck_perso_review_session_ids_v2";
 const REVIEW_SESSION_LEASE_SECONDS = 90;
 const RECENT_REVIEW_TTL_MS = 15000;
 const REVIEW_QUEUE_STORAGE_KEY = "deck_perso_review_submit_queue_v1";
@@ -248,8 +259,11 @@ const SCHEDULER_SHADOW_DIFF_EVENTS_TABLE = "scheduler_shadow_diff_events";
 const ACTIVE_FSRS_WEIGHTS_TABLE = "user_fsrs_active_weights";
 const inFlightReviewKeys = new Set<string>();
 let cachedClientReviewIds: Record<string, string> | null = null;
+let cachedReviewSessionIds: Record<string, string> | null = null;
 let isReplayOnlineListenerAttached = false;
 let replayInProgress: Promise<ReviewReplayResult> | null = null;
+let submitReviewLegacySignatureAvailability: "unknown" | "available" | "missing" =
+	"unknown";
 interface QueuedReviewItem {
 	accountKey: string;
 	cardKey: string;
@@ -438,6 +452,45 @@ function safeSessionStorage(): Storage | null {
 		return null;
 	}
 	return null;
+}
+
+function loadReviewSessionIds(): Record<string, string> {
+	if (cachedReviewSessionIds) {
+		return cachedReviewSessionIds;
+	}
+
+	const storage = safeSessionStorage();
+	if (!storage) {
+		cachedReviewSessionIds = {};
+		return cachedReviewSessionIds;
+	}
+
+	try {
+		const raw = storage.getItem(REVIEW_SESSION_IDS_STORAGE_KEY);
+		cachedReviewSessionIds = raw
+			? (JSON.parse(raw) as Record<string, string>)
+			: {};
+	} catch {
+		cachedReviewSessionIds = {};
+	}
+
+	return cachedReviewSessionIds;
+}
+
+function persistReviewSessionIds(): void {
+	const storage = safeSessionStorage();
+	if (!storage || !cachedReviewSessionIds) {
+		return;
+	}
+
+	try {
+		storage.setItem(
+			REVIEW_SESSION_IDS_STORAGE_KEY,
+			JSON.stringify(cachedReviewSessionIds),
+		);
+	} catch {
+		/* swallow */
+	}
 }
 
 function setClientReviewId(cardKey: string, clientReviewId: string): void {
@@ -632,6 +685,12 @@ async function claimActiveReviewSessionLease(
 	return error ?? null;
 }
 
+async function waitForReviewLeaseRetry(delayMs: number): Promise<void> {
+	await new Promise((resolve) => {
+		setTimeout(resolve, delayMs);
+	});
+}
+
 function enqueueReviewSubmission(
 	accountKey: string,
 	cardKey: string,
@@ -675,7 +734,7 @@ function guardPreviewMode(
 	if (mode !== "real") {
 		return createServiceError(
 			"PREVIEW_BLOCKED",
-			`${operation} est désactivé en mode preview.`,
+			`${operation} is disabled in preview mode.`,
 			false,
 		);
 	}
@@ -706,6 +765,35 @@ function isMissingLegacySubmitReviewSignature(
 		(error.code === "PGRST202" || haystack.includes("schema cache")) &&
 		haystack.includes("submit_review_fsrs_v2") &&
 		haystack.includes("p_client_review_id")
+	);
+}
+
+function isMissingBatchSubmitReviewSignature(
+	error?: PostgrestError | null,
+): boolean {
+	if (!error) {
+		return false;
+	}
+
+	const haystack =
+		`${error.message ?? ""} ${error.details ?? ""} ${error.hint ?? ""}`.toLowerCase();
+	return (
+		(error.code === "PGRST202" || haystack.includes("schema cache")) &&
+		haystack.includes("submit_review_fsrs_v2") &&
+		(haystack.includes("p_session_id") || haystack.includes("p_reviews"))
+	);
+}
+
+function isReviewSessionNotOpenError(error: unknown): boolean {
+	const haystack = extractUnknownErrorText(error);
+	if (!haystack) {
+		return false;
+	}
+
+	return (
+		haystack.includes("review session not found or not open") ||
+		haystack.includes("review_session_not_found") ||
+		haystack.includes("review_session_not_open")
 	);
 }
 
@@ -1256,22 +1344,151 @@ function generateClientReviewId(): string {
 	return `${Date.now().toString(16)}-${Math.random().toString(16).slice(2, 10)}`;
 }
 
-function getOrCreateReviewSessionId(): string {
+function getOrCreateReviewSessionId(accountKey: string): string {
 	const storage = safeSessionStorage();
 	if (storage) {
 		try {
-			const existing = storage.getItem(REVIEW_SESSION_ID_STORAGE_KEY);
-			if (existing) {
-				return existing;
+			const ids = loadReviewSessionIds();
+			if (ids[accountKey]) {
+				return ids[accountKey];
 			}
+
+			const legacyExisting = storage.getItem(REVIEW_SESSION_ID_STORAGE_KEY);
+			if (legacyExisting) {
+				ids[accountKey] = legacyExisting;
+				storage.removeItem(REVIEW_SESSION_ID_STORAGE_KEY);
+				persistReviewSessionIds();
+				return legacyExisting;
+			}
+
 			const created = generateClientReviewId();
-			storage.setItem(REVIEW_SESSION_ID_STORAGE_KEY, created);
+			ids[accountKey] = created;
+			persistReviewSessionIds();
 			return created;
 		} catch {
 			return generateClientReviewId();
 		}
 	}
 	return generateClientReviewId();
+}
+
+function clearReviewSessionId(accountKey: string): void {
+	const ids = loadReviewSessionIds();
+	if (!ids[accountKey]) {
+		return;
+	}
+
+	delete ids[accountKey];
+	persistReviewSessionIds();
+}
+
+function getStoredReviewSessionId(accountKey: string): string | null {
+	const ids = loadReviewSessionIds();
+	return typeof ids[accountKey] === "string" ? ids[accountKey] : null;
+}
+
+function setReviewSessionId(accountKey: string, reviewSessionId: string): void {
+	const ids = loadReviewSessionIds();
+	ids[accountKey] = reviewSessionId;
+	persistReviewSessionIds();
+}
+
+function isUuidLike(value: string | null | undefined): value is string {
+	return typeof value === "string"
+		? /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+				value,
+			)
+		: false;
+}
+
+async function startServerReviewSession(
+	client: AppSupabaseClient,
+	accountKey: string,
+): Promise<{ sessionId: string | null; error: PostgrestError | null }> {
+	const { data, error } = await startReviewSessionV1(client, {});
+	if (error) {
+		return { sessionId: null, error };
+	}
+
+	const sessionId =
+		data && typeof data === "object" && typeof (data as { session_id?: unknown }).session_id === "string"
+			? ((data as { session_id: string }).session_id ?? null)
+			: null;
+	if (!isUuidLike(sessionId)) {
+		return {
+			sessionId: null,
+			error: {
+				code: "PGRST116",
+				details: null,
+				hint: null,
+				message: "Review session could not be started.",
+				name: "PostgrestError",
+			},
+		};
+	}
+
+	setReviewSessionId(accountKey, sessionId);
+	return { sessionId, error: null };
+}
+
+async function claimReviewSessionLeaseWithRecovery(
+	client: AppSupabaseClient,
+	accountKey: string,
+	getReviewSessionId: () => string,
+	setReviewSessionId: (nextReviewSessionId: string) => void,
+	options?: {
+		allowSessionRotation?: boolean;
+	},
+): Promise<PostgrestError | null> {
+	const startFreshSession = async (): Promise<PostgrestError | null> => {
+		clearReviewSessionId(accountKey);
+		const { sessionId, error: startError } = await startServerReviewSession(
+			client,
+			accountKey,
+		);
+		if (!startError && sessionId) {
+			setReviewSessionId(sessionId);
+		}
+		return startError;
+	};
+
+	const currentReviewSessionId = getReviewSessionId();
+	if (!isUuidLike(currentReviewSessionId)) {
+		return startFreshSession();
+	}
+
+	let error = await claimActiveReviewSessionLease(client, currentReviewSessionId);
+	if (!error) {
+		return null;
+	}
+
+	if (isReviewSessionNotOpenError(error)) {
+		return startFreshSession();
+	}
+
+	if (!isActiveSessionLockedError(error)) {
+		return error;
+	}
+
+	for (const delayMs of [300, 1000]) {
+		await waitForReviewLeaseRetry(delayMs);
+		error = await claimActiveReviewSessionLease(client, getReviewSessionId());
+		if (!error) {
+			return null;
+		}
+		if (isReviewSessionNotOpenError(error)) {
+			return startFreshSession();
+		}
+		if (!isActiveSessionLockedError(error)) {
+			return error;
+		}
+	}
+
+	if (options?.allowSessionRotation !== false) {
+		return startFreshSession();
+	}
+
+	return error;
 }
 
 function normalizeCardIds(cardIds: string[]): string[] {
@@ -1485,7 +1702,7 @@ function fromPostgrestError(error?: PostgrestError | null): DeckServiceError {
 	if (authLike || error.code === "PGRST301") {
 		return createServiceError(
 			"NOT_AUTHENTICATED",
-			"Vous devez être connecté pour effectuer cette action.",
+			"You must be signed in to do this.",
 			false,
 		);
 	}
@@ -1496,6 +1713,16 @@ function fromPostgrestError(error?: PostgrestError | null): DeckServiceError {
 	const limitLike = /limite|limit|quota/i.test(
 		`${error.message} ${error.details ?? ""}`,
 	);
+	const reviewContractLike = /user_card_events_review_requires_fsrs_after|fsrs_after/i.test(
+		`${error.message} ${error.details ?? ""} ${error.hint ?? ""}`,
+	);
+	if (reviewContractLike) {
+		return createServiceError(
+			"RPC_ERROR",
+			"The review scheduler returned an outdated response. Please try again in a moment.",
+			true,
+		);
+	}
 
 	return createServiceError(
 		"RPC_ERROR",
@@ -2188,7 +2415,7 @@ const toManualImportServiceError = ({
 	) {
 		return createServiceError(
 			"NOT_AUTHENTICATED",
-			"Vous devez être connecté pour effectuer cette action.",
+			"You must be signed in to do this.",
 			false,
 		);
 	}
@@ -4951,7 +5178,7 @@ const resolveAuthenticatedUserId = async (
 		ok: false,
 		error: createServiceError(
 			"NOT_AUTHENTICATED",
-			"Vous devez etre connecte pour consulter ce deck.",
+			"You must be signed in to view this deck.",
 			false,
 		),
 	};
@@ -5734,7 +5961,7 @@ async function submitReviewNow(
 			ok: false,
 			error: createServiceError(
 				"UNKNOWN",
-				"Carte introuvable côté serveur.",
+				CARD_NOT_FOUND_MESSAGE,
 				false,
 			),
 		};
@@ -5745,7 +5972,7 @@ async function submitReviewNow(
 			ok: false,
 			error: createServiceError(
 				"DUPLICATE_REVIEW",
-				"Cette carte vient d'être révisée. Réessayez dans quelques secondes.",
+				RECENT_REVIEW_MESSAGE,
 				false,
 			),
 		};
@@ -5756,7 +5983,7 @@ async function submitReviewNow(
 			ok: false,
 			error: createServiceError(
 				"DUPLICATE_IN_FLIGHT",
-				"Une revue est déjà en cours pour cette carte.",
+				DUPLICATE_IN_FLIGHT_MESSAGE,
 				true,
 			),
 		};
@@ -5768,44 +5995,64 @@ async function submitReviewNow(
 	}
 
 	inFlightReviewKeys.add(cardKey);
+	const accountKey = await resolveAccountKey(client);
 	const clientReviewId = getOrCreateClientReviewId(cardKey);
-	const reviewSessionId = getOrCreateReviewSessionId();
+	let reviewSessionId = getStoredReviewSessionId(accountKey) ?? "";
 	const nowUtc = new Date().toISOString();
+	const schedulerCardId =
+		typeof card.schedulerCardId === "string" && card.schedulerCardId.trim().length > 0
+			? card.schedulerCardId.trim()
+			: typeof card.remoteId === "string" &&
+				  card.remoteId.trim().length > 0 &&
+				  !card.remoteId.startsWith("due-")
+				? card.remoteId.trim()
+				: null;
+	const runtimeFoundationCardId =
+		typeof card.foundationCardId === "string" && card.foundationCardId.trim().length > 0
+			? card.foundationCardId.trim()
+			: (card.source === "foundation" || card.sourceType === "foundation") &&
+				  schedulerCardId
+				? schedulerCardId
+				: null;
+
+	const renewReviewSessionLease = async (): Promise<PostgrestError | null> => {
+		clearReviewSessionId(accountKey);
+		reviewSessionId = "";
+		return claimReviewSessionLeaseWithRecovery(
+			client,
+			accountKey,
+			() => reviewSessionId,
+			(nextReviewSessionId) => {
+				reviewSessionId = nextReviewSessionId;
+			},
+			{ allowSessionRotation: false },
+		);
+	};
 
 	try {
-		const leaseError = await claimActiveReviewSessionLease(
+		const leaseError = await claimReviewSessionLeaseWithRecovery(
 			client,
-			reviewSessionId,
+			accountKey,
+			() => reviewSessionId,
+			(nextReviewSessionId) => {
+				reviewSessionId = nextReviewSessionId;
+			},
 		);
 		if (leaseError) {
-			if (isActiveSessionLockedError(leaseError)) {
-				return {
-					ok: false,
-					error: createServiceError(
-						"ACTIVE_SESSION_LOCKED",
-						"Une autre session de revue est active sur ce compte.",
-						false,
-					),
-				};
+			if (!isActiveSessionLockedError(leaseError)) {
+				return { ok: false, error: fromPostgrestError(leaseError) };
 			}
-			return { ok: false, error: fromPostgrestError(leaseError) };
 		}
 
 		const submitViaLegacyRpc = async (options?: {
 			trackReviewLifecycle?: boolean;
+			allowSessionRecoveryRetry?: boolean;
 		}): Promise<ServiceResult<SubmitReviewSchedulerPayload | null>> => {
 			const trackReviewLifecycle = options?.trackReviewLifecycle ?? true;
+			const allowSessionRecoveryRetry =
+				options?.allowSessionRecoveryRetry ?? true;
 			const hasLegacyCardIds =
 				!!card.vocabularyCardId || !!card.foundationCardId;
-			const schedulerCardId =
-				typeof card.schedulerCardId === "string" && card.schedulerCardId.trim().length > 0
-					? card.schedulerCardId.trim()
-					: typeof card.remoteId === "string" &&
-						  card.remoteId.trim().length > 0 &&
-						  !card.remoteId.startsWith("due-")
-						? card.remoteId.trim()
-						: null;
-
 			const submitBatchSignature = async () =>
 				submitReviewFsrsV2(client, {
 					p_session_id: reviewSessionId,
@@ -5827,18 +6074,47 @@ async function submitReviewNow(
 					p_foundation_card_id: card.foundationCardId ?? null,
 				});
 
+			const shouldTryBatchSignature = Boolean(schedulerCardId);
+			const shouldTryLegacySignature =
+				hasLegacyCardIds &&
+				(submitReviewLegacySignatureAvailability !== "missing" || !shouldTryBatchSignature);
+
 			let data: unknown = null;
 			let error: PostgrestError | null = null;
-			if (!hasLegacyCardIds && schedulerCardId) {
+			if (shouldTryBatchSignature) {
 				({ data, error } = await submitBatchSignature());
+				if (error && shouldTryLegacySignature && isMissingBatchSubmitReviewSignature(error)) {
+					({ data, error } = await submitLegacySignature());
+					if (!error) {
+						submitReviewLegacySignatureAvailability = "available";
+					}
+				}
 			} else {
 				({ data, error } = await submitLegacySignature());
+				if (!error) {
+					submitReviewLegacySignatureAvailability = "available";
+				}
 				if (error && isMissingLegacySubmitReviewSignature(error) && schedulerCardId) {
+					submitReviewLegacySignatureAvailability = "missing";
 					({ data, error } = await submitBatchSignature());
 				}
 			}
 
 			if (error) {
+				if (schedulerCardId && allowSessionRecoveryRetry && isReviewSessionNotOpenError(error)) {
+					const renewedLeaseError = await renewReviewSessionLease();
+					if (renewedLeaseError) {
+						if (!isActiveSessionLockedError(renewedLeaseError)) {
+							return { ok: false, error: fromPostgrestError(renewedLeaseError) };
+						}
+					}
+
+					return submitViaLegacyRpc({
+						trackReviewLifecycle,
+						allowSessionRecoveryRetry: false,
+					});
+				}
+
 				if (isDuplicateReviewError(error)) {
 					if (trackReviewLifecycle) {
 						markRecentReview(cardKey);
@@ -5848,7 +6124,7 @@ async function submitReviewNow(
 						ok: false,
 						error: createServiceError(
 							"DUPLICATE_REVIEW",
-							"Cette carte a déjà été révisée dans un autre onglet.",
+							DUPLICATE_REVIEW_MESSAGE,
 							false,
 						),
 					};
@@ -5880,7 +6156,7 @@ async function submitReviewNow(
 		).functions?.invoke;
 		const canUseRuntimeReviewScheduler =
 			typeof invoke === "function" &&
-			!!card.foundationCardId &&
+			!!runtimeFoundationCardId &&
 			!isDeckPersoSchedulerRollbackToLegacyEnabled();
 
 		const shadowDiffContext = canUseRuntimeReviewScheduler
@@ -5888,18 +6164,21 @@ async function submitReviewNow(
 			: { userId: null, enabled: false };
 
 		if (canUseRuntimeReviewScheduler) {
-			const legacyFallbackSunsetGuardEnabled =
-				isDeckPersoSchedulerLegacyFallbackSunsetGuardEnabled();
-			const runtimeReviewRequestPayload = {
+			// Foundation review submission now depends on the runtime scheduler path.
+			// The legacy SQL RPC no longer matches the backend event contract.
+			const legacyFallbackSunsetGuardEnabled = false;
+			const buildRuntimeReviewRequestPayload = () => ({
 				schema_version: 1,
 				now_utc: nowUtc,
-				foundation_card_id: card.foundationCardId,
+				foundation_card_id: runtimeFoundationCardId,
 				review_event: {
 					review_session_id: reviewSessionId,
 					client_review_id: clientReviewId,
 					rating,
 				},
-			};
+			});
+
+			let runtimeReviewRequestPayload = buildRuntimeReviewRequestPayload();
 
 			let runtimeInvokeData: unknown = null;
 			let runtimeInvokeError: unknown = null;
@@ -5914,12 +6193,34 @@ async function submitReviewNow(
 			}
 
 			if (runtimeInvokeError) {
+				if (isReviewSessionNotOpenError(runtimeInvokeError)) {
+					const renewedLeaseError = await renewReviewSessionLease();
+					if (renewedLeaseError) {
+						if (!isActiveSessionLockedError(renewedLeaseError)) {
+							return { ok: false, error: fromPostgrestError(renewedLeaseError) };
+						}
+					}
+
+					runtimeReviewRequestPayload = buildRuntimeReviewRequestPayload();
+					try {
+						const retryInvokeResult = await invoke("scheduler-review-v1", {
+							body: runtimeReviewRequestPayload,
+						});
+						runtimeInvokeData = retryInvokeResult.data;
+						runtimeInvokeError = retryInvokeResult.error;
+					} catch (retryInvokeError) {
+						runtimeInvokeError = retryInvokeError;
+					}
+				}
+			}
+
+			if (runtimeInvokeError) {
 				if (isInvokeActiveSessionLockedError(runtimeInvokeError)) {
 					return {
 						ok: false,
 						error: createServiceError(
 							"ACTIVE_SESSION_LOCKED",
-							"Une autre session de revue est active sur ce compte.",
+							ACTIVE_SESSION_LOCKED_MESSAGE,
 							false,
 						),
 					};
@@ -5932,7 +6233,7 @@ async function submitReviewNow(
 						ok: false,
 						error: createServiceError(
 							"DUPLICATE_REVIEW",
-							"Cette carte a déjà été révisée dans un autre onglet.",
+							DUPLICATE_REVIEW_MESSAGE,
 							false,
 						),
 					};
@@ -6297,6 +6598,8 @@ export const deckPersoDueReviewInternals = {
 	resolveClient,
 	resolveCardKey,
 	resolveAccountKey,
+	getOrCreateReviewSessionId,
+	clearReviewSessionId,
 	createServiceError,
 	fromPostgrestError,
 	fromUnknownError,
@@ -6318,6 +6621,8 @@ export const deckPersoDueReviewInternals = {
 	isDeckPersoSchedulerRollbackToLegacyEnabled,
 	isDeckPersoSchedulerLegacyFallbackSunsetGuardEnabled,
 	shouldFallbackToLegacySubmitRpc,
+	isMissingBatchSubmitReviewSignature,
+	isReviewSessionNotOpenError,
 	shouldFallbackToLegacyDueFetch,
 	shouldAllowLegacyFallbackOnTransportFailure,
 	shouldAllowLegacyFallbackOnInvalidRuntimePayload,
@@ -6350,7 +6655,7 @@ export async function logCardFlipEvent(
 			ok: false,
 			error: createServiceError(
 				"UNKNOWN",
-				"Carte introuvable côté serveur.",
+				CARD_NOT_FOUND_MESSAGE,
 				false,
 			),
 		};
