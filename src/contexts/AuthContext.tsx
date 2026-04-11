@@ -89,6 +89,40 @@ const resolveEmailRedirectUrl = (redirectPath: string): string => {
 	).toString();
 };
 
+const DAILY_CONNECTION_TRACKED_KEY_PREFIX =
+	"app:daily-connection-tracked-at:v1:";
+
+const getDailyConnectionTrackedKey = (userId: string): string =>
+	`${DAILY_CONNECTION_TRACKED_KEY_PREFIX}${userId}`;
+
+const readDailyConnectionTrackedAt = (userId: string): string | null => {
+	if (typeof window === "undefined") {
+		return null;
+	}
+
+	try {
+		const value = window.localStorage.getItem(getDailyConnectionTrackedKey(userId));
+		return typeof value === "string" && value.length > 0 ? value : null;
+	} catch {
+		return null;
+	}
+};
+
+const writeDailyConnectionTrackedAt = (userId: string, activityDate: string): void => {
+	if (typeof window === "undefined") {
+		return;
+	}
+
+	try {
+		window.localStorage.setItem(
+			getDailyConnectionTrackedKey(userId),
+			activityDate,
+		);
+	} catch {
+		// Ignore storage write failures.
+	}
+};
+
 export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const AUTH_INIT_TIMEOUT_MS = 12000;
 	const [user, setUser] = useState<User | null>(null);
@@ -141,6 +175,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const trackDailyConnection = useCallback(async (userId: string) => {
 		const activityDate = new Date().toISOString().split("T")[0];
+		if (readDailyConnectionTrackedAt(userId) === activityDate) {
+			return;
+		}
 
 		const { error } = await (supabase as any).rpc("upsert_daily_activity", {
 			p_user_id: userId,
@@ -151,6 +188,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		});
 
 		if (!error) {
+			writeDailyConnectionTrackedAt(userId, activityDate);
 			return;
 		}
 
@@ -169,7 +207,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 		if (fallbackError) {
 			console.error("Error tracking daily connection:", fallbackError);
+			return;
 		}
+
+		writeDailyConnectionTrackedAt(userId, activityDate);
 	}, []);
 
 	const syncSessionPersistenceArtifacts = useCallback(

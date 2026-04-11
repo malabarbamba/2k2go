@@ -880,6 +880,13 @@ export type Database = {
 					words_acquired_count: number;
 				}[];
 			};
+			get_profile_social_summary_v1: {
+				Args: { p_target_user_id: string };
+				Returns: {
+					audio_recorded_count: number;
+					last_activity_at: string | null;
+				}[];
+			};
 			cleanup_expired_2fa_codes: { Args: never; Returns: undefined };
 			list_incoming_friend_requests: {
 				Args: never;
@@ -894,6 +901,19 @@ export type Database = {
 					requester_username: string | null;
 				}[];
 			};
+			list_outgoing_friend_requests: {
+				Args: never;
+				Returns: {
+					recipient_avatar_url: string | null;
+					recipient_email: string | null;
+					recipient_first_name: string | null;
+					recipient_last_name: string | null;
+					recipient_user_id: string;
+					recipient_username: string | null;
+					request_id: string;
+					requested_at: string;
+				}[];
+			};
 			list_my_friends: {
 				Args: never;
 				Returns: {
@@ -902,6 +922,7 @@ export type Database = {
 					email: string | null;
 					first_name: string | null;
 					friend_user_id: string;
+					last_activity_at: string | null;
 					last_name: string | null;
 					username: string | null;
 				}[];

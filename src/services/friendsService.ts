@@ -16,11 +16,23 @@ export type FriendListItem = {
 	lastName: string | null;
 	avatarUrl: string | null;
 	connectedAt: string;
+	lastActivityAt: string | null;
 };
 
 export type IncomingFriendRequest = {
 	requestId: string;
 	requesterUserId: string;
+	username: string | null;
+	email: string | null;
+	firstName: string | null;
+	lastName: string | null;
+	avatarUrl: string | null;
+	requestedAt: string;
+};
+
+export type OutgoingFriendRequest = {
+	requestId: string;
+	recipientUserId: string;
 	username: string | null;
 	email: string | null;
 	firstName: string | null;
@@ -104,6 +116,7 @@ export const listMyFriends = async (): Promise<FriendListItem[]> => {
 		lastName: row.last_name,
 		avatarUrl: row.avatar_url,
 		connectedAt: row.connected_at,
+		lastActivityAt: row.last_activity_at,
 	}));
 };
 
@@ -124,6 +137,27 @@ export const listIncomingFriendRequests = async (): Promise<
 		firstName: row.requester_first_name,
 		lastName: row.requester_last_name,
 		avatarUrl: row.requester_avatar_url,
+		requestedAt: row.requested_at,
+	}));
+};
+
+export const listOutgoingFriendRequests = async (): Promise<
+	OutgoingFriendRequest[]
+> => {
+	const { data, error } = await supabase.rpc("list_outgoing_friend_requests");
+
+	if (error) {
+		throw new Error(getRpcErrorCode(error.message));
+	}
+
+	return (data ?? []).map((row) => ({
+		requestId: row.request_id,
+		recipientUserId: row.recipient_user_id,
+		username: row.recipient_username,
+		email: row.recipient_email,
+		firstName: row.recipient_first_name,
+		lastName: row.recipient_last_name,
+		avatarUrl: row.recipient_avatar_url,
 		requestedAt: row.requested_at,
 	}));
 };

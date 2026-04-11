@@ -40,6 +40,10 @@ import { buildCollectedCardSourceLinkPath } from "@/data/immersionVideoRouting";
 import type { VocabCard as AnkiCard } from "@/data/vocabCards";
 import { readActiveUserId } from "@/lib/authPersistence";
 import {
+	resolveFoundationDeckMedia,
+	resolveFoundationDeckMediaByFrequencyRank,
+} from "@/lib/foundationDeckMedia";
+import {
 	deleteLocalFoundationCardMediaSlot,
 	type LocalFoundationCardMediaOverlayRecord,
 	resetLocalFoundationCardMediaOverrides,
@@ -240,6 +244,18 @@ const getCardSourceChipLabel = (card: AnkiCard): CardSourceChipLabel => {
 const isFoundationCard = (card: AnkiCard): boolean =>
 	card.source === "foundation" || card.sourceType === "foundation";
 
+const resolveCardFocusLabel = (card: AnkiCard): string | null => {
+	const rawFocus =
+		typeof card.focus === "string" || typeof card.focus === "number"
+			? String(card.focus).trim()
+			: "";
+	if (!rawFocus) {
+		return null;
+	}
+
+	return rawFocus.startsWith("#") ? rawFocus : `#${rawFocus}`;
+};
+
 type SourceChipTone = "default" | "muted";
 
 const SOURCE_CHIP_TONE_CLASSES: Record<
@@ -267,14 +283,6 @@ const SourceChip = ({
 }) => {
 	const chip = getCardSourceChipLabel(card);
 	const toneClasses = SOURCE_CHIP_TONE_CLASSES[tone];
-	const showFocus = isFoundationCard(card);
-	const rawFocus = showFocus ? card.focus?.toString().trim() : null;
-	const focusValue = rawFocus
-		? rawFocus.startsWith("#")
-			? rawFocus
-			: `#${rawFocus}`
-		: null;
-
 	return (
 		<div
 			className={`flex w-full flex-shrink-0 items-center justify-between px-5 sm:px-6 pt-0.5 pb-1 ${className}`}
@@ -284,13 +292,29 @@ const SourceChip = ({
 			>
 				{chip.label}
 			</span>
-			{focusValue && (
-				<span
-					className={`inline-flex items-center whitespace-nowrap text-[9px] font-semibold sm:text-[10px] ${toneClasses.focus}`}
-				>
-					{focusValue}
-				</span>
-			)}
+		</div>
+	);
+};
+
+const FocusBadge = ({ card }: { card: AnkiCard }) => {
+	const focusLabel = resolveCardFocusLabel(card);
+	if (!focusLabel) {
+		return null;
+	}
+
+	return (
+		<div
+			className="pointer-events-none absolute z-30"
+			style={{
+				right: "14px",
+				bottom: "12px",
+				fontFamily: "Arial, sans-serif",
+				fontSize: "13.3333px",
+				lineHeight: 1,
+				color: "rgba(0,0,0,0.72)",
+			}}
+		>
+			{focusLabel}
 		</div>
 	);
 };
@@ -712,12 +736,41 @@ const buildCardMediaUrls = (
 	imageUrl: string | null;
 	vocabAudioUrl: string | null;
 	sentenceAudioUrl: string | null;
-} => ({
-	imageUrl: card.image ?? null,
-	vocabAudioUrl: card.vocabAudioUrl ?? audioUrls[`vocab-${card.id}`] ?? null,
-	sentenceAudioUrl:
-		card.sentenceAudioUrl ?? audioUrls[`sentence-${card.id}`] ?? null,
-});
+} => {
+	const isFoundationCard =
+		card.source === "foundation" || card.sourceType === "foundation";
+	const numericFocus =
+		typeof card.focus === "string" ? Number.parseInt(card.focus, 10) : null;
+	const foundationMedia = isFoundationCard
+		? {
+				...resolveFoundationDeckMediaByFrequencyRank(
+					Number.isFinite(numericFocus) ? numericFocus : null,
+				),
+				...resolveFoundationDeckMedia(
+					card.vocabFull,
+					card.vocabBase,
+					card.sentFull,
+				),
+		  }
+		: {};
+
+	return {
+		imageUrl:
+			card.image ?? card.defaultImageUrl ?? foundationMedia.imageUrl ?? null,
+		vocabAudioUrl:
+			card.vocabAudioUrl ??
+			card.defaultVocabAudioUrl ??
+			foundationMedia.vocabAudioUrl ??
+			audioUrls[`vocab-${card.id}`] ??
+			null,
+		sentenceAudioUrl:
+			card.sentenceAudioUrl ??
+			card.defaultSentenceAudioUrl ??
+			foundationMedia.sentenceAudioUrl ??
+			audioUrls[`sentence-${card.id}`] ??
+			null,
+	};
+};
 
 const resolveEditableCardTarget = (
 	card: AnkiCard,
@@ -1984,6 +2037,9 @@ export const CardBack = ({
 		};
 	}, [
 		audioUrls,
+		card.defaultImageUrl,
+		card.defaultSentenceAudioUrl,
+		card.defaultVocabAudioUrl,
 		card.foundationCardId,
 		card.id,
 		card.image,
@@ -3298,6 +3354,7 @@ export const ReviewMainCardSurface = ({
 					audioMuted={audioMuted}
 				/>
 			</div>
+			<FocusBadge card={card} />
 		</div>
 	);
 };

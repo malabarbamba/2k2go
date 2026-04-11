@@ -1,15 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { PENDING_REVIEWS_INVALIDATED_EVENT } from "@/lib/pendingReviewsEvents";
 
-const REFRESH_INTERVAL_MS = 5_000;
-const AUTO_REFRESH_COOLDOWN_MS = 5_000;
+const REFRESH_INTERVAL_MS = 60_000;
+const AUTO_REFRESH_COOLDOWN_MS = 30_000;
+const REALTIME_REFRESH_DEBOUNCE_MS = 500;
 const GUEST_FOUNDATION_REVIEW_UPDATED_EVENT =
 	"arur:guest-foundation-review-updated";
 const GUEST_PENDING_REVIEWS_SCOPE = "__guest__";
 const DEFAULT_AUTHENTICATED_DECK_SCOPE = "personal_and_foundation";
 const PENDING_REVIEWS_LOCAL_STORAGE_PREFIX = "arur:pending-reviews:v1:";
-const PENDING_REVIEWS_PERSISTED_MAX_AGE_MS = 5_000;
+const PENDING_REVIEWS_PERSISTED_MAX_AGE_MS = 30_000;
 
 export type PendingReviewsDeckScope =
 	| "personal_and_foundation"
@@ -379,11 +382,19 @@ export const usePendingReviewsCount = (
 			void refreshInternal(true);
 		};
 
+		const handlePendingReviewsInvalidated = () => {
+			void refreshInternal(true);
+		};
+
 		window.addEventListener("focus", handleWindowFocus);
 		document.addEventListener("visibilitychange", handleVisibilityChange);
 		window.addEventListener(
 			GUEST_FOUNDATION_REVIEW_UPDATED_EVENT,
 			handleGuestFoundationReviewUpdate as EventListener,
+		);
+		window.addEventListener(
+			PENDING_REVIEWS_INVALIDATED_EVENT,
+			handlePendingReviewsInvalidated as EventListener,
 		);
 
 		return () => {
@@ -394,8 +405,54 @@ export const usePendingReviewsCount = (
 				GUEST_FOUNDATION_REVIEW_UPDATED_EVENT,
 				handleGuestFoundationReviewUpdate as EventListener,
 			);
+			window.removeEventListener(
+				PENDING_REVIEWS_INVALIDATED_EVENT,
+				handlePendingReviewsInvalidated as EventListener,
+			);
 		};
 	}, [authLoading, enableAutoRefresh, refreshInternal]);
+
+	useEffect(() => {
+		if (authLoading || !enableAutoRefresh || !userId) {
+			return;
+		}
+
+		let refreshTimeoutId: number | null = null;
+		const scheduleRefresh = () => {
+			if (refreshTimeoutId !== null) {
+				window.clearTimeout(refreshTimeoutId);
+			}
+
+			refreshTimeoutId = window.setTimeout(() => {
+				refreshTimeoutId = null;
+				void refreshInternal(true);
+			}, REALTIME_REFRESH_DEBOUNCE_MS);
+		};
+
+		const channel = supabase
+			.channel(`pending-reviews:${userId}`)
+			.on(
+				"postgres_changes",
+				{
+					event: "*",
+					schema: "learning",
+					table: "user_cards",
+					filter: `user_id=eq.${userId}`,
+				},
+				() => {
+					scheduleRefresh();
+				},
+			)
+			.subscribe();
+
+		return () => {
+			if (refreshTimeoutId !== null) {
+				window.clearTimeout(refreshTimeoutId);
+			}
+
+			void supabase.removeChannel(channel);
+		};
+	}, [authLoading, enableAutoRefresh, refreshInternal, userId]);
 
 	return {
 		count,

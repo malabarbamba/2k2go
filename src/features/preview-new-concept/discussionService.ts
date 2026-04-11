@@ -5,6 +5,7 @@ import type {
 	TablesInsert,
 	TablesUpdate,
 } from "@/integrations/supabase/types";
+import { getCurrentAuthUserId } from "@/lib/authSessionCache";
 import type { VocabCard } from "@/lib/deck-perso-adapters";
 
 export const PREVIEW_DISCUSSION_AUDIO_BUCKET =
@@ -13,7 +14,7 @@ export const PREVIEW_DISCUSSION_SIGNED_URL_TTL_SECONDS = 60 * 60;
 
 const PREVIEW_DISCUSSION_AUTH_MESSAGE =
 	"Tu dois etre connecte pour utiliser les discussions du preview.";
-const PREVIEW_DISCUSSION_MAX_AUDIO_DURATION_MS = 7000;
+const PREVIEW_DISCUSSION_MAX_AUDIO_DURATION_MS = 5000;
 const PREVIEW_DISCUSSION_MAX_REPLY_TEXT_LENGTH = 70;
 const PREVIEW_DISCUSSION_TEXT_MESSAGE_SELECT_COLUMNS =
 	"id, user_id, vocabulary_card_id, foundation_card_id, message_text, created_at, updated_at";
@@ -54,6 +55,16 @@ type PreviewDiscussionCardIds = {
 	foundationCardId: string | null;
 	vocabularyCardId: string | null;
 };
+
+type PreviewDiscussionCardLike = Pick<
+	VocabCard,
+	| "foundationCardId"
+	| "vocabularyCardId"
+	| "source"
+	| "sourceType"
+	| "id"
+	| "remoteId"
+>;
 
 export type PreviewDiscussionCardRef =
 	| {
@@ -185,6 +196,18 @@ const trimOptionalString = (value: unknown): string | null => {
 	return trimmedValue.length > 0 ? trimmedValue : null;
 };
 
+const UUID_PATTERN =
+	/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const normalizePreviewDiscussionCardId = (value: unknown): string | null => {
+	const normalizedValue = trimOptionalString(value);
+	if (!normalizedValue || !UUID_PATTERN.test(normalizedValue)) {
+		return null;
+	}
+
+	return normalizedValue;
+};
+
 const normalizeAudioDurationMs = (value: unknown): number | null => {
 	if (typeof value !== "number" || !Number.isFinite(value)) {
 		return null;
@@ -305,8 +328,10 @@ const buildPreviewDiscussionCardRefFromIds = ({
 	foundationCardId,
 	vocabularyCardId,
 }: PreviewDiscussionCardIds): PreviewDiscussionCardRef => {
-	const normalizedVocabularyCardId = trimOptionalString(vocabularyCardId);
-	const normalizedFoundationCardId = trimOptionalString(foundationCardId);
+	const normalizedVocabularyCardId =
+		normalizePreviewDiscussionCardId(vocabularyCardId);
+	const normalizedFoundationCardId =
+		normalizePreviewDiscussionCardId(foundationCardId);
 
 	if (normalizedVocabularyCardId && !normalizedFoundationCardId) {
 		return {
@@ -329,9 +354,80 @@ const buildPreviewDiscussionCardRefFromIds = ({
 	}
 
 	throw new Error(
-		"La discussion preview exige exactement un vocabularyCardId ou un foundationCardId.",
+		"La discussion preview exige exactement un vocabularyCardId ou un foundationCardId UUID.",
 	);
 };
+
+const resolvePreviewDiscussionCardIdsFromCard = (
+	card: PreviewDiscussionCardLike,
+): PreviewDiscussionCardIds => {
+	const explicitVocabularyCardId = normalizePreviewDiscussionCardId(
+		card.vocabularyCardId ?? null,
+	);
+	const explicitFoundationCardId = normalizePreviewDiscussionCardId(
+		card.foundationCardId ?? null,
+	);
+
+	if (
+		(explicitVocabularyCardId && !explicitFoundationCardId) ||
+		(explicitFoundationCardId && !explicitVocabularyCardId)
+	) {
+		return {
+			foundationCardId: explicitFoundationCardId,
+			vocabularyCardId: explicitVocabularyCardId,
+		};
+	}
+
+	const fallbackPersistedId = normalizePreviewDiscussionCardId(
+		card.remoteId ?? card.id,
+	);
+	if (!fallbackPersistedId) {
+		return {
+			foundationCardId: null,
+			vocabularyCardId: null,
+		};
+	}
+
+	const normalizedSource = trimOptionalString(card.source)?.toLowerCase();
+	const normalizedSourceType = trimOptionalString(card.sourceType)?.toLowerCase();
+	const isFoundationCard =
+		normalizedSource === "foundation" || normalizedSourceType === "foundation";
+	const isVocabularyCard =
+		normalizedSource === "vocabulary" ||
+		normalizedSourceType === "collected" ||
+		normalizedSourceType === "sent";
+
+	if (isFoundationCard && !isVocabularyCard) {
+		return {
+			foundationCardId: fallbackPersistedId,
+			vocabularyCardId: null,
+		};
+	}
+
+	if (isVocabularyCard && !isFoundationCard) {
+		return {
+			foundationCardId: null,
+			vocabularyCardId: fallbackPersistedId,
+		};
+	}
+
+	return {
+		foundationCardId: null,
+		vocabularyCardId: null,
+	};
+};
+
+export function isPreviewDiscussionCardSupported(
+	card: PreviewDiscussionCardLike,
+): boolean {
+	const { foundationCardId, vocabularyCardId } =
+		resolvePreviewDiscussionCardIdsFromCard(card);
+
+	return Boolean(
+		(vocabularyCardId && !foundationCardId) ||
+			(foundationCardId && !vocabularyCardId),
+	);
+}
 
 const toPreviewDiscussionCardRef = (
 	value: PreviewDiscussionCardRef | VocabCard,
@@ -348,30 +444,7 @@ const toPreviewDiscussionCardColumns = (
 });
 
 const getPreviewDiscussionCurrentUserId = async (): Promise<string | null> => {
-	try {
-		const { data, error } = await supabase.auth.getUser();
-		if (!error && data.user?.id) {
-			return data.user.id;
-		}
-	} catch {
-		// Fallback to getSession below.
-	}
-
-	try {
-		const { data, error } = await supabase.auth.getSession();
-		const sessionUserId = data.session?.user?.id ?? null;
-		if (
-			!error &&
-			typeof sessionUserId === "string" &&
-			sessionUserId.length > 0
-		) {
-			return sessionUserId;
-		}
-	} catch {
-		return null;
-	}
-
-	return null;
+	return getCurrentAuthUserId();
 };
 
 const requirePreviewDiscussionCurrentUserId = async (): Promise<string> => {
@@ -720,12 +793,11 @@ const mapPreviewDiscussionAudioReplyRow = ({
 });
 
 export function buildPreviewDiscussionCardRef(
-	card: Pick<VocabCard, "foundationCardId" | "vocabularyCardId">,
+	card: PreviewDiscussionCardLike,
 ): PreviewDiscussionCardRef {
-	return buildPreviewDiscussionCardRefFromIds({
-		foundationCardId: card.foundationCardId ?? null,
-		vocabularyCardId: card.vocabularyCardId ?? null,
-	});
+	return buildPreviewDiscussionCardRefFromIds(
+		resolvePreviewDiscussionCardIdsFromCard(card),
+	);
 }
 
 export function buildPreviewDiscussionAudioObjectPath({

@@ -9,7 +9,10 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { foundation2kDeck } from "@/data/foundation2kDeck";
 import { buildCollectedCardSourceLinkPath } from "@/data/immersionVideoRouting";
 import type { Database } from "@/integrations/supabase/types";
-import { resolveFoundationDeckMedia } from "@/lib/foundationDeckMedia";
+import {
+	resolveFoundationDeckMedia,
+	resolveFoundationDeckMediaByFrequencyRank,
+} from "@/lib/foundationDeckMedia";
 import type { GetDueCardsV2Row } from "@/lib/supabase/rpc";
 import { repairMojibake } from "@/lib/textEncoding";
 
@@ -249,12 +252,18 @@ export function supabaseCardToVocabCard(
 						normalizedCategory === "alphabet_arabe"
 					? "alphabet"
 					: "collected";
+	const foundationFrequencyRank = readOptionalNumber(
+		(record as { frequency_rank?: unknown }).frequency_rank,
+	);
 	const foundationMedia = isFoundationMediaCard
-		? resolveFoundationDeckMedia(
-				baseArabic,
-				stripHarakat(baseArabic),
-				sentenceAr,
-			)
+		? {
+				...resolveFoundationDeckMediaByFrequencyRank(foundationFrequencyRank),
+				...resolveFoundationDeckMedia(
+					baseArabic,
+					stripHarakat(baseArabic),
+					sentenceAr,
+				),
+		  }
 		: {};
 	const vocabAudioUrl =
 		foundationMedia.vocabAudioUrl ?? readOptionalString(record.audio_url);
@@ -336,6 +345,24 @@ export function supabaseCardToVocabCard(
 			sourceVideoIsShort,
 			sourceWordStartSeconds,
 		});
+	const fsrsStateRaw = (record as { fsrs_state?: unknown }).fsrs_state;
+	const statusFromFsrsState =
+		typeof fsrsStateRaw === "number" && Number.isFinite(fsrsStateRaw)
+			? fsrsStateRaw === 0
+				? "new"
+				: fsrsStateRaw === 1
+					? "learning"
+					: fsrsStateRaw === 2
+						? "review"
+						: undefined
+			: undefined;
+	const rawStatus =
+		readOptionalString((record as { status?: unknown }).status) ??
+		readOptionalString((record as { state?: unknown }).state);
+	const status =
+		typeof rawStatus === "string" && rawStatus.length > 0
+			? rawStatus.toLowerCase()
+			: statusFromFsrsState;
 
 	return {
 		id,
@@ -382,7 +409,7 @@ export function supabaseCardToVocabCard(
 		nextReviewAt:
 			record.next_review_at ??
 			((record as { due_at?: unknown }).due_at as string | null | undefined),
-		status: record.status ?? undefined,
+		status,
 	};
 }
 

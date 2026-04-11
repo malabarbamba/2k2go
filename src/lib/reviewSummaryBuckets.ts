@@ -11,7 +11,7 @@ export type ReviewSummaryCounts = {
 export function resolveReviewSummaryBucket(
 	status: string | null | undefined,
 ): ReviewSummaryBucket {
-	const normalizedStatus = status?.toLowerCase();
+	const normalizedStatus = status?.trim().toLowerCase();
 	if (normalizedStatus === "new") {
 		return "new";
 	}

@@ -231,6 +231,11 @@ html {
 	scrollbar-gutter: stable both-edges;
 }
 
+html[data-dialog-open="true"],
+body[data-dialog-open="true"] {
+	scrollbar-gutter: auto;
+}
+
 html.landing-scrollbar-theme,
 body.landing-scrollbar-theme,
 html.landing-scrollbar-theme *,

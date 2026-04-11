@@ -42,7 +42,12 @@ import type {
 	DeckSourceType,
 	SearchCardsV2Row,
 } from "@/services/deckPersoService";
-import type { FriendListItem } from "@/services/friendsService";
+import type {
+	FriendListItem,
+	IncomingFriendRequest,
+	OutgoingFriendRequest,
+} from "@/services/friendsService";
+import { getProfileSocialSummary } from "@/services/profilePageService";
 import { fetchWordsAcquiredCount } from "@/services/profileProgressService";
 
 const LazyVocabGrid = lazy(() =>
@@ -733,10 +738,14 @@ function resolveContactDisplayName(friend: FriendListItem): string {
 }
 
 function formatLastActivityLabel(
-	connectedAt: string,
+	activityAt: string | null,
 	isEnglish: boolean,
 ): string | null {
-	const date = new Date(connectedAt);
+	if (!activityAt) {
+		return null;
+	}
+
+	const date = new Date(activityAt);
 	if (Number.isNaN(date.getTime())) {
 		return null;
 	}
@@ -747,34 +756,48 @@ function formatLastActivityLabel(
 	if (elapsedSeconds < 60) {
 		return isEnglish
 			? `${elapsedSeconds} second${elapsedSeconds > 1 ? "s" : ""} ago`
-			: `dernière activité il y a ${elapsedSeconds} seconde${elapsedSeconds > 1 ? "s" : ""}`;
+			: `il y a ${elapsedSeconds} seconde${elapsedSeconds > 1 ? "s" : ""}`;
 	}
 
 	const elapsedMinutes = Math.floor(elapsedSeconds / 60);
 	if (elapsedMinutes < 60) {
 		return isEnglish
 			? `${elapsedMinutes} minute${elapsedMinutes > 1 ? "s" : ""} ago`
-			: `dernière activité il y a ${elapsedMinutes} minute${elapsedMinutes > 1 ? "s" : ""}`;
+			: `il y a ${elapsedMinutes} minute${elapsedMinutes > 1 ? "s" : ""}`;
 	}
 
 	const elapsedHours = Math.floor(elapsedMinutes / 60);
 	if (elapsedHours < 24) {
 		return isEnglish
 			? `${elapsedHours} hour${elapsedHours > 1 ? "s" : ""} ago`
-			: `dernière activité il y a ${elapsedHours} heure${elapsedHours > 1 ? "s" : ""}`;
+			: `il y a ${elapsedHours} heure${elapsedHours > 1 ? "s" : ""}`;
 	}
 
 	const elapsedDays = Math.floor(elapsedHours / 24);
 	if (elapsedDays < 7) {
 		return isEnglish
 			? `${elapsedDays} day${elapsedDays > 1 ? "s" : ""} ago`
-			: `dernière activité il y a ${elapsedDays} jour${elapsedDays > 1 ? "s" : ""}`;
+			: `il y a ${elapsedDays} jour${elapsedDays > 1 ? "s" : ""}`;
 	}
 
 	const elapsedWeeks = Math.floor(elapsedDays / 7);
+	if (elapsedWeeks < 5) {
+		return isEnglish
+			? `${elapsedWeeks} week${elapsedWeeks > 1 ? "s" : ""} ago`
+			: `il y a ${elapsedWeeks} semaine${elapsedWeeks > 1 ? "s" : ""}`;
+	}
+
+	const elapsedMonths = Math.floor(elapsedDays / 30);
+	if (elapsedMonths < 12) {
+		return isEnglish
+			? `${elapsedMonths} month${elapsedMonths > 1 ? "s" : ""} ago`
+			: `il y a ${elapsedMonths} mois`;
+	}
+
+	const elapsedYears = Math.floor(elapsedDays / 365);
 	return isEnglish
-		? `${elapsedWeeks} week${elapsedWeeks > 1 ? "s" : ""} ago`
-		: `dernière activité il y a ${elapsedWeeks} semaine${elapsedWeeks > 1 ? "s" : ""}`;
+		? `${elapsedYears} year${elapsedYears > 1 ? "s" : ""} ago`
+		: `il y a ${elapsedYears} an${elapsedYears > 1 ? "s" : ""}`;
 }
 
 function resolveProfileDisplayName(
@@ -1674,7 +1697,7 @@ function AppV2ImmersionVideoPage({
 				}}
 			>
 				{isEnglish
-					? "tip: watch videos you actually understand. your personal word list automatically unlocks matching youtube content, so you never waste time on videos that are too hard."
+					? "tip: the very own vocabulary you know unlocks matching youtube content using ai-powered data matching, so you get the most efficient immersive content."
 					: "astuce : interroge des vidéos youtube et calcule le pourcentage de vocabulaire d'une vidéo qui recoupe tes mots connus. résultats : regarde des vidéos que tu comprends vraiment. tes mots débloquent les bonnes vidéos youtube. zéro temps perdu sur du contenu trop dur."}
 			</p>
 		</div>
@@ -1703,6 +1726,10 @@ function AppV2ProfilePage({
 	const [bankGridData, setBankGridData] = useState<VocabGridData | null>(null);
 	const [isBankGridLoading, setIsBankGridLoading] = useState(false);
 	const [bankGridError, setBankGridError] = useState<string | null>(null);
+	const [profileAudioRecordedCount, setProfileAudioRecordedCount] = useState(0);
+	const [profileLastActivityAt, setProfileLastActivityAt] = useState<string | null>(
+		null,
+	);
 	const [cachedProfile, setCachedProfile] = useState<UserProfile | null>(() =>
 		readAppV2ProfileCache(getAppV2ProfileCacheByUsernameKey(username)),
 	);
@@ -1732,6 +1759,43 @@ function AppV2ProfilePage({
 	useEffect(() => {
 		setBioInput(displayedProfile?.bio ?? "");
 	}, [displayedProfile?.bio]);
+
+	useEffect(() => {
+		let cancelled = false;
+		const userId = displayedProfile?.user_id;
+
+		if (!userId) {
+			setProfileAudioRecordedCount(0);
+			setProfileLastActivityAt(null);
+			return () => {
+				cancelled = true;
+			};
+		}
+
+		void (async () => {
+			try {
+				const summary = await getProfileSocialSummary(userId);
+				if (cancelled) {
+					return;
+				}
+
+				setProfileAudioRecordedCount(summary.audioRecordedCount);
+				setProfileLastActivityAt(summary.lastActivityAt);
+			} catch (summaryError) {
+				if (cancelled) {
+					return;
+				}
+
+				console.error("Error loading profile social summary:", summaryError);
+				setProfileAudioRecordedCount(0);
+				setProfileLastActivityAt(null);
+			}
+		})();
+
+		return () => {
+			cancelled = true;
+		};
+	}, [displayedProfile?.user_id]);
 
 	useEffect(() => {
 		if (!isOwnDisplayedProfile || !user?.id) {
@@ -1834,6 +1898,12 @@ function AppV2ProfilePage({
 	const countryValue = displayedProfile?.location?.trim() || "";
 	const rawProfileBio = displayedProfile?.bio?.trim() || "";
 	const displayedProfileBio = rawProfileBio.length > 0 ? rawProfileBio : "...";
+	const lastActivityLabel = formatLastActivityLabel(profileLastActivityAt, isEnglish);
+	const profileAudioRecordedLabel = isEnglish
+		? `total audios recorded : ${profileAudioRecordedCount}`
+		: `total des audios enregistrés : ${profileAudioRecordedCount}`;
+	const profileLastActivityLabel =
+		lastActivityLabel ?? (isEnglish ? "unknown" : "inconnue");
 	const bioTextareaRef = usePretextAutoResize(
 		bioInput,
 		APP_V2_PRETEXT_BODY_FONT,
@@ -1998,6 +2068,19 @@ function AppV2ProfilePage({
 								@{usernameValue}
 							</p>
 						) : null}
+						<p
+							style={{
+								...baseTextStyle,
+								margin: "10px 0 0 0",
+								lineHeight: 1.15,
+							}}
+						>
+							{profileAudioRecordedLabel}
+						</p>
+						<p style={{ ...baseTextStyle, margin: 0, lineHeight: 1.15 }}>
+							{isEnglish ? "last activity:" : "dernière activité :"}{" "}
+							{profileLastActivityLabel}
+						</p>
 						{countryValue.length > 0 ? (
 							<p style={{ ...baseTextStyle, margin: 0, lineHeight: 1.15 }}>
 								{countryValue}
@@ -2919,10 +3002,20 @@ function AppV2SettingsPage({ monComptePath }: { monComptePath: string }) {
 					/>
 				</div>
 
-				<p style={{ ...baseTextStyle, marginTop: "10px" }}>{isEnglish ? "reminders" : "rappels"}</p>
+			</div>
+
+			<div
+				style={{
+					marginTop: "10px",
+					padding: "10px",
+					backgroundColor: "#efefef",
+					border: "1px solid #d6d6d6",
+				}}
+			>
+				<p style={baseTextStyle}>{isEnglish ? "vocab cards reminders" : "rappels"}</p>
 				<div style={{ marginTop: "8px" }}>
 					<p style={{ ...baseTextStyle, margin: 0 }}>
-						{isEnglish ? "review reminder email" : "email de rappel de révision"}{" "}
+						{isEnglish ? "email reminders" : "email de rappel de révision"}{" "}
 						<label style={baseTextStyle}>
 							<input
 								type="radio"
@@ -3049,10 +3142,19 @@ function AppV2ContactsPage({
 }) {
 	const isEnglish = useIsEnglishApp();
 	const [contacts, setContacts] = useState<FriendListItem[]>([]);
+	const [incomingRequests, setIncomingRequests] = useState<IncomingFriendRequest[]>(
+		[],
+	);
+	const [outgoingRequests, setOutgoingRequests] = useState<OutgoingFriendRequest[]>(
+		[],
+	);
 	const [isLoading, setIsLoading] = useState(hasSession);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [usernameInput, setUsernameInput] = useState("");
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [pendingActionRequestId, setPendingActionRequestId] = useState<
+		string | null
+	>(null);
 	const [isAddButtonHovered, setIsAddButtonHovered] = useState(false);
 	const {
 		message: contactInlineMessage,
@@ -3062,6 +3164,8 @@ function AppV2ContactsPage({
 	const refreshContacts = useCallback(async () => {
 		if (!hasSession) {
 			setContacts([]);
+			setIncomingRequests([]);
+			setOutgoingRequests([]);
 			setIsLoading(false);
 			setErrorMessage(null);
 			return;
@@ -3071,11 +3175,16 @@ function AppV2ContactsPage({
 		setErrorMessage(null);
 
 		try {
-			const { loadPreviewConnections } = await import(
+			const { loadPreviewConnectionRequests, loadPreviewConnections } = await import(
 				"@/features/preview-new-concept/services"
 			);
-			const result = await loadPreviewConnections();
-			setContacts(result);
+			const [connectionsResult, requestsResult] = await Promise.all([
+				loadPreviewConnections(),
+				loadPreviewConnectionRequests(),
+			]);
+			setContacts(connectionsResult);
+			setIncomingRequests(requestsResult.incomingRequests);
+			setOutgoingRequests(requestsResult.outgoingRequests);
 		} catch (error) {
 			console.error("Error loading app-v2 contacts:", error);
 			setErrorMessage(
@@ -3168,6 +3277,126 @@ function AppV2ContactsPage({
 		[isEnglish, refreshContacts, showContactInlineMessage, usernameInput],
 	);
 
+	const handleRespondToContactRequest = useCallback(
+		async (requestId: string, action: "accept" | "decline") => {
+			setPendingActionRequestId(requestId);
+
+			try {
+				const { respondToPreviewConnectionRequest } = await import(
+					"@/features/preview-new-concept/services"
+				);
+				const status = await respondToPreviewConnectionRequest(requestId, action);
+				if (status === "accepted") {
+					showContactInlineMessage(
+						isEnglish
+							? "Contact request accepted."
+							: "Demande de contact acceptée.",
+					);
+				} else {
+					showContactInlineMessage(
+						isEnglish
+							? "Contact request declined."
+							: "Demande de contact refusée.",
+					);
+				}
+				await refreshContacts();
+			} catch (error) {
+				const code = error instanceof Error ? error.message : "UNKNOWN_ERROR";
+				switch (code) {
+					case "INVALID_FRIEND_REQUEST_ID":
+					case "NOT_FOUND":
+						showContactInlineMessage(
+							isEnglish
+								? "This request is no longer available."
+								: "Cette demande n'est plus disponible.",
+						);
+						break;
+					default:
+						showContactInlineMessage(
+							isEnglish
+								? "Unable to process this contact request."
+								: "Impossible de traiter cette demande de contact.",
+						);
+				}
+			} finally {
+				setPendingActionRequestId(null);
+			}
+		},
+		[isEnglish, refreshContacts, showContactInlineMessage],
+	);
+
+	const renderContactAvatar = useCallback(
+		(avatarUrl: string | null, fallbackLabel: string) => {
+			const fallbackInitial = fallbackLabel
+				.replace(/^@+/, "")
+				.trim()
+				.slice(0, 1)
+				.toUpperCase();
+
+			if (avatarUrl) {
+				return (
+					<img
+						src={avatarUrl}
+						alt={fallbackLabel}
+						style={{
+							width: "24px",
+							height: "24px",
+							borderRadius: 0,
+							objectFit: "cover",
+							flexShrink: 0,
+						}}
+					/>
+				);
+			}
+
+			return (
+				<div
+					aria-hidden="true"
+					style={{
+						width: "24px",
+						height: "24px",
+						borderRadius: 0,
+						backgroundColor: "#d9d9d9",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+						fontSize: "12px",
+						lineHeight: 1,
+						flexShrink: 0,
+					}}
+				>
+					{fallbackInitial || "?"}
+				</div>
+			);
+		},
+		[],
+	);
+
+	const resolvePendingContactLabel = useCallback(
+		(
+			username: string | null,
+			firstName: string | null,
+			lastName: string | null,
+		): string => {
+			if (username?.trim()) {
+				return `@${username.trim()}`;
+			}
+
+			const fullName = [firstName, lastName].filter(Boolean).join(" ").trim();
+			if (fullName) {
+				return fullName;
+			}
+
+			return isEnglish ? "contact" : "contact";
+		},
+		[isEnglish],
+	);
+
+	const hasAnyConnections =
+		contacts.length > 0 ||
+		incomingRequests.length > 0 ||
+		outgoingRequests.length > 0;
+
 	return (
 		<div style={{ textAlign: "left", marginTop: "14px" }}>
 			<p style={{ ...baseTextStyle, margin: 0 }}>
@@ -3234,39 +3463,151 @@ function AppV2ContactsPage({
 					<p style={baseTextStyle}>{isEnglish ? "loading..." : "chargement..."}</p>
 				) : errorMessage ? (
 					<p style={baseTextStyle}>{errorMessage}</p>
-				) : contacts.length === 0 ? (
+				) : !hasAnyConnections ? (
 					<p style={baseTextStyle}>{isEnglish ? "no contacts yet." : "aucun contact pour le moment."}</p>
 				) : (
-					<ul style={{ margin: 0, paddingLeft: "18px" }}>
-						{contacts.map((friend) => {
-							const displayName = resolveContactDisplayName(friend);
-							const connectedLabel = formatLastActivityLabel(
-								friend.connectedAt,
-								isEnglish,
-							);
+					<div>
+						{outgoingRequests.length > 0 ? (
+							<div style={{ marginBottom: "12px" }}>
+								<p style={{ ...baseTextStyle, marginTop: 0, marginBottom: "6px" }}>
+									{isEnglish ? "pending requests" : "demandes en attente"}
+								</p>
+								<ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+									{outgoingRequests.map((request) => {
+										const displayName = resolvePendingContactLabel(
+											request.username,
+											request.firstName,
+											request.lastName,
+										);
 
-							return (
-								<li key={friend.userId} style={{ marginBottom: "6px" }}>
-									{friend.username ? (
-										<Link
-											to={buildAppV2AccountPath(friend.username)}
-											style={plainLinkStyle}
-											onClick={(event) => {
-												event.preventDefault();
-												onOpenContact(friend);
-											}}
-										>
-											{displayName}
-										</Link>
-									) : (
-										<span style={baseTextStyle}>{displayName}</span>
-									)}
-									{friend.email ? ` — ${friend.email}` : ""}
-									{connectedLabel ? ` — ${connectedLabel}` : ""}
-								</li>
-							);
-						})}
-					</ul>
+										return (
+											<li key={request.requestId} style={{ marginBottom: "6px" }}>
+												<div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+													{renderContactAvatar(request.avatarUrl, displayName)}
+													<span style={baseTextStyle}>{displayName}</span>
+													<span style={{ ...baseTextStyle, fontStyle: "italic" }}>
+														{isEnglish ? "pending" : "en attente"}
+													</span>
+												</div>
+											</li>
+										);
+									})}
+								</ul>
+							</div>
+						) : null}
+
+						{incomingRequests.length > 0 ? (
+							<div style={{ marginBottom: "12px" }}>
+								<p style={{ ...baseTextStyle, marginTop: 0, marginBottom: "6px" }}>
+									{isEnglish ? "received requests" : "demandes reçues"}
+								</p>
+								<ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+									{incomingRequests.map((request) => {
+										const displayName = resolvePendingContactLabel(
+											request.username,
+											request.firstName,
+											request.lastName,
+										);
+										const isPendingAction =
+											pendingActionRequestId === request.requestId;
+
+										return (
+											<li key={request.requestId} style={{ marginBottom: "6px" }}>
+												<div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+													{renderContactAvatar(request.avatarUrl, displayName)}
+													{request.username ? (
+														<Link
+															to={buildAppV2AccountPath(request.username)}
+															style={plainLinkStyle}
+														>
+															{displayName}
+														</Link>
+													) : (
+														<span style={baseTextStyle}>{displayName}</span>
+													)}
+													<button
+														type="button"
+														disabled={isPendingAction}
+														onClick={() => {
+															void handleRespondToContactRequest(
+																request.requestId,
+																"decline",
+															);
+														}}
+														style={{
+															...appV2ButtonBaseStyle,
+															padding: "1px 8px",
+														}}
+													>
+														{isEnglish ? "decline" : "refuser"}
+													</button>
+													<button
+														type="button"
+														disabled={isPendingAction}
+														onClick={() => {
+															void handleRespondToContactRequest(
+																request.requestId,
+																"accept",
+															);
+														}}
+														style={{
+															...appV2ButtonBaseStyle,
+															padding: "1px 8px",
+														}}
+													>
+														{isEnglish ? "accept" : "accepter"}
+													</button>
+												</div>
+											</li>
+										);
+									})}
+								</ul>
+							</div>
+						) : null}
+
+						{contacts.length > 0 ? (
+							<div>
+								<p style={{ ...baseTextStyle, marginTop: 0, marginBottom: "6px" }}>
+									{isEnglish ? "contacts" : "contacts"}
+								</p>
+								<ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+									{contacts.map((friend) => {
+										const displayName = resolveContactDisplayName(friend);
+										const connectedLabel = formatLastActivityLabel(
+											friend.lastActivityAt,
+											isEnglish,
+										);
+
+										return (
+											<li key={friend.userId} style={{ marginBottom: "6px" }}>
+												<div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+													{renderContactAvatar(friend.avatarUrl, displayName)}
+													{friend.username ? (
+														<Link
+															to={buildAppV2AccountPath(friend.username)}
+															style={plainLinkStyle}
+															onClick={(event) => {
+																event.preventDefault();
+																onOpenContact(friend);
+															}}
+														>
+															{displayName}
+														</Link>
+													) : (
+														<span style={baseTextStyle}>{displayName}</span>
+													)}
+													<span style={baseTextStyle}>
+														{isEnglish ? "last activity:" : "dernière activité :"}{" "}
+														{connectedLabel ?? (isEnglish ? "unknown" : "inconnue")}
+													</span>
+												</div>
+											</li>
+										);
+									})}
+								</ul>
+							</div>
+						) : null}
+					</div>
 				)}
 			</div>
 		</div>

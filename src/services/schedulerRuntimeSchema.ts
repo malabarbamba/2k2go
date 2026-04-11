@@ -16,7 +16,7 @@ const SchedulerDueQueueEntrySchema = z
 		example_sentence_fr: NullableString,
 		audio_url: NullableString,
 		category: NullableString,
-		status: z.enum(["new", "learning", "review", "mastered"]),
+		status: z.enum(["new", "learning", "relearning", "review", "mastered"]),
 		next_review_at: NullableString,
 		added_to_deck_at: NullableString,
 		first_seen_at: NullableString,

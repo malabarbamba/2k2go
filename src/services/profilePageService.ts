@@ -56,6 +56,11 @@ export type ProfileProgressionSummary = {
 	unlockedDistinctionIds: DistinctionId[];
 };
 
+export type ProfileSocialSummary = {
+	audioRecordedCount: number;
+	lastActivityAt: string | null;
+};
+
 type ConnectionContextRow = {
 	relationship_state: string;
 	connection_count: number;
@@ -325,6 +330,35 @@ export const getProfileProgressionSummary = async (
 		objectives: buildObjectives(row),
 		unlockedDistinctionIds: (row.unlocked_distinction_ids ??
 			[]) as DistinctionId[],
+	};
+};
+
+export const getProfileSocialSummary = async (
+	targetUserId: string,
+): Promise<ProfileSocialSummary> => {
+	const { data, error } = await supabase.rpc("get_profile_social_summary_v1", {
+		p_target_user_id: targetUserId,
+	});
+
+	if (error) {
+		throw new Error(getRpcErrorCode(error.message));
+	}
+
+	const row = (data?.[0] ?? null) as {
+		audio_recorded_count?: number | null;
+		last_activity_at?: string | null;
+	} | null;
+
+	if (!row) {
+		throw new Error("INVALID_PROFILE_SOCIAL_SUMMARY_RESPONSE");
+	}
+
+	return {
+		audioRecordedCount: Math.max(0, Math.floor(row.audio_recorded_count ?? 0)),
+		lastActivityAt:
+			typeof row.last_activity_at === "string" && row.last_activity_at.trim().length > 0
+				? row.last_activity_at
+				: null,
 	};
 };
 

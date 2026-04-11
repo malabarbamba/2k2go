@@ -28,6 +28,8 @@ import {
 	deleteGuestCollectedCardMediaSlot,
 	saveGuestCollectedCardMediaAssets,
 } from "@/lib/guestCollectedCardMediaStore";
+import { getCurrentAuthUserId } from "@/lib/authSessionCache";
+import { emitPendingReviewsInvalidated } from "@/lib/pendingReviewsEvents";
 import { emitProfileInsightsRefresh } from "@/lib/profileInsightsEvents";
 import {
 	addCardToPersonalDeckV2,
@@ -610,18 +612,12 @@ function ensureOnlineReplayListener(): void {
 async function resolveAccountKey(
 	client: AppSupabaseClient | null,
 ): Promise<string> {
-	if (!client || !client.auth || typeof client.auth.getUser !== "function") {
+	if (!client) {
 		return "anonymous";
 	}
-	try {
-		const { data, error } = await client.auth.getUser();
-		if (error || !data.user?.id) {
-			return "anonymous";
-		}
-		return data.user.id;
-	} catch {
-		return "anonymous";
-	}
+
+	const userId = await getCurrentAuthUserId();
+	return userId ?? "anonymous";
 }
 
 async function claimActiveReviewSessionLease(
@@ -1134,23 +1130,14 @@ function serializeServiceResultForShadow<T>(
 async function resolveSchedulerShadowDiffContext(
 	client: AppSupabaseClient,
 ): Promise<SchedulerShadowDiffContext> {
-	if (!client.auth || typeof client.auth.getUser !== "function") {
+	if (!client.auth) {
 		return { userId: null, enabled: false };
 	}
 
-	try {
-		const { data, error } = await client.auth.getUser();
-		if (error) {
-			return { userId: null, enabled: false };
-		}
-
-		return {
-			userId: data.user?.id ?? null,
-			enabled: false,
-		};
-	} catch {
-		return { userId: null, enabled: false };
-	}
+	return {
+		userId: await getCurrentAuthUserId(),
+		enabled: false,
+	};
 }
 
 async function resolveActiveWeightsVersion(
@@ -1378,7 +1365,7 @@ function parseFoundationFocus(value: unknown): number | null {
 	return Number.isFinite(parsed) ? parsed : null;
 }
 
-function compareFoundationCardsByFocus(
+function compareCardsByFocus(
 	left: VocabCard,
 	right: VocabCard,
 ): number {
@@ -1408,28 +1395,25 @@ function compareFoundationCardsByFocus(
 }
 
 function orderFoundationCardsByFocus(cards: VocabCard[]): VocabCard[] {
-	const foundationPositions: number[] = [];
-	const foundationCards: VocabCard[] = [];
+	const newCardPositions: number[] = [];
+	const newCards: VocabCard[] = [];
 
 	cards.forEach((card, index) => {
-		if (card.source !== "foundation") {
+		if (card.status?.toLowerCase() !== "new") {
 			return;
 		}
-		foundationPositions.push(index);
-		foundationCards.push(card);
+		newCardPositions.push(index);
+		newCards.push(card);
 	});
 
-	if (foundationCards.length < 2) {
+	if (newCards.length < 2) {
 		return cards;
 	}
 
-	const sortedFoundationCards = [...foundationCards]
+	const sortedFoundationCards = [...newCards]
 		.map((card, index) => ({ card, index }))
 		.sort((left, right) => {
-			const focusComparison = compareFoundationCardsByFocus(
-				left.card,
-				right.card,
-			);
+			const focusComparison = compareCardsByFocus(left.card, right.card);
 			if (focusComparison !== 0) {
 				return focusComparison;
 			}
@@ -1438,7 +1422,7 @@ function orderFoundationCardsByFocus(cards: VocabCard[]): VocabCard[] {
 		.map((entry) => entry.card);
 	const orderedCards = [...cards];
 
-	foundationPositions.forEach((position, index) => {
+	newCardPositions.forEach((position, index) => {
 		orderedCards[position] = sortedFoundationCards[index];
 	});
 
@@ -5866,6 +5850,7 @@ async function submitReviewNow(
 				markRecentReview(cardKey);
 				clearClientReviewId(cardKey);
 			}
+			emitPendingReviewsInvalidated();
 			emitProfileInsightsRefresh();
 			return {
 				ok: true,
@@ -6170,6 +6155,7 @@ async function submitReviewNow(
 
 			markRecentReview(cardKey);
 			clearClientReviewId(cardKey);
+			emitPendingReviewsInvalidated();
 			emitProfileInsightsRefresh();
 			return { ok: true, data: runtimeReviewResponse };
 		}
@@ -6255,6 +6241,9 @@ export async function replayQueuedReviews(): Promise<ReviewReplayResult> {
 		};
 
 		persistReviewQueueState(nextState);
+		if (succeeded > 0) {
+			emitPendingReviewsInvalidated();
+		}
 		return {
 			processed,
 			succeeded,

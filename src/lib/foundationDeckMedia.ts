@@ -8,6 +8,7 @@ type FoundationMedia = {
 };
 
 type FoundationMediaRecord = {
+	frequencyRank: number;
 	vocabFull: string;
 	vocabBase: string;
 	sentFull: string;
@@ -176,12 +177,13 @@ function buildFoundationMediaRecords(): FoundationMediaRecord[] {
 	};
 
 	return dataRows
-		.map((row) => {
+		.map((row, index) => {
 			const vocabFull = getCell(row, "VocabFull").trim();
 			const vocabBase = getCell(row, "VocabBase").trim();
 			const sentFull = getCell(row, "SentFull").trim();
 			const sentBase = getCell(row, "SentBase").trim();
 			return {
+				frequencyRank: index + 1,
 				vocabFull,
 				vocabBase,
 				sentFull,
@@ -196,6 +198,7 @@ function buildFoundationMediaRecords(): FoundationMediaRecord[] {
 
 const foundationMediaByNormalizedWord = new Map<string, FoundationMedia>();
 const foundationMediaByNormalizedSentence = new Map<string, FoundationMedia>();
+const foundationMediaByFrequencyRank = new Map<number, FoundationMedia>();
 
 for (const record of buildFoundationMediaRecords()) {
 	const media: FoundationMedia = {
@@ -224,6 +227,24 @@ for (const record of buildFoundationMediaRecords()) {
 			foundationMediaByNormalizedWord.set(key, media);
 		}
 	}
+
+	if (!foundationMediaByFrequencyRank.has(record.frequencyRank)) {
+		foundationMediaByFrequencyRank.set(record.frequencyRank, media);
+	}
+}
+
+export function resolveFoundationDeckMediaByFrequencyRank(
+	frequencyRank: number | null | undefined,
+): FoundationMedia {
+	if (
+		typeof frequencyRank !== "number" ||
+		!Number.isFinite(frequencyRank) ||
+		frequencyRank <= 0
+	) {
+		return {};
+	}
+
+	return foundationMediaByFrequencyRank.get(Math.floor(frequencyRank)) ?? {};
 }
 
 export function resolveFoundationDeckMedia(

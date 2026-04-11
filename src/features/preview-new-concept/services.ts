@@ -5,8 +5,14 @@ import type { ReviewType, VocabCard } from "@/lib/deck-perso-adapters";
 import { normalizeAppNavigationTarget } from "@/lib/appPathNormalizer";
 import { resolveWordsMilestoneMeta } from "@/lib/wordsMilestones";
 import {
+	type IncomingFriendRequest,
 	type FriendListItem,
+	type FriendRequestAction,
+	type OutgoingFriendRequest,
+	listIncomingFriendRequests,
+	listOutgoingFriendRequests,
 	listMyFriends,
+	respondToFriendRequest,
 	sendFriendRequestByUsername,
 } from "@/services/friendsService";
 import { getProfileProgressionSummary } from "@/services/profilePageService";
@@ -171,8 +177,30 @@ export async function loadPreviewConnections() {
 	return listMyFriends();
 }
 
+export async function loadPreviewConnectionRequests(): Promise<{
+	incomingRequests: IncomingFriendRequest[];
+	outgoingRequests: OutgoingFriendRequest[];
+}> {
+	const [incomingRequests, outgoingRequests] = await Promise.all([
+		listIncomingFriendRequests(),
+		listOutgoingFriendRequests(),
+	]);
+
+	return {
+		incomingRequests,
+		outgoingRequests,
+	};
+}
+
 export async function sendPreviewConnectionRequest(usernameInput: string) {
 	return sendFriendRequestByUsername(usernameInput);
+}
+
+export async function respondToPreviewConnectionRequest(
+	requestId: string,
+	action: FriendRequestAction,
+) {
+	return respondToFriendRequest(requestId, action);
 }
 
 const getPreviewReadyMetricsClient = (): PreviewReadyMetricsClient =>

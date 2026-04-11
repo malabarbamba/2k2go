@@ -1,7 +1,6 @@
 import {
 	ArrowRight,
 	Check,
-	ChevronDown,
 	ChevronLeft,
 	Eye,
 	Loader2,
@@ -31,6 +30,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useIsEnglishApp } from "@/contexts/AppLocaleContext";
 import {
 	AUDIO_FILES,
 	type AudioUrls,
@@ -39,7 +39,10 @@ import {
 } from "./VocabCardShared";
 import { useAuth } from "@/contexts/AuthContext";
 import { DEMO_CARDS, demoCardToVocabCard } from "@/data/demoReviewData";
-import type { PreviewDiscussionAudioPost } from "@/features/preview-new-concept/discussionService";
+import {
+	isPreviewDiscussionCardSupported,
+	type PreviewDiscussionAudioPost,
+} from "@/features/preview-new-concept/discussionService";
 import { useMissionProgress } from "@/hooks/useMissionProgress";
 import { useProfile } from "@/hooks/useProfile";
 import type { ReviewType, VocabCard } from "@/lib/deck-perso-adapters";
@@ -54,41 +57,12 @@ import { cn } from "@/lib/utils";
 import { buildAppProfilePath } from "@/routes/routeAuthContract";
 import { useAudio } from "@/services/audioService";
 import {
-	hasCollectedDeckInAccountLight,
-	searchAppVocabularyBank,
-} from "@/services/appVocabularySearchService";
-import {
 	fetchDueCardsByReviewTypes,
 	submitReviewForCard,
 } from "@/services/deckPersoDueReviewService";
 import type { BinaryReviewRating } from "@/services/deckPersoService";
 import type { FriendListItem } from "@/services/friendsService";
-import {
-	type ReviewFilter,
-	ReviewFilterDropdown,
-} from "@/components/deck-perso-visual/ReviewFilterDropdown";
-
-const REVIEW_FILTER_DEFINITIONS = [
-	{ id: 1, label: "Foundations 2000", reviewType: "foundation" },
-	{ id: 2, label: "Collected cards", reviewType: "collected" },
-	{ id: 3, label: "Cards from my teacher", reviewType: "sent" },
-] as const;
-
-// Default filters - counts will be updated dynamically
-// Note: Alphabet deck has its own dedicated mini-deck UX, not FSRS reviews
-const DEFAULT_FILTERS: ReviewFilter[] = REVIEW_FILTER_DEFINITIONS.map(
-	({ id, label }) => ({
-		id,
-		label,
-		checked: true,
-		count: 0,
-	}),
-);
-
-const ALL_REVIEW_TYPES: ReviewType[] = REVIEW_FILTER_DEFINITIONS.map(
-	({ reviewType }) => reviewType,
-);
-const MAX_DECK_AVAILABILITY_SEARCH = 1000;
+const ALL_REVIEW_TYPES: ReviewType[] = ["foundation", "collected", "sent"];
 
 function resolveCardReviewType(
 	card: Pick<VocabCard, "source" | "tags" | "sourceType">,
@@ -133,6 +107,111 @@ function resolveSessionContactDisplayName(friend: FriendListItem): string {
 	return "contact";
 }
 
+function resolveSessionContactInitials(friend: FriendListItem): string {
+	const displayName = resolveSessionContactDisplayName(friend)
+		.replace(/^@/, "")
+		.trim();
+	const parts = displayName.split(/\s+/).filter(Boolean);
+	if (parts.length === 0) {
+		return "CT";
+	}
+
+	return parts
+		.slice(0, 2)
+		.map((part) => part[0]?.toUpperCase() ?? "")
+		.join("");
+}
+
+function formatEnglishRelativeTime(
+	value: string | null | undefined,
+	referenceDate: Date = new Date(),
+): string {
+	if (!value) {
+		return "just now";
+	}
+
+	const parsedDate = new Date(value);
+	if (Number.isNaN(parsedDate.getTime())) {
+		return "just now";
+	}
+
+	const diffMs = Math.max(0, referenceDate.getTime() - parsedDate.getTime());
+	const diffSeconds = Math.floor(diffMs / 1000);
+	if (diffSeconds < 60) {
+		return "just now";
+	}
+
+	const diffMinutes = Math.floor(diffSeconds / 60);
+	if (diffMinutes < 60) {
+		return diffMinutes === 1 ? "1 min ago" : `${diffMinutes} min ago`;
+	}
+
+	const diffHours = Math.floor(diffMinutes / 60);
+	if (diffHours < 24) {
+		return diffHours === 1 ? "1 hour ago" : `${diffHours} hours ago`;
+	}
+
+	const diffDays = Math.floor(diffHours / 24);
+	if (diffDays === 1) {
+		return "yesterday";
+	}
+
+	if (diffDays < 7) {
+		return `${diffDays} days ago`;
+	}
+
+	return parsedDate.toLocaleDateString("en-US", {
+		day: "numeric",
+		month: "short",
+	});
+}
+
+function resolveAudioActivityAuthorName(
+	author: PreviewDiscussionAudioPost["author"],
+): string {
+	const firstName =
+		typeof author.firstName === "string" ? author.firstName.trim() : "";
+	if (firstName.length > 0) {
+		return firstName;
+	}
+
+	const username =
+		typeof author.username === "string" ? author.username.trim() : "";
+	if (username.length > 0) {
+		return `@${username}`;
+	}
+
+	const displayName =
+		typeof author.displayName === "string" ? author.displayName.trim() : "";
+	if (displayName.length > 0 && displayName.toLowerCase() !== "apprenant") {
+		return displayName;
+	}
+
+	return "contact";
+}
+
+function resolveAudioActivityAuthorInitials(
+	author: PreviewDiscussionAudioPost["author"],
+	displayName: string,
+): string {
+	const providedInitials =
+		typeof author.initials === "string" ? author.initials.trim() : "";
+	if (providedInitials.length > 0) {
+		return providedInitials.slice(0, 2).toUpperCase();
+	}
+
+	const normalizedLabel = displayName.replace(/^@/, "").trim();
+	const parts = normalizedLabel.split(/\s+/).filter(Boolean);
+	if (parts.length === 0) {
+		return "CT";
+	}
+
+	return parts
+		.slice(0, 2)
+		.map((part) => part[0]?.toUpperCase() ?? "")
+		.join("");
+}
+
 // Card sound preference helper
 const CARD_SOUND_KEY = "2k2go-card-sound";
 const readCardSoundEnabled = (): boolean => {
@@ -145,7 +224,7 @@ const readCardSoundEnabled = (): boolean => {
 	}
 };
 
-const PREVIEW_SESSION_MAX_RECORDING_SECONDS = 7;
+const PREVIEW_SESSION_MAX_RECORDING_SECONDS = 5;
 const PREVIEW_SESSION_MAX_RECORDING_DURATION_MS =
 	PREVIEW_SESSION_MAX_RECORDING_SECONDS * 1000;
 const PREVIEW_SESSION_CARD_AUDIO_CACHE_TTL_MS = 5 * 60 * 1000;
@@ -387,9 +466,16 @@ const DUE_FEEDBACK_HOLD_MS = 1600;
 const DUE_FEEDBACK_FADE_OUT_MS = 1000;
 const SWIPE_DRAG_COOLDOWN_MS = 1000;
 const SESSION_DUE_CARDS_CACHE_TTL_MS = 45_000;
+const REVIEW_LEGEND_MESSAGE =
+	"blue = new cards.\nred = cards in learning.\ngreen = cards to review.";
+const GUEST_AUDIO_RECORDING_PROMPT =
+	"log in to record an audio trace for the future and to listen to your contacts' vocal masterpieces.";
+const GUEST_AUDIO_ACTIVITY_PROMPT =
+	"log in to listen to your contacts' vocal masterpieces.";
 const IS_VITEST_RUNTIME = Boolean(
 	(import.meta as ImportMeta & { vitest?: unknown }).vitest,
 );
+const SESSION_DUE_CARDS_CACHE_VERSION = "media-v2";
 
 type SessionDueCardsCacheEntry = {
 	cards: VocabCard[];
@@ -499,11 +585,11 @@ function resolveActionHints(card: VocabCard | null): {
 		return { fail: "10 min", pass: "1 j" };
 	}
 
-	const normalizedStatus = card.status?.toLowerCase();
+	const normalizedStatus = card.status?.trim().toLowerCase();
 	if (normalizedStatus === "new") {
 		return { fail: "10 min", pass: "1 j" };
 	}
-	if (normalizedStatus === "learning") {
+	if (normalizedStatus === "learning" || normalizedStatus === "relearning") {
 		return { fail: "10 min", pass: "2 j" };
 	}
 
@@ -525,12 +611,13 @@ export const CardsReview = ({
 	const navigate = useNavigate();
 	const { playFail, playValider, playFinish, resume, isInitialized } =
 		useAudio();
-	const { user } = useAuth();
+	const isEnglishApp = useIsEnglishApp();
+	const { user, loading: isAuthLoading } = useAuth();
 	const { profile } = useProfile(undefined, user?.id);
 	const { masteredCards, totalCards } = useMissionProgress();
 
 	// Determine demo mode
-	const isGuest = !user;
+	const isGuest = !isAuthLoading && !user;
 	const hasPreviewCardOverride = Array.isArray(previewCards);
 	const shouldTreatPreviewCardsAsDemo =
 		hasPreviewCardOverride && !forceLiveSubmission;
@@ -542,8 +629,8 @@ export const CardsReview = ({
 	const usePlainHtmlSessionChrome =
 		isSessionLayout && sessionChromeVariant === "plain_html";
 	const dueCardsCacheScope = isGuestLocalReviewMode
-		? "guest_local"
-		: `auth:${user?.id ?? "guest"}`;
+		? `guest_local:${SESSION_DUE_CARDS_CACHE_VERSION}`
+		: `auth:${user?.id ?? "guest"}:${SESSION_DUE_CARDS_CACHE_VERSION}`;
 	const sessionPeerLabel = "contact";
 	const hasPreviewCards = Array.isArray(previewCards);
 	const shouldUseSessionDueCardsCache =
@@ -570,134 +657,6 @@ export const CardsReview = ({
 	const requestIdRef = useRef<number>(0);
 	const completionReportedRef = useRef(false);
 
-	// Dropdown state
-	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-	const dropdownRef = useRef<HTMLDivElement>(null);
-	const [isSessionFilterTriggerHovered, setIsSessionFilterTriggerHovered] =
-		useState(false);
-	const [activeFilters, setActiveFilters] =
-		useState<ReviewFilter[]>(DEFAULT_FILTERS);
-	const [availableFilterIds, setAvailableFilterIds] = useState<number[]>(() =>
-		REVIEW_FILTER_DEFINITIONS.map((filter) => filter.id),
-	);
-
-	// Get active review types from filters
-	const activeReviewTypes = useMemo(() => {
-		const types: ReviewType[] = [];
-
-		REVIEW_FILTER_DEFINITIONS.forEach((filterDefinition) => {
-			const isActive = activeFilters.some(
-				(filter) => filter.id === filterDefinition.id && filter.checked,
-			);
-			if (isActive) {
-				types.push(filterDefinition.reviewType);
-			}
-		});
-
-		return types;
-	}, [activeFilters]);
-
-	useEffect(() => {
-		let isCancelled = false;
-
-		const resolveAvailableFilters = async () => {
-			if (isGuestLocalReviewMode) {
-				if (!isCancelled) {
-					setAvailableFilterIds([1]);
-				}
-				return;
-			}
-
-			if (shouldUseDemoData) {
-				if (!isCancelled) {
-					setAvailableFilterIds(
-						REVIEW_FILTER_DEFINITIONS.map((filter) => filter.id),
-					);
-				}
-				return;
-			}
-
-			const availabilityByFilter = await Promise.all(
-				REVIEW_FILTER_DEFINITIONS.map(async (filterDefinition) => {
-					if (filterDefinition.reviewType === "collected") {
-						const collectedDeckResult = await hasCollectedDeckInAccountLight();
-
-						if (collectedDeckResult.ok) {
-							return {
-								id: filterDefinition.id,
-								isAvailable: collectedDeckResult.data,
-								isResolved: true,
-							};
-						}
-					}
-
-					const result = await searchAppVocabularyBank(
-						"",
-						MAX_DECK_AVAILABILITY_SEARCH,
-						[filterDefinition.reviewType],
-					);
-
-					if (!result.ok) {
-						return {
-							id: filterDefinition.id,
-							isAvailable: false,
-							isResolved: false,
-						};
-					}
-
-					const isAvailable = result.data.some(
-						(row) => Boolean(row.is_seen) || Boolean(row.is_added),
-					);
-
-					return {
-						id: filterDefinition.id,
-						isAvailable,
-						isResolved: true,
-					};
-				}),
-			);
-
-			if (isCancelled) {
-				return;
-			}
-
-			const nextAvailableFilterIds = availabilityByFilter
-				.filter((filter) => filter.isAvailable)
-				.map((filter) => filter.id);
-
-			const hasResolvedAvailability = availabilityByFilter.some(
-				(filter) => filter.isResolved,
-			);
-
-			if (!hasResolvedAvailability) {
-				setAvailableFilterIds(
-					REVIEW_FILTER_DEFINITIONS.map((filter) => filter.id),
-				);
-				return;
-			}
-
-			setAvailableFilterIds(nextAvailableFilterIds);
-		};
-
-		void resolveAvailableFilters();
-
-		return () => {
-			isCancelled = true;
-		};
-	}, [isGuestLocalReviewMode, shouldUseDemoData]);
-
-	useEffect(() => {
-		setActiveFilters((previousFilters) => {
-			const nextFilters = previousFilters.filter((filter) =>
-				availableFilterIds.includes(filter.id),
-			);
-
-			return nextFilters.length === previousFilters.length
-				? previousFilters
-				: nextFilters;
-		});
-	}, [availableFilterIds]);
-
 	// ============================================================================
 	// FETCH CARDS
 	// ============================================================================
@@ -721,6 +680,12 @@ export const CardsReview = ({
 	);
 
 	const fetchCards = useCallback(async () => {
+		if (!hasPreviewCards && !shouldUseDemoData && isAuthLoading) {
+			setIsLoadingCards(true);
+			setFetchError(null);
+			return;
+		}
+
 		setCardFlipped(false);
 		setShowVowels(false);
 		setDragX(0);
@@ -812,6 +777,7 @@ export const CardsReview = ({
 	}, [
 		dueCardsCacheScope,
 		hasPreviewCards,
+		isAuthLoading,
 		isGuestLocalReviewMode,
 		previewCards,
 		shouldUseSessionDueCardsCache,
@@ -932,7 +898,6 @@ export const CardsReview = ({
 	const [pendingRemovalCardId, setPendingRemovalCardId] = useState<
 		string | null
 	>(null);
-	const [showReviewLegend, setShowReviewLegend] = useState(false);
 	const [currentCardAudioPost, setCurrentCardAudioPost] =
 		useState<PreviewDiscussionAudioPost | null>(null);
 	const [isCardAudioLoading, setIsCardAudioLoading] = useState(false);
@@ -997,6 +962,7 @@ export const CardsReview = ({
 	const cardAudioIntervalRef = useRef<number | null>(null);
 	const cardAudioTimeoutRef = useRef<number | null>(null);
 	const cardAudioRecordingStartedAtRef = useRef<number | null>(null);
+	const cardAudioDiscardOnStopRef = useRef(false);
 	const sessionShareKeyRef = useRef<string>(createSessionShareKey());
 	const hasSessionShareFlushRef = useRef(false);
 	const cardAudioPostCacheRef = useRef<Map<string, CardAudioPostCacheEntry>>(
@@ -1172,26 +1138,24 @@ export const CardsReview = ({
 	const audioUrls: AudioUrls = AUDIO_FILES;
 
 	// Derived values
-	const filteredCards = useMemo(
-		() =>
-			cards.filter((card) =>
-				activeReviewTypes.includes(resolveCardReviewType(card)),
-			),
-		[cards, activeReviewTypes],
-	);
 	const visibleCards = useMemo(
 		() =>
 			pendingRemovalCardId
-				? filteredCards.filter((card) => card.id !== pendingRemovalCardId)
-				: filteredCards,
-		[filteredCards, pendingRemovalCardId],
+				? cards.filter((card) => card.id !== pendingRemovalCardId)
+				: cards,
+		[cards, pendingRemovalCardId],
 	);
 	const cardsTotal = visibleCards.length;
 	const cardsCompleted = cards.length === 0;
 	const hasVisibleCards = cardsTotal > 0;
-	const isFilterEmpty = !cardsCompleted && !hasVisibleCards;
 	const remainingCount = cardsTotal;
 	const cardData = hasVisibleCards ? visibleCards[0] : null;
+	const isCardAudioSupported =
+		Boolean(cardData) && isPreviewDiscussionCardSupported(cardData);
+	const showSessionCardAudioControls =
+		isSessionLayout &&
+		!isAuthLoading &&
+		(Boolean(user?.id) ? isCardAudioSupported : Boolean(cardData));
 	const currentCardAudioSelectionKey = cardData
 		? buildSessionCardAudioCacheKey(cardData)
 		: null;
@@ -1253,6 +1217,17 @@ export const CardsReview = ({
 			cardAudioTimeoutRef.current = null;
 		}
 	}, []);
+
+	const showGuestAudioPrompt = useCallback(
+		(kind: "record" | "contacts") => {
+			window.alert(
+				kind === "record"
+					? GUEST_AUDIO_RECORDING_PROMPT
+					: GUEST_AUDIO_ACTIVITY_PROMPT,
+			);
+		},
+		[],
+	);
 
 	const stopCardAudioRecorderStream = useCallback(() => {
 		if (!cardAudioStreamRef.current) {
@@ -1452,6 +1427,18 @@ export const CardsReview = ({
 				return;
 			}
 
+			if (!isPreviewDiscussionCardSupported(activeCard)) {
+				const unsupportedCacheKey = buildSessionCardAudioCacheKey(activeCard);
+				currentCardAudioCacheKeyRef.current = unsupportedCacheKey;
+				cardAudioPostCacheRef.current.set(unsupportedCacheKey, {
+					fetchedAt: Date.now(),
+					post: null,
+				});
+				setCurrentCardAudioPost(null);
+				setIsCardAudioLoading(false);
+				return;
+			}
+
 			const cacheKey = buildSessionCardAudioCacheKey(activeCard);
 			currentCardAudioCacheKeyRef.current = cacheKey;
 
@@ -1518,15 +1505,32 @@ export const CardsReview = ({
 		[isSessionLayout, user?.id],
 	);
 
-	const stopCardAudioRecording = useCallback(() => {
+	const stopCardAudioRecording = useCallback((discard = false) => {
+		cardAudioDiscardOnStopRef.current = discard;
 		if (cardAudioRecorderRef.current?.state === "recording") {
+			try {
+				cardAudioRecorderRef.current.requestData();
+			} catch {
+				// Some browsers can throw when no data is buffered yet.
+			}
 			cardAudioRecorderRef.current.stop();
+		} else {
+			setIsCardAudioRecording(false);
 		}
 		stopCardAudioTimers();
 	}, [stopCardAudioTimers]);
 
 	const startCardAudioRecording = useCallback(async () => {
-		if (!isSessionLayout || !user?.id || !cardData) {
+		if (!isSessionLayout || !cardData) {
+			return;
+		}
+
+		if (!user?.id) {
+			showGuestAudioPrompt("record");
+			return;
+		}
+
+		if (!isPreviewDiscussionCardSupported(cardData)) {
 			return;
 		}
 
@@ -1549,6 +1553,7 @@ export const CardsReview = ({
 		stopCardAudioPlayback();
 		stopCardAudioTimers();
 		stopCardAudioRecorderStream();
+		cardAudioDiscardOnStopRef.current = false;
 
 		try {
 			const stream = await navigator.mediaDevices.getUserMedia({
@@ -1585,9 +1590,12 @@ export const CardsReview = ({
 				setIsCardAudioRecording(false);
 				stopCardAudioRecorderStream();
 
+				const shouldDiscard = cardAudioDiscardOnStopRef.current;
+				cardAudioDiscardOnStopRef.current = false;
 				const chunks = cardAudioChunksRef.current;
 				cardAudioChunksRef.current = [];
-				if (chunks.length === 0) {
+				if (shouldDiscard || chunks.length === 0) {
+					setCardAudioRecordingSeconds(0);
 					return;
 				}
 
@@ -1608,12 +1616,47 @@ export const CardsReview = ({
 					try {
 						const { createOrReplaceCurrentUserPreviewDiscussionAudioPost } =
 							await import("@/features/preview-new-concept/discussionService");
-						const savedAudioPost =
+						let savedAudioPost =
 							await createOrReplaceCurrentUserPreviewDiscussionAudioPost({
 								audioFile,
 								card: cardData,
 								recordingDurationMs: durationMs,
 							});
+
+						const cardSelectionKey = buildSessionCardAudioCacheKey(cardData);
+						try {
+							const connections =
+								sessionConnections.length > 0
+									? sessionConnections
+									: await loadSessionConnectionsForAudio();
+							const selectedContactIds = connections.map((friend) => friend.userId);
+
+							setShareSelectionsByCardKey((previousSelections) => ({
+								...previousSelections,
+								[cardSelectionKey]: selectedContactIds,
+							}));
+
+							const shouldShareWithContacts = selectedContactIds.length > 0;
+							if (
+								savedAudioPost.shareSelected !== shouldShareWithContacts ||
+								(shouldShareWithContacts &&
+									savedAudioPost.shareSessionKey !== sessionShareKeyRef.current)
+							) {
+								const { setPreviewSessionAudioPostShareIntent } = await import(
+									"@/features/preview-new-concept/discussionService"
+								);
+								savedAudioPost = await setPreviewSessionAudioPostShareIntent({
+									audioPostId: savedAudioPost.id,
+									selected: shouldShareWithContacts,
+									sessionKey: shouldShareWithContacts
+										? sessionShareKeyRef.current
+										: null,
+								});
+							}
+						} catch (shareError) {
+							console.error("Unable to sync default audio sharing:", shareError);
+						}
+
 						setCurrentCardAudioPostInCache(savedAudioPost);
 						hasSessionShareFlushRef.current = false;
 						toast.success("Audio saved.");
@@ -1646,6 +1689,7 @@ export const CardsReview = ({
 			}, PREVIEW_SESSION_MAX_RECORDING_DURATION_MS);
 		} catch (error) {
 			console.error("Unable to start card recording:", error);
+			cardAudioDiscardOnStopRef.current = false;
 			stopCardAudioTimers();
 			stopCardAudioRecorderStream();
 			setIsCardAudioRecording(false);
@@ -1656,6 +1700,9 @@ export const CardsReview = ({
 		invalidateCardAudioFetches,
 		isCardAudioSaving,
 		isSessionLayout,
+		loadSessionConnectionsForAudio,
+		showGuestAudioPrompt,
+		sessionConnections,
 		setCurrentCardAudioPostInCache,
 		stopCardAudioPlayback,
 		stopCardAudioRecorderStream,
@@ -1786,6 +1833,20 @@ export const CardsReview = ({
 	}, [startCardAudioRecording]);
 
 	const openContactAudiosDialog = useCallback(async () => {
+		if (!cardData) {
+			return;
+		}
+
+		if (!user?.id) {
+			setIsCardAudioMenuOpen(false);
+			showGuestAudioPrompt("contacts");
+			return;
+		}
+
+		if (!isPreviewDiscussionCardSupported(cardData)) {
+			return;
+		}
+
 		setIsCardAudioMenuOpen(false);
 		setShowContactAudiosDialog(true);
 		setContactAudioPostsError(null);
@@ -1819,7 +1880,13 @@ export const CardsReview = ({
 		} finally {
 			setIsContactAudioPostsLoading(false);
 		}
-	}, [cardData, loadSessionConnectionsForAudio, sessionConnections, user?.id]);
+	}, [
+		cardData,
+		loadSessionConnectionsForAudio,
+		sessionConnections,
+		showGuestAudioPrompt,
+		user?.id,
+	]);
 
 	const openShareContactsDialog = useCallback(async () => {
 		if (!currentCardAudioPost) {
@@ -1828,36 +1895,90 @@ export const CardsReview = ({
 
 		setIsCardAudioMenuOpen(false);
 		setShowShareContactsDialog(true);
-		if (sessionConnections.length === 0) {
-			await loadSessionConnectionsForAudio();
+		const connections =
+			sessionConnections.length > 0
+				? sessionConnections
+				: await loadSessionConnectionsForAudio();
+
+		if (currentCardAudioSelectionKey) {
+			setShareSelectionsByCardKey((previousSelections) => {
+				if (
+					Object.prototype.hasOwnProperty.call(
+						previousSelections,
+						currentCardAudioSelectionKey,
+					)
+				) {
+					return previousSelections;
+				}
+
+				return {
+					...previousSelections,
+					[currentCardAudioSelectionKey]: connections.map(
+						(friend) => friend.userId,
+					),
+				};
+			});
 		}
 	}, [
+		currentCardAudioSelectionKey,
 		currentCardAudioPost,
 		loadSessionConnectionsForAudio,
-		sessionConnections.length,
+		sessionConnections,
 	]);
 
 	const toggleContactShareSelection = useCallback(
-		(friendUserId: string) => {
+		async (friendUserId: string) => {
 			if (!currentCardAudioPost || !currentCardAudioSelectionKey) {
 				return;
 			}
 
-			setShareSelectionsByCardKey((previousSelections) => {
-				const currentSelection =
-					previousSelections[currentCardAudioSelectionKey] ?? [];
-				const hasFriend = currentSelection.includes(friendUserId);
-				const nextSelection = hasFriend
-					? currentSelection.filter((id) => id !== friendUserId)
-					: [...currentSelection, friendUserId];
+			const previousSelection = selectedShareContactIds;
+			const hasFriend = previousSelection.includes(friendUserId);
+			const nextSelection = hasFriend
+				? previousSelection.filter((id) => id !== friendUserId)
+				: [...previousSelection, friendUserId];
 
+			setShareSelectionsByCardKey((previousSelections) => {
 				return {
 					...previousSelections,
 					[currentCardAudioSelectionKey]: nextSelection,
 				};
 			});
+
+			setIsCardAudioShareUpdating(true);
+			invalidateCardAudioFetches();
+			try {
+				const { setPreviewSessionAudioPostShareIntent } = await import(
+					"@/features/preview-new-concept/discussionService"
+				);
+				const shouldShareWithContacts = nextSelection.length > 0;
+				const updatedPost = await setPreviewSessionAudioPostShareIntent({
+					audioPostId: currentCardAudioPost.id,
+					selected: shouldShareWithContacts,
+					sessionKey: shouldShareWithContacts
+						? sessionShareKeyRef.current
+						: null,
+				});
+				setCurrentCardAudioPostInCache(updatedPost);
+				hasSessionShareFlushRef.current = false;
+			} catch (error) {
+				console.error("Unable to update contact sharing selection:", error);
+				setShareSelectionsByCardKey((previousSelections) => ({
+					...previousSelections,
+					[currentCardAudioSelectionKey]: previousSelection,
+				}));
+				toast.error("Unable to update sharing for this audio.");
+			} finally {
+				setIsCardAudioShareUpdating(false);
+			}
 		},
-		[currentCardAudioPost, currentCardAudioSelectionKey],
+		[
+			currentCardAudioPost,
+			currentCardAudioSelectionKey,
+			invalidateCardAudioFetches,
+			selectedShareContactIds,
+			setCurrentCardAudioPostInCache,
+		],
 	);
 
 	useEffect(() => {
@@ -1983,49 +2104,9 @@ export const CardsReview = ({
 		};
 	}, [visibleCards]);
 
-	const reviewTypeCounts = useMemo(() => {
-		return cards.reduce(
-			(acc, card) => {
-				const type = resolveCardReviewType(card);
-				acc[type] += 1;
-				return acc;
-			},
-			{
-				foundation: 0,
-				collected: 0,
-				sent: 0,
-			} as Record<ReviewType, number>,
-		);
-	}, [cards]);
-
-	const filtersWithCounts = useMemo(
-		() =>
-			activeFilters.map((filter) => {
-				const filterDefinition = REVIEW_FILTER_DEFINITIONS.find(
-					(definition) => definition.id === filter.id,
-				);
-
-				return {
-					...filter,
-					count: filterDefinition
-						? reviewTypeCounts[filterDefinition.reviewType]
-						: filter.count,
-				};
-			}),
-		[activeFilters, reviewTypeCounts],
-	);
-
 	useEffect(() => {
 		onCardsChanged?.(cards);
 	}, [cards, onCardsChanged]);
-
-	const visibleFiltersWithCounts = useMemo(
-		() =>
-			filtersWithCounts.filter((filter) =>
-				availableFilterIds.includes(filter.id),
-			),
-		[availableFilterIds, filtersWithCounts],
-	);
 
 	// Resume AudioContext on first user interaction (required for mobile)
 	useEffect(() => {
@@ -2048,20 +2129,6 @@ export const CardsReview = ({
 			window.removeEventListener("touchstart", handleUserInteraction);
 		};
 	}, [isInitialized, resume]);
-
-	// Close dropdown when clicking outside
-	useEffect(() => {
-		const handleClickOutside = (e: MouseEvent) => {
-			if (
-				dropdownRef.current &&
-				!dropdownRef.current.contains(e.target as Node)
-			) {
-				setShowFilterDropdown(false);
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => document.removeEventListener("mousedown", handleClickOutside);
-	}, []);
 
 	// Cleanup timeouts
 	useEffect(() => {
@@ -2409,107 +2476,6 @@ export const CardsReview = ({
 		onGuestReviewAction?.();
 	};
 
-	const renderFilterTrigger = (className: string) => (
-		<div className={className} ref={dropdownRef}>
-			<button
-				type="button"
-				onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-				onMouseEnter={() => {
-					if (usePlainHtmlSessionChrome) {
-						setIsSessionFilterTriggerHovered(true);
-					}
-				}}
-				onMouseLeave={() => {
-					if (usePlainHtmlSessionChrome) {
-						setIsSessionFilterTriggerHovered(false);
-					}
-				}}
-				className={
-					usePlainHtmlSessionChrome
-						? "inline-flex items-center"
-						: "flex items-center gap-2 rounded-lg border border-border/80 bg-card px-3.5 py-1.5 text-card-foreground transition-colors hover:bg-accent"
-				}
-				style={
-					usePlainHtmlSessionChrome
-						? {
-								fontSize: "13.3333px",
-								fontFamily: "Arial, sans-serif",
-								backgroundColor: isSessionFilterTriggerHovered
-									? "#e3e3e3"
-									: "#efefef",
-								color: "#000000",
-								border: "1px solid #000000",
-								borderRadius: "3px",
-								padding: "1px 6px",
-							}
-						: undefined
-				}
-			>
-				{usePlainHtmlSessionChrome ? (
-					<>
-						<span>all my cards</span>
-						<span aria-hidden="true" style={{ marginLeft: "4px" }}>
-							▾
-						</span>
-					</>
-				) : (
-					<>
-						<svg
-							width="14"
-							height="14"
-							viewBox="0 0 16 16"
-							fill="none"
-							className="text-muted-foreground"
-							aria-label="Filter"
-							role="img"
-						>
-							<title>Filter</title>
-							<rect
-								x="2"
-								y="2"
-								width="12"
-								height="12"
-								rx="2"
-								stroke="currentColor"
-								strokeWidth="1.2"
-							/>
-							<rect
-								x="4"
-								y="4"
-								width="8"
-								height="3"
-								rx="0.5"
-								fill="currentColor"
-								opacity="0.4"
-							/>
-							<rect
-								x="4"
-								y="9"
-								width="5"
-								height="3"
-								rx="0.5"
-								fill="currentColor"
-								opacity="0.4"
-							/>
-						</svg>
-						<span className="text-sm text-card-foreground">
-							All my reviews
-						</span>
-						<ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
-					</>
-				)}
-			</button>
-
-			{showFilterDropdown && (
-				<ReviewFilterDropdown
-					filters={visibleFiltersWithCounts}
-					onFiltersChange={setActiveFilters}
-					plainHtmlMode={usePlainHtmlSessionChrome}
-				/>
-			)}
-		</div>
-	);
-
 	const hasCurrentCardAudio = Boolean(currentCardAudioPost?.audioUrl);
 	const isCurrentCardSharedInSession = usePlainHtmlSessionChrome
 		? selectedShareContactIds.length > 0
@@ -2525,6 +2491,10 @@ export const CardsReview = ({
 		iconButtonSize: number;
 		iconSize: number;
 	}) => {
+		if (!showSessionCardAudioControls || !cardData) {
+			return null;
+		}
+
 		const iconButtonStyle = {
 			width: `${iconButtonSize}px`,
 			height: `${iconButtonSize}px`,
@@ -2592,253 +2562,325 @@ export const CardsReview = ({
 
 		return (
 			<div
-				className="relative z-40 flex items-center gap-2"
+				className="relative z-40 flex flex-col items-center gap-1.5"
 				aria-busy={isCardAudioLoading}
 			>
-				{isCardAudioRecording ? (
-					<button
-						type="button"
-						onClick={(event) => {
-							event.stopPropagation();
-							stopCardAudioRecording();
-						}}
-						className="relative flex items-center justify-center"
-						style={
-							usePlainHtmlSessionChrome
-								? {
-										...htmlIconButtonStyle,
-										border: "1px solid #9a2e2e",
-										backgroundColor: "#f4dddd",
-										color: "#7a1d1d",
-									}
-								: iconButtonStyle
-						}
-						aria-label="Stop recording"
-						disabled={isCardAudioSaving || isFlipAudioMuted}
-					>
-						<Square size={iconSize} />
-						<span className="absolute -right-1.5 -top-1.5 rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-semibold leading-none text-white shadow-sm">
-							{cardAudioRecordingSeconds}s
-						</span>
-					</button>
-				) : hasCurrentCardAudio ? (
-					<button
-						type="button"
-						onClick={(event) => {
-							event.stopPropagation();
-							void toggleCurrentCardAudioPlayback();
-						}}
-						className="flex items-center justify-center"
-						style={
-							usePlainHtmlSessionChrome ? htmlIconButtonStyle : iconButtonStyle
-						}
-						aria-label={isCardAudioPlaying ? "Pause" : "Play audio"}
-						disabled={isCardAudioSaving || isFlipAudioMuted}
-					>
-						{isCardAudioPlaying ? (
-							<Pause size={iconSize} />
-						) : (
-							<Play size={iconSize} />
-						)}
-					</button>
-				) : (
-					<Tooltip delayDuration={1000}>
-						<TooltipTrigger asChild>{recordAudioButton}</TooltipTrigger>
-						<TooltipContent
-							side="bottom"
-							sideOffset={8}
-							className="max-w-[220px] text-center"
-						>
-							{sessionFrontAudioTooltipLabel}
-						</TooltipContent>
-					</Tooltip>
-				)}
-
-				{usePlainHtmlSessionChrome ? (
-					<div ref={sessionAudioMenuRef} style={{ position: "relative" }}>
+				<div className="flex items-center gap-2">
+					{isCardAudioRecording ? (
 						<button
 							type="button"
 							onClick={(event) => {
 								event.stopPropagation();
-								setIsCardAudioMenuOpen((previousOpen) => !previousOpen);
+								stopCardAudioRecording();
 							}}
-							onMouseEnter={() => {
-								setIsSessionAudioMenuTriggerHovered(true);
-							}}
-							onMouseLeave={() => {
-								setIsSessionAudioMenuTriggerHovered(false);
-							}}
-							aria-label="Actions audio"
-							disabled={
-								isCardAudioSaving || isCardAudioRecording || isFlipAudioMuted
+							className="relative flex items-center justify-center"
+							style={
+								usePlainHtmlSessionChrome
+									? {
+											...htmlIconButtonStyle,
+											border: "1px solid #9a2e2e",
+											backgroundColor: "#f4dddd",
+											color: "#7a1d1d",
+									  }
+									: iconButtonStyle
 							}
-							className="flex items-center justify-center"
-							style={{
-								...htmlIconButtonStyle,
-								backgroundColor: isSessionAudioMenuTriggerHovered
-									? "#e3e3e3"
-									: "#efefef",
-							}}
+							aria-label="Save recording"
+							disabled={isCardAudioSaving || isFlipAudioMuted}
 						>
-							<MoreHorizontal size={iconSize} />
+							<Square size={iconSize} />
+							<span className="absolute -right-1.5 -top-1.5 rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-semibold leading-none text-white shadow-sm">
+								{cardAudioRecordingSeconds}s
+							</span>
 						</button>
-
-						{isCardAudioMenuOpen ? (
-							<div
-								role="menu"
-								style={{
-									position: "absolute",
-									right: 0,
-									marginTop: "4px",
-									display: "flex",
-									flexDirection: "column",
-									gap: "4px",
-									padding: 0,
-									backgroundColor: "transparent",
-									zIndex: 70,
-									minWidth: "210px",
-								}}
-								onPointerDown={(event) => event.stopPropagation()}
+					) : hasCurrentCardAudio ? (
+						<button
+							type="button"
+							onClick={(event) => {
+								event.stopPropagation();
+								void toggleCurrentCardAudioPlayback();
+							}}
+							className="flex items-center justify-center"
+							style={
+								usePlainHtmlSessionChrome ? htmlIconButtonStyle : iconButtonStyle
+							}
+							aria-label={isCardAudioPlaying ? "Pause" : "Play audio"}
+							disabled={isCardAudioSaving || isFlipAudioMuted}
+						>
+							{isCardAudioPlaying ? (
+								<Pause size={iconSize} />
+							) : (
+								<Play size={iconSize} />
+							)}
+						</button>
+					) : (
+						<Tooltip delayDuration={1000}>
+							<TooltipTrigger asChild>{recordAudioButton}</TooltipTrigger>
+							<TooltipContent
+								side="bottom"
+								sideOffset={8}
+								className="max-w-[220px] text-center"
 							>
-								<button
-									type="button"
-									onClick={() => {
-										void openContactAudiosDialog();
-									}}
-									onMouseEnter={() => {
-										setHoveredSessionAudioMenuAction("contacts");
-									}}
-									onMouseLeave={() => {
-										setHoveredSessionAudioMenuAction((previous) =>
-											previous === "contacts" ? null : previous,
-										);
-									}}
-									style={resolveHtmlMenuItemStyle("contacts")}
-								>
-									<Eye size={14} />
-									<span>see my contacts' audio on this card</span>
-								</button>
-								{hasCurrentCardAudio ? (
-									<button
-										type="button"
-										onClick={() => {
-											void openShareContactsDialog();
-										}}
-										onMouseEnter={() => {
-											setHoveredSessionAudioMenuAction("share");
-										}}
-										onMouseLeave={() => {
-											setHoveredSessionAudioMenuAction((previous) =>
-												previous === "share" ? null : previous,
-											);
-										}}
-										style={{
-											...resolveHtmlMenuItemStyle("share"),
-											borderColor: isCurrentCardSharedInSession
-												? "#2e6b2e"
-												: "#000000",
-										}}
-									>
-										<Share2 size={14} />
-										<span>share with a contact</span>
-									</button>
-								) : null}
-								{hasCurrentCardAudio ? (
-									<button
-										type="button"
-										onClick={() => {
-											handleRerecordCurrentCardAudio();
-										}}
-										onMouseEnter={() => {
-											setHoveredSessionAudioMenuAction("rerecord");
-										}}
-										onMouseLeave={() => {
-											setHoveredSessionAudioMenuAction((previous) =>
-												previous === "rerecord" ? null : previous,
-											);
-										}}
-										style={resolveHtmlMenuItemStyle("rerecord")}
-									>
-										<RotateCcw size={14} />
-										<span>record again</span>
-									</button>
-								) : null}
-								{hasCurrentCardAudio ? (
-									<button
-										type="button"
-										onClick={() => {
-											void handleDeleteCurrentCardAudio();
-										}}
-										onMouseEnter={() => {
-											setHoveredSessionAudioMenuAction("delete");
-										}}
-										onMouseLeave={() => {
-											setHoveredSessionAudioMenuAction((previous) =>
-												previous === "delete" ? null : previous,
-											);
-										}}
-										style={{
-											...resolveHtmlMenuItemStyle("delete"),
-										}}
-									>
-										<Trash2 size={14} />
-										<span>delete</span>
-									</button>
-								) : null}
-							</div>
-						) : null}
-					</div>
-				) : hasCurrentCardAudio ? (
-					<DropdownMenu
-						open={isCardAudioMenuOpen}
-						onOpenChange={setIsCardAudioMenuOpen}
-					>
-						<DropdownMenuTrigger asChild>
+								{sessionFrontAudioTooltipLabel}
+							</TooltipContent>
+						</Tooltip>
+					)}
+
+					{usePlainHtmlSessionChrome ? (
+						<div ref={sessionAudioMenuRef} style={{ position: "relative" }}>
 							<button
 								type="button"
-								onClick={(event) => event.stopPropagation()}
-								className="flex items-center justify-center rounded-lg bg-white/5 text-[#f1eadb]/72 transition-colors hover:bg-white/10 hover:text-[#f1eadb]"
-								style={iconButtonStyle}
+								onClick={(event) => {
+									event.stopPropagation();
+									setIsCardAudioMenuOpen((previousOpen) => !previousOpen);
+								}}
+								onMouseEnter={() => {
+									setIsSessionAudioMenuTriggerHovered(true);
+								}}
+								onMouseLeave={() => {
+									setIsSessionAudioMenuTriggerHovered(false);
+								}}
 								aria-label="Actions audio"
-								disabled={isCardAudioSaving || isFlipAudioMuted}
+								disabled={
+									isCardAudioSaving || isCardAudioRecording || isFlipAudioMuted
+								}
+								className="flex items-center justify-center"
+								style={{
+									...htmlIconButtonStyle,
+									backgroundColor: isSessionAudioMenuTriggerHovered
+										? "#e3e3e3"
+										: "#efefef",
+								}}
 							>
 								<MoreHorizontal size={iconSize} />
 							</button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent
-							align="end"
-							sideOffset={6}
-							className="min-w-[190px]"
-							onPointerDown={(event) => event.stopPropagation()}
-							onClick={(event) => event.stopPropagation()}
+
+							{isCardAudioMenuOpen ? (
+								<div
+									role="menu"
+									style={{
+										position: "absolute",
+										right: 0,
+										marginTop: "4px",
+										display: "flex",
+										flexDirection: "column",
+										gap: "4px",
+										padding: 0,
+										backgroundColor: "transparent",
+										zIndex: 70,
+										minWidth: "210px",
+									}}
+									onPointerDown={(event) => event.stopPropagation()}
+								>
+									<button
+										type="button"
+										onClick={() => {
+											void openContactAudiosDialog();
+										}}
+										onMouseEnter={() => {
+											setHoveredSessionAudioMenuAction("contacts");
+										}}
+										onMouseLeave={() => {
+											setHoveredSessionAudioMenuAction((previous) =>
+												previous === "contacts" ? null : previous,
+											);
+										}}
+										style={resolveHtmlMenuItemStyle("contacts")}
+									>
+										<Eye size={14} />
+										<span>audio activity on these cards</span>
+									</button>
+									{hasCurrentCardAudio ? (
+										<button
+											type="button"
+											onClick={() => {
+												void openShareContactsDialog();
+											}}
+											onMouseEnter={() => {
+												setHoveredSessionAudioMenuAction("share");
+											}}
+											onMouseLeave={() => {
+												setHoveredSessionAudioMenuAction((previous) =>
+													previous === "share" ? null : previous,
+												);
+											}}
+											style={{
+												...resolveHtmlMenuItemStyle("share"),
+												borderColor: isCurrentCardSharedInSession
+													? "#2e6b2e"
+													: "#000000",
+											}}
+										>
+											<Share2 size={14} />
+											<span>share with others</span>
+										</button>
+									) : null}
+									{hasCurrentCardAudio ? (
+										<button
+											type="button"
+											onClick={() => {
+												handleRerecordCurrentCardAudio();
+											}}
+											onMouseEnter={() => {
+												setHoveredSessionAudioMenuAction("rerecord");
+											}}
+											onMouseLeave={() => {
+												setHoveredSessionAudioMenuAction((previous) =>
+													previous === "rerecord" ? null : previous,
+												);
+											}}
+											style={resolveHtmlMenuItemStyle("rerecord")}
+										>
+											<RotateCcw size={14} />
+											<span>record again</span>
+										</button>
+									) : null}
+									{hasCurrentCardAudio ? (
+										<button
+											type="button"
+											onClick={() => {
+												void handleDeleteCurrentCardAudio();
+											}}
+											onMouseEnter={() => {
+												setHoveredSessionAudioMenuAction("delete");
+											}}
+											onMouseLeave={() => {
+												setHoveredSessionAudioMenuAction((previous) =>
+													previous === "delete" ? null : previous,
+												);
+											}}
+											style={resolveHtmlMenuItemStyle("delete")}
+										>
+											<Trash2 size={14} />
+											<span>delete</span>
+										</button>
+									) : null}
+								</div>
+							) : null}
+						</div>
+					) : (
+						<DropdownMenu
+							open={isCardAudioMenuOpen}
+							onOpenChange={setIsCardAudioMenuOpen}
 						>
-							<DropdownMenuItem
-								className="cursor-pointer"
-								onSelect={() => {
-									handleRerecordCurrentCardAudio();
-								}}
+							<DropdownMenuTrigger asChild>
+								<button
+									type="button"
+									onClick={(event) => event.stopPropagation()}
+									className="flex items-center justify-center rounded-lg bg-white/5 text-[#f1eadb]/72 transition-colors hover:bg-white/10 hover:text-[#f1eadb]"
+									style={iconButtonStyle}
+									aria-label="Actions audio"
+									disabled={
+										isCardAudioSaving || isCardAudioRecording || isFlipAudioMuted
+									}
+								>
+									<MoreHorizontal size={iconSize} />
+								</button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent
+								align="end"
+								sideOffset={6}
+								className="min-w-[210px]"
+								onPointerDown={(event) => event.stopPropagation()}
+								onClick={(event) => event.stopPropagation()}
 							>
-								<RotateCcw className="h-3.5 w-3.5" />
-								<span>Record again</span>
-							</DropdownMenuItem>
-							<DropdownMenuItem
-								className="cursor-pointer text-red-500 focus:text-red-500"
-								onSelect={() => {
-									void handleDeleteCurrentCardAudio();
-								}}
-							>
-								<Trash2 className="h-3.5 w-3.5" />
-								<span>Delete</span>
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
+								<DropdownMenuItem
+									className="cursor-pointer"
+									onSelect={() => {
+										void openContactAudiosDialog();
+									}}
+								>
+									<Eye className="h-3.5 w-3.5" />
+									<span>Audio activity on these cards</span>
+								</DropdownMenuItem>
+								{hasCurrentCardAudio ? (
+									<DropdownMenuItem
+										className={cn(
+											"cursor-pointer",
+											isCurrentCardSharedInSession
+												? "text-emerald-400 focus:text-emerald-400"
+												: "",
+										)}
+										onSelect={() => {
+											void openShareContactsDialog();
+										}}
+									>
+										<Share2 className="h-3.5 w-3.5" />
+										<span>Share with others</span>
+									</DropdownMenuItem>
+								) : null}
+								{hasCurrentCardAudio ? (
+									<DropdownMenuItem
+										className="cursor-pointer"
+										onSelect={() => {
+											handleRerecordCurrentCardAudio();
+										}}
+									>
+										<RotateCcw className="h-3.5 w-3.5" />
+										<span>Record again</span>
+									</DropdownMenuItem>
+								) : null}
+								{hasCurrentCardAudio ? (
+									<DropdownMenuItem
+										className="cursor-pointer text-red-500 focus:text-red-500"
+										onSelect={() => {
+											void handleDeleteCurrentCardAudio();
+										}}
+									>
+										<Trash2 className="h-3.5 w-3.5" />
+										<span>Delete</span>
+									</DropdownMenuItem>
+								) : null}
+							</DropdownMenuContent>
+						</DropdownMenu>
+					)}
+				</div>
+
+				{isCardAudioRecording ? (
+					<div className="flex items-center justify-center gap-1">
+						<button
+							type="button"
+							onClick={(event) => {
+								event.stopPropagation();
+								stopCardAudioRecording();
+							}}
+							className={cn(
+								"flex h-5 items-center justify-center rounded border px-2 text-[13.3333px] font-normal",
+								usePlainHtmlSessionChrome
+									? "border-black bg-[#efefef] text-black"
+									: "border-white/30 bg-white/10 text-[#f1eadb]",
+							)}
+							style={{ fontFamily: "Arial, sans-serif" }}
+							aria-label="Save recording"
+							disabled={isCardAudioSaving || isFlipAudioMuted}
+						>
+							Save
+						</button>
+						<button
+							type="button"
+							onClick={(event) => {
+								event.stopPropagation();
+								stopCardAudioRecording(true);
+							}}
+							className={cn(
+								"flex h-5 items-center justify-center rounded border px-2 text-[13.3333px] font-normal",
+								usePlainHtmlSessionChrome
+									? "border-black bg-[#efefef] text-black"
+									: "border-white/30 bg-white/10 text-[#f1eadb]",
+							)}
+							style={{ fontFamily: "Arial, sans-serif" }}
+							aria-label="Cancel recording"
+							disabled={isCardAudioSaving || isFlipAudioMuted}
+						>
+							Cancel
+						</button>
+					</div>
 				) : null}
 			</div>
 		);
 	};
 
 	const sessionFrontAudioControl =
-		isSessionLayout && user ? renderSessionFrontAudioControl : null;
+		showSessionCardAudioControls ? renderSessionFrontAudioControl : null;
 
 	const renderSessionCardTopControls = () => {
 		if (!isSessionLayout || !usePlainHtmlSessionChrome) {
@@ -2932,7 +2974,7 @@ export const CardsReview = ({
 			return null;
 		}
 
-		if (cardsCompleted || isFilterEmpty || isLoadingCards) {
+		if (cardsCompleted || isLoadingCards) {
 			return null;
 		}
 
@@ -3171,25 +3213,7 @@ export const CardsReview = ({
 										</div>
 									)}
 								</div>
-							) : isFilterEmpty ? (
-								<div
-									className="absolute inset-0 rounded-[36px] overflow-hidden px-6 text-center flex items-center justify-center"
-									style={{
-										background: theme.backgroundWrap,
-										border: `1px solid ${theme.borderWrap}`,
-										boxShadow: "0 10px 26px -16px rgba(0,0,0,0.28)",
-									}}
-								>
-									<div className="flex flex-col items-center">
-										<p className="text-lg font-semibold text-white">
-											No reviews for this filter
-										</p>
-										<p className="mt-2 max-w-[270px] text-sm text-white/70">
-											Re-enable a category in "All my reviews" to continue.
-										</p>
-									</div>
-								</div>
-							) : (
+					) : (
 								<>
 									{!isDragActive && cardData && (
 										<div className="relative h-full w-full rounded-[36px] z-10">
@@ -3299,6 +3323,10 @@ export const CardsReview = ({
 	);
 
 	const renderReviewSummarySection = () => {
+		const openReviewLegendMessage = () => {
+			window.alert(REVIEW_LEGEND_MESSAGE);
+		};
+
 		if (isLoadingCards) {
 			return usePlainHtmlSessionChrome ? null : (
 				<ReviewSummaryLoadingSkeleton />
@@ -3318,7 +3346,7 @@ export const CardsReview = ({
 				>
 					<button
 						type="button"
-						onClick={() => setShowReviewLegend(true)}
+						onClick={openReviewLegendMessage}
 						className={
 							usePlainHtmlSessionChrome
 								? "flex items-center justify-center bg-transparent"
@@ -3341,7 +3369,7 @@ export const CardsReview = ({
 					</button>
 					<button
 						type="button"
-						onClick={() => setShowReviewLegend(true)}
+						onClick={openReviewLegendMessage}
 						className={
 							usePlainHtmlSessionChrome
 								? "flex items-center justify-center bg-transparent"
@@ -3364,7 +3392,7 @@ export const CardsReview = ({
 					</button>
 					<button
 						type="button"
-						onClick={() => setShowReviewLegend(true)}
+						onClick={openReviewLegendMessage}
 						className={
 							usePlainHtmlSessionChrome
 								? "flex items-center justify-center bg-transparent"
@@ -3389,6 +3417,8 @@ export const CardsReview = ({
 
 				<a
 					href="/app/why-it-works"
+					target="_blank"
+					rel="noreferrer"
 					data-tutorial="review-docs-link"
 					className={
 						usePlainHtmlSessionChrome
@@ -3411,6 +3441,36 @@ export const CardsReview = ({
 			</div>
 		);
 	};
+
+	const sessionPopupContentClassName = usePlainHtmlSessionChrome
+		? "max-w-[440px] gap-2 border-black bg-[#efefef] p-2 shadow-none sm:rounded-[3px]"
+		: "max-w-md";
+	const sessionPopupContentStyle = usePlainHtmlSessionChrome
+		? {
+				fontFamily: "Arial, sans-serif",
+				fontSize: "13.3333px",
+				backgroundColor: "#efefef",
+				border: "1px solid #000000",
+				color: "#000000",
+				borderRadius: "3px",
+		  }
+		: undefined;
+	const sessionPopupTitleStyle = usePlainHtmlSessionChrome
+		? {
+				fontFamily: "Arial, sans-serif",
+				fontSize: "13.3333px",
+				fontWeight: 400,
+				lineHeight: 1.2,
+		  }
+		: undefined;
+	const sessionPopupBodyStyle = usePlainHtmlSessionChrome
+		? {
+				fontFamily: "Arial, sans-serif",
+				fontSize: "13.3333px",
+				lineHeight: 1.2,
+				color: "#000000",
+		  }
+		: undefined;
 
 	return (
 		<div
@@ -3495,9 +3555,7 @@ export const CardsReview = ({
 								</button>
 							</div>
 						)
-					) : (
-						renderFilterTrigger("relative mb-3 flex flex-col items-center")
-					)}
+					) : null}
 
 					{/* Error state with retry */}
 					{fetchError && (
@@ -3526,42 +3584,17 @@ export const CardsReview = ({
 			>
 				<DialogContent
 					motionPreset="fade"
-					className={usePlainHtmlSessionChrome ? "max-w-md" : "max-w-md"}
-					style={
-						usePlainHtmlSessionChrome
-							? {
-									fontFamily: "Arial, sans-serif",
-									fontSize: "13.3333px",
-									backgroundColor: "#f7f6f2",
-									border: "1px solid #000000",
-									color: "#000000",
-									borderRadius: 0,
-								}
-							: undefined
-					}
+					closeMode={usePlainHtmlSessionChrome ? "plain_html" : "default"}
+					className={sessionPopupContentClassName}
+					style={sessionPopupContentStyle}
 					aria-describedby={undefined}
 				>
-					<DialogTitle
-						style={
-							usePlainHtmlSessionChrome
-								? { fontFamily: "Arial, sans-serif", fontSize: "13.3333px" }
-								: undefined
-						}
-					>
-						My contacts' audio
+					<DialogTitle style={sessionPopupTitleStyle}>
+						Audio activity on these cards
 					</DialogTitle>
 					<div
 						className="space-y-2 pt-1"
-						style={
-							usePlainHtmlSessionChrome
-								? {
-										fontFamily: "Arial, sans-serif",
-										fontSize: "13.3333px",
-										lineHeight: 1.35,
-										color: "#000000",
-									}
-								: undefined
-						}
+						style={sessionPopupBodyStyle}
 					>
 						{isContactAudioPostsLoading ? (
 							<p>Loading audio...</p>
@@ -3579,11 +3612,18 @@ export const CardsReview = ({
 						) : (
 							<div className="space-y-2">
 								{contactAudioPosts.map((audioPost) => {
-									const displayName =
-										audioPost.author.primaryName?.trim() ||
-										(audioPost.author.username
-											? `@${audioPost.author.username}`
-											: "contact");
+									const displayName = resolveAudioActivityAuthorName(
+										audioPost.author,
+									);
+									const avatarInitials = resolveAudioActivityAuthorInitials(
+										audioPost.author,
+										displayName,
+									);
+									const relativeTimeLabel = isEnglishApp
+										? formatEnglishRelativeTime(
+												audioPost.updatedAt ?? audioPost.createdAt,
+										  )
+										: audioPost.relativeTime;
 									const isPlaying = activeContactAudioPostId === audioPost.id;
 
 									return (
@@ -3591,25 +3631,67 @@ export const CardsReview = ({
 											key={audioPost.id}
 											className="flex items-center justify-between gap-3"
 										>
-											<div>
-												<p>{displayName}</p>
-												<p style={{ opacity: 0.7 }}>{audioPost.relativeTime}</p>
+											<div className="flex min-w-0 items-center gap-2">
+												<div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-[2px] bg-[#dcdcdc] text-[10px] font-semibold uppercase leading-none text-black">
+													{audioPost.author.avatarUrl ? (
+														<img
+															src={audioPost.author.avatarUrl}
+															alt={`${displayName} profile`}
+															className="h-full w-full object-cover"
+														/>
+													) : (
+														avatarInitials
+													)}
+												</div>
+												<div className="min-w-0" style={{ lineHeight: 1 }}>
+													<p
+														style={{
+															margin: 0,
+															whiteSpace: "nowrap",
+															overflow: "hidden",
+															textOverflow: "ellipsis",
+														}}
+													>
+														{displayName}
+													</p>
+													<p
+														style={{
+															margin: "4px 0 0 0",
+															opacity: 0.68,
+															fontSize: "11.5px",
+															lineHeight: 0.95,
+														}}
+													>
+														{relativeTimeLabel}
+													</p>
+												</div>
 											</div>
 											<button
 												type="button"
 												onClick={() => {
 													void toggleContactAudioPlayback(audioPost);
 												}}
+												onMouseEnter={(event) => {
+													event.currentTarget.style.backgroundColor = isPlaying
+														? "#c7d7c7"
+														: "#cfcfcf";
+												}}
+												onMouseLeave={(event) => {
+													event.currentTarget.style.backgroundColor = isPlaying
+														? "#dcebdc"
+														: "#e0e0e0";
+												}}
 												disabled={isFlipAudioMuted}
 												style={{
 													fontSize: "13.3333px",
 													fontFamily: "Arial, sans-serif",
-													backgroundColor: isPlaying ? "#dcebdc" : "#efefef",
+													backgroundColor: isPlaying ? "#dcebdc" : "#e0e0e0",
 													color: "#000000",
 													border: "1px solid #000000",
 													borderRadius: "3px",
 													padding: "1px 8px",
 													opacity: isFlipAudioMuted ? 0.55 : 1,
+													transition: "background-color 120ms ease",
 												}}
 											>
 												{isPlaying ? "pause" : "listen"}
@@ -3629,42 +3711,17 @@ export const CardsReview = ({
 			>
 				<DialogContent
 					motionPreset="fade"
-					className={usePlainHtmlSessionChrome ? "max-w-md" : "max-w-md"}
-					style={
-						usePlainHtmlSessionChrome
-							? {
-									fontFamily: "Arial, sans-serif",
-									fontSize: "13.3333px",
-									backgroundColor: "#f7f6f2",
-									border: "1px solid #000000",
-									color: "#000000",
-									borderRadius: 0,
-								}
-							: undefined
-					}
+					closeMode={usePlainHtmlSessionChrome ? "plain_html" : "default"}
+					className={sessionPopupContentClassName}
+					style={sessionPopupContentStyle}
 					aria-describedby={undefined}
 				>
-					<DialogTitle
-						style={
-							usePlainHtmlSessionChrome
-								? { fontFamily: "Arial, sans-serif", fontSize: "13.3333px" }
-								: undefined
-						}
-					>
-						Share with a contact
+					<DialogTitle style={sessionPopupTitleStyle}>
+						Share with others
 					</DialogTitle>
 					<div
 						className="space-y-2 pt-1"
-						style={
-							usePlainHtmlSessionChrome
-								? {
-										fontFamily: "Arial, sans-serif",
-										fontSize: "13.3333px",
-										lineHeight: 1.35,
-										color: "#000000",
-									}
-								: undefined
-						}
+						style={sessionPopupBodyStyle}
 					>
 						{!hasCurrentCardAudio ? (
 							<p>Record audio on this card before sharing it.</p>
@@ -3680,101 +3737,44 @@ export const CardsReview = ({
 									const isSelected = selectedShareContactIds.includes(
 										friend.userId,
 									);
+									const friendDisplayName = resolveSessionContactDisplayName(friend);
+									const friendInitials = resolveSessionContactInitials(friend);
 
 									return (
-										<div
+										<label
 											key={friend.userId}
-											className="flex items-center justify-between gap-3"
+											className="flex items-center gap-2"
 										>
-											<p>{resolveSessionContactDisplayName(friend)}</p>
-											<button
-												type="button"
-												onClick={() => {
-													toggleContactShareSelection(friend.userId);
+											<input
+												type="checkbox"
+												checked={isSelected}
+												onChange={() => {
+													void toggleContactShareSelection(friend.userId);
 												}}
 												disabled={isCardAudioShareUpdating}
 												style={{
-													fontSize: "13.3333px",
-													fontFamily: "Arial, sans-serif",
-													backgroundColor: isSelected ? "#dcebdc" : "#efefef",
-													color: "#000000",
-													border: "1px solid #000000",
-													borderRadius: "3px",
-													padding: "1px 8px",
+													width: "14px",
+													height: "14px",
+													accentColor: "#2e6b2e",
 												}}
-											>
-												{isSelected ? "remove from sharing" : "share"}
-											</button>
-										</div>
+											/>
+											<div className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-[2px] bg-[#dcdcdc] text-[9px] font-semibold uppercase leading-none text-black">
+												{friend.avatarUrl ? (
+													<img
+														src={friend.avatarUrl}
+														alt={`${friendDisplayName} profile`}
+														className="h-full w-full object-cover"
+													/>
+												) : (
+													friendInitials
+												)}
+											</div>
+											<span>{friendDisplayName}</span>
+										</label>
 									);
 								})}
 							</div>
 						)}
-					</div>
-				</DialogContent>
-			</Dialog>
-
-			<Dialog open={showReviewLegend} onOpenChange={setShowReviewLegend}>
-				<DialogContent
-					motionPreset="fade"
-					className={
-						usePlainHtmlSessionChrome
-							? "max-w-xs"
-							: "max-w-xs border-border/80 bg-popover text-popover-foreground"
-					}
-					style={
-						usePlainHtmlSessionChrome
-							? {
-									fontFamily: "Arial, sans-serif",
-									fontSize: "13.3333px",
-									backgroundColor: "#f7f6f2",
-									border: "1px solid #000000",
-									color: "#000000",
-									borderRadius: 0,
-								}
-							: undefined
-					}
-					aria-describedby={undefined}
-				>
-					<DialogTitle
-						className={
-							usePlainHtmlSessionChrome
-								? ""
-								: "text-sm font-medium text-popover-foreground"
-						}
-						style={
-							usePlainHtmlSessionChrome
-								? { fontFamily: "Arial, sans-serif", fontSize: "13.3333px" }
-								: undefined
-						}
-					>
-						Counter guide
-					</DialogTitle>
-					<div
-						className={
-							usePlainHtmlSessionChrome
-								? "space-y-2 pt-1"
-								: "space-y-2 pt-1 text-xs leading-relaxed text-muted-foreground"
-						}
-						style={
-							usePlainHtmlSessionChrome
-								? {
-										fontFamily: "Arial, sans-serif",
-										fontSize: "13.3333px",
-										lineHeight: 1.35,
-										color: "#000000",
-									}
-								: undefined
-						}
-					>
-						<p>These numbers show how many cards remain by type.</p>
-						<p>
-							<span className="text-sky-500">Blue</span> : new cards.
-							<br />
-							<span className="text-rose-500">Red</span> : cards in learning.
-							<br />
-							<span className="text-emerald-500">Green</span> : cards to review.
-						</p>
 					</div>
 				</DialogContent>
 			</Dialog>
