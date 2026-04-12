@@ -17,7 +17,7 @@ describe("ReviewMainCardSurface foundation media", () => {
 				term: "اِسْمٌ",
 				translation: "nom",
 				transliteration: null,
-				example_term: "بِاسْمِ اللَّهِ",
+				example_term: "بِسْمِ اللَّهِ",
 				example_translation: "Au nom d'Allah.",
 				frequency_rank: 1,
 				image_url: null,
