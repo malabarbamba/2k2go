@@ -5,8 +5,7 @@ Open-source vocab cards for the 2,000 most frequent Arabic words, in order, with
 ## open-source scope
 
 - This public repository is open source for the frontend and the foundation deck.
-- Backend can be added to repo is anyone asks
-- We will make backend opensource if anyone asks for it.
+- Backend can be added to repo if anyone asks
 
 ## what it does
 
