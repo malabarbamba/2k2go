@@ -246,7 +246,7 @@ Use vocalized material at the beginning, then let immersion gradually teach your
 
 **Which Arabic should I learn?**
 
-Modern Standard Arabic (MSA). It's the one that works everywhere: news, education, formal writing, all 22 Arab countries. Everything else comes after. That's the path I have chosen for 2k2go and below is breakdown of why exactly is that the case.
+Modern Standard Arabic (MSA). It's the one that works everywhere: news, education, formal writing, all 22 Arab countries and also many more knowing that for example, in Pakistan or Malaysia it is easy to find someone in a mosque that speaks MSA. Everything else comes after. That's why I chose MSA for 2k2go. Read below for a breakdown.
 
 ---
 
