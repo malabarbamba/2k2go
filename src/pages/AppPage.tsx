@@ -3943,7 +3943,7 @@ export default function AppPage() {
 				fsrs_target_retention: 0.9,
 				new_cards_per_day: 20,
 				scheduler_timezone: data.timezone,
-				scheduler_day_cutoff_hour: 4,
+				scheduler_day_cutoff_hour: 0,
 				plan: null,
 				pro_status: null,
 				admin_override_pro: null,
