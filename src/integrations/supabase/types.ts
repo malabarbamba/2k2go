@@ -167,6 +167,57 @@ export type Database = {
 				};
 				Relationships: [];
 			};
+			deck_download_events: {
+				Row: {
+					browser: string | null;
+					click_id: string;
+					country: string | null;
+					created_at: string;
+					deck_key: string;
+					id: string;
+					ip_hash: string | null;
+					locale: string | null;
+					page_path: string;
+					referrer: string | null;
+					source_name: string;
+					user_agent: string | null;
+					user_id: string | null;
+					visitor_id: string | null;
+				};
+				Insert: {
+					browser?: string | null;
+					click_id: string;
+					country?: string | null;
+					created_at?: string;
+					deck_key: string;
+					id?: string;
+					ip_hash?: string | null;
+					locale?: string | null;
+					page_path: string;
+					referrer?: string | null;
+					source_name: string;
+					user_agent?: string | null;
+					user_id?: string | null;
+					visitor_id?: string | null;
+				};
+				Update: {
+					browser?: string | null;
+					click_id?: string;
+					country?: string | null;
+					created_at?: string;
+					deck_key?: string;
+					id?: string;
+					ip_hash?: string | null;
+					locale?: string | null;
+					page_path?: string;
+					referrer?: string | null;
+					source_name?: string;
+					user_agent?: string | null;
+					user_id?: string | null;
+					visitor_id?: string | null;
+				};
+				Relationships: [];
+			};
 			friend_requests: {
 				Row: {
 					created_at: string;
@@ -838,6 +889,14 @@ export type Database = {
 			[_ in never]: never;
 		};
 		Functions: {
+			get_app_admin_overview_v1: {
+				Args: never;
+				Returns: {
+					accounts_total: number;
+					deck_downloads_total: number;
+					unique_visitors_total: number;
+				}[];
+			};
 			get_app_v2_session_unique_visitors_total: {
 				Args: never;
 				Returns: number;

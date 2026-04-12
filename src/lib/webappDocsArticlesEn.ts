@@ -601,7 +601,7 @@ Yes. The parameters below are the ones behind this method, adapted for Anki's SM
 
 The most important part of this article is not the numbers below. It is this:
 
-Without one-target sentences, no Anki settings will produce the results you are looking for. The scheduler schedules what you give it. Good cards on good settings work. Bad cards on good settings produce a very precise timer for forgetting.
+Without one-target sentences, no Anki settings will produce the results you are looking for. The scheduler schedules what you give it. Good cards on good settings work. Bad cards on good settings is just garbage.
 
 If your cards are word-to-translation pairs or multi-target sentences, rebuild the card format before touching deck options.
 

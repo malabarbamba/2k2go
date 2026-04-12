@@ -12,7 +12,15 @@ npm-debug.log*
 ai-skills/reddit-expert/
 
 # Private backend source (kept in private repository)
-supabase/
+supabase/*
+!supabase/functions/
+supabase/functions/*
+!supabase/functions/deck-download-init/
+!supabase/functions/deck-download-init/index.ts
+!supabase/migrations/
+supabase/migrations/*
+!supabase/migrations/20260412_deck_download_events_v1.sql
+supabase/.temp/
 scripts/translate_foundation_deck_deepl.py
 tmp_public_schema.sql
 tmp_old_public_schema.sql

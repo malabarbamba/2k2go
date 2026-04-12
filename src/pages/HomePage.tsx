@@ -1,7 +1,12 @@
 import { useEffect, useState, type ComponentType } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppLocale } from "@/contexts/AppLocaleContext";
+import { getOrCreateAppSessionVisitorId } from "@/lib/appSessionVisitor";
 import { readActiveUserId } from "@/lib/authPersistence";
+import {
+	createDeckDownloadClickId,
+	recordDeckDownloadClick,
+} from "@/services/deckDownloadTrackingService";
 import foundationsDeckFile from "@/assets/deck-fondations-2k/2K2GO Arabic Foundations.apkg?url";
 
 const LANDING_RAILS_MIN_VIEWPORT_WIDTH = 1025;
@@ -26,6 +31,30 @@ export default function HomePage() {
 	const [RailsComponent, setRailsComponent] = useState<ComponentType | null>(null);
 	const [isCtaHovered, setIsCtaHovered] = useState(false);
 	const isEnglish = locale === "en";
+
+	const handleDeckDownloadClick = () => {
+		const userId = readActiveUserId().trim();
+		const pagePath =
+			typeof window === "undefined"
+				? location.pathname
+				: `${window.location.pathname}${window.location.search}`;
+
+		void recordDeckDownloadClick({
+			clickId: createDeckDownloadClickId(),
+			deckKey: "enki_deck",
+			sourceName: "landing_main_cta",
+			pagePath,
+			referrer:
+				typeof document === "undefined" || document.referrer.trim().length === 0
+					? null
+					: document.referrer,
+			locale,
+			userId: userId.length > 0 ? userId : null,
+			visitorId: getOrCreateAppSessionVisitorId(),
+		}).catch((error) => {
+			console.error("Error recording landing deck download click:", error);
+		});
+	};
 
 	useEffect(() => {
 		const searchParams = new URLSearchParams(location.search);
@@ -182,6 +211,7 @@ export default function HomePage() {
 					<a
 						href={foundationsDeckFile}
 						download="2K2GO Arabic Foundations.apkg"
+						onClick={handleDeckDownloadClick}
 						style={{
 							font: "inherit",
 							color: "#000000",
@@ -194,7 +224,7 @@ export default function HomePage() {
 							alignItems: "center",
 						}}
 					>
-						download deck
+						download anki deck
 					</a>
 					<span aria-hidden="true">&middot;</span>
 					<a

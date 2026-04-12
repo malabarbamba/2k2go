@@ -386,10 +386,24 @@ const extractTargets = (html: string): Set<string> => {
 	return targets;
 };
 
+const matchesDroppedWaslAlifForm = (word: string, target: string): boolean => {
+	if (!target.startsWith("ا") || word.length < 2 || target.length < 2) {
+		return false;
+	}
+
+	const prefixedWord = word.slice(1);
+	const unprefixedTarget = target.slice(1);
+	return ["ب", "ف", "ك", "ل"].includes(word[0] ?? "") && prefixedWord === unprefixedTarget;
+};
+
 const containsTarget = (word: string, targetSet: Set<string>): boolean => {
 	const cleanedWord = stripTashkeel(word).replace(/ـ/g, "");
 	for (const target of targetSet) {
-		if (cleanedWord.includes(target) || target.includes(cleanedWord)) {
+		if (
+			cleanedWord.includes(target) ||
+			target.includes(cleanedWord) ||
+			matchesDroppedWaslAlifForm(cleanedWord, target)
+		) {
 			return true;
 		}
 	}

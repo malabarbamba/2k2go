@@ -18,6 +18,7 @@ import type {
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { useProfile, type UserProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
+import { getOrCreateAppSessionVisitorId } from "@/lib/appSessionVisitor";
 import {
 	clampProfileNewCardsPerDay,
 	isSupportedProfileCountry,
@@ -138,8 +139,7 @@ const APP_V2_DEFAULT_WEEKLY_REMAINING_CARDS =
 	PROFILE_NEW_CARDS_PER_DAY_DEFAULT * 7;
 const APP_V2_TOTAL_DECK_CARDS = 2000;
 const APP_V2_HOME_METRICS_CACHE_TTL_MS = 5_000;
-const APP_V2_SESSION_VISITOR_STORAGE_KEY = "app_session_visitor_id";
-const APP_V2_ADMIN_OVERVIEW_CACHE_KEY = "app:admin-overview:v1";
+const APP_V2_ADMIN_OVERVIEW_CACHE_KEY = "app:admin-overview:v2";
 const APP_V2_ADMIN_OVERVIEW_CACHE_TTL_MS = 5 * 60_000;
 const APP_V2_PROFILE_CACHE_TTL_MS = 5 * 60_000;
 const APP_V2_FOUNDATION_REMAINING_CACHE_TTL_MS = 5 * 60_000;
@@ -892,9 +892,13 @@ function writeAppV2FoundationRemainingCache(
 	}
 }
 
-type AppV2AdminOverviewCacheSnapshot = {
+type AppV2AdminOverviewTotals = {
 	uniqueVisitorsTotal: number;
 	accountsTotal: number;
+	deckDownloadsTotal: number;
+};
+
+type AppV2AdminOverviewCacheSnapshot = AppV2AdminOverviewTotals & {
 	updatedAt: number;
 };
 
@@ -913,6 +917,7 @@ function readAppV2AdminOverviewCache(): AppV2AdminOverviewCacheSnapshot | null {
 		if (
 			typeof parsedValue?.uniqueVisitorsTotal !== "number" ||
 			typeof parsedValue?.accountsTotal !== "number" ||
+			typeof parsedValue?.deckDownloadsTotal !== "number" ||
 			typeof parsedValue?.updatedAt !== "number"
 		) {
 			return null;
@@ -924,6 +929,10 @@ function readAppV2AdminOverviewCache(): AppV2AdminOverviewCacheSnapshot | null {
 				Math.floor(parsedValue.uniqueVisitorsTotal),
 			),
 			accountsTotal: Math.max(0, Math.floor(parsedValue.accountsTotal)),
+			deckDownloadsTotal: Math.max(
+				0,
+				Math.floor(parsedValue.deckDownloadsTotal),
+			),
 			updatedAt: parsedValue.updatedAt,
 		};
 	} catch {
@@ -932,8 +941,7 @@ function readAppV2AdminOverviewCache(): AppV2AdminOverviewCacheSnapshot | null {
 }
 
 function writeAppV2AdminOverviewCache(
-	uniqueVisitorsTotal: number,
-	accountsTotal: number,
+	totals: AppV2AdminOverviewTotals,
 ): void {
 	if (typeof window === "undefined") {
 		return;
@@ -943,8 +951,15 @@ function writeAppV2AdminOverviewCache(
 		window.localStorage.setItem(
 			APP_V2_ADMIN_OVERVIEW_CACHE_KEY,
 			JSON.stringify({
-				uniqueVisitorsTotal: Math.max(0, Math.floor(uniqueVisitorsTotal)),
-				accountsTotal: Math.max(0, Math.floor(accountsTotal)),
+				uniqueVisitorsTotal: Math.max(
+					0,
+					Math.floor(totals.uniqueVisitorsTotal),
+				),
+				accountsTotal: Math.max(0, Math.floor(totals.accountsTotal)),
+				deckDownloadsTotal: Math.max(
+					0,
+					Math.floor(totals.deckDownloadsTotal),
+				),
 				updatedAt: Date.now(),
 			}),
 		);
@@ -968,45 +983,26 @@ function parseNonNegativeInteger(value: unknown, fallback = 0): number {
 	return Math.max(0, Math.floor(parsedValue));
 }
 
-function createAppV2SessionVisitorId(): string {
-	if (
-		typeof crypto !== "undefined" &&
-		typeof crypto.randomUUID === "function"
-	) {
-		return crypto.randomUUID();
+function parseAppV2AdminOverviewResponse(
+	value: unknown,
+): AppV2AdminOverviewTotals | null {
+	const firstRow = Array.isArray(value) ? value[0] : null;
+	if (!firstRow || typeof firstRow !== "object") {
+		return null;
 	}
 
-	return `fallback-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-}
-
-function getOrCreateAppV2SessionVisitorId(): string {
-	if (typeof window === "undefined") {
-		return createAppV2SessionVisitorId();
-	}
-
-	try {
-		const storedValue = window.localStorage.getItem(
-			APP_V2_SESSION_VISITOR_STORAGE_KEY,
-		);
-		if (storedValue && storedValue.trim().length > 0) {
-			return storedValue;
-		}
-	} catch {
-		// Ignore localStorage read failures.
-	}
-
-	const nextVisitorId = createAppV2SessionVisitorId();
-
-	try {
-		window.localStorage.setItem(
-			APP_V2_SESSION_VISITOR_STORAGE_KEY,
-			nextVisitorId,
-		);
-	} catch {
-		// Ignore localStorage write failures.
-	}
-
-	return nextVisitorId;
+	const overviewRow = firstRow as Record<string, unknown>;
+	return {
+		uniqueVisitorsTotal: parseNonNegativeInteger(
+			overviewRow.unique_visitors_total,
+			0,
+		),
+		accountsTotal: parseNonNegativeInteger(overviewRow.accounts_total, 0),
+		deckDownloadsTotal: parseNonNegativeInteger(
+			overviewRow.deck_downloads_total,
+			0,
+		),
+	};
 }
 
 function readAppV2HomeMetricsCache(
@@ -3670,6 +3666,8 @@ export default function AppPage() {
 		useState<number>(() => readAppV2AdminOverviewCache()?.uniqueVisitorsTotal ?? 0);
 	const [adminAccountsTotal, setAdminAccountsTotal] =
 		useState<number>(() => readAppV2AdminOverviewCache()?.accountsTotal ?? 0);
+	const [adminDeckDownloadsTotal, setAdminDeckDownloadsTotal] =
+		useState<number>(() => readAppV2AdminOverviewCache()?.deckDownloadsTotal ?? 0);
 	const [cachedFoundationRemainingCount, setCachedFoundationRemainingCount] =
 		useState<number | null>(() =>
 			readAppV2FoundationRemainingCache(user?.id ?? null),
@@ -4153,7 +4151,7 @@ export default function AppPage() {
 			return;
 		}
 
-		const visitorId = getOrCreateAppV2SessionVisitorId();
+		const visitorId = getOrCreateAppSessionVisitorId();
 
 		const trackUniqueVisitor = async () => {
 			const { error } = await supabase.rpc(
@@ -4176,12 +4174,14 @@ export default function AppPage() {
 		if (!user?.id) {
 			setAdminUniqueVisitorsTotal(0);
 			setAdminAccountsTotal(0);
+			setAdminDeckDownloadsTotal(0);
 			return;
 		}
 
 		if (isAdmin === false) {
 			setAdminUniqueVisitorsTotal(0);
 			setAdminAccountsTotal(0);
+			setAdminDeckDownloadsTotal(0);
 			return;
 		}
 
@@ -4194,6 +4194,7 @@ export default function AppPage() {
 		if (cachedSnapshot) {
 			setAdminUniqueVisitorsTotal(cachedSnapshot.uniqueVisitorsTotal);
 			setAdminAccountsTotal(cachedSnapshot.accountsTotal);
+			setAdminDeckDownloadsTotal(cachedSnapshot.deckDownloadsTotal);
 			if (
 				Date.now() - cachedSnapshot.updatedAt <=
 				APP_V2_ADMIN_OVERVIEW_CACHE_TTL_MS
@@ -4205,26 +4206,15 @@ export default function AppPage() {
 		}
 
 		const loadAdminOverview = async () => {
-			const [uniqueVisitorsResponse, accountsResponse] = await Promise.all([
-				supabase.rpc("get_app_v2_session_unique_visitors_total"),
-				supabase.rpc("get_total_accounts_count_v1"),
-			]);
+			const adminOverviewResponse = await supabase.rpc(
+				"get_app_admin_overview_v1",
+			);
 
-			if (uniqueVisitorsResponse.error) {
+			if (adminOverviewResponse.error) {
 				console.error(
-					"Error loading app-v2 session unique visitors total:",
-					uniqueVisitorsResponse.error,
+					"Error loading app admin overview:",
+					adminOverviewResponse.error,
 				);
-			}
-
-			if (accountsResponse.error) {
-				console.error(
-					"Error loading app-v2 accounts total:",
-					accountsResponse.error,
-				);
-			}
-
-			if (uniqueVisitorsResponse.error && accountsResponse.error) {
 				return;
 			}
 
@@ -4232,16 +4222,24 @@ export default function AppPage() {
 				return;
 			}
 
-			const nextUniqueVisitorsTotal = uniqueVisitorsResponse.error
-				? (cachedSnapshot?.uniqueVisitorsTotal ?? 0)
-				: parseNonNegativeInteger(uniqueVisitorsResponse.data, 0);
-			const nextAccountsTotal = accountsResponse.error
-				? (cachedSnapshot?.accountsTotal ?? 0)
-				: parseNonNegativeInteger(accountsResponse.data, 0);
+			const nextOverview =
+				parseAppV2AdminOverviewResponse(adminOverviewResponse.data) ??
+				(cachedSnapshot
+					? {
+						uniqueVisitorsTotal: cachedSnapshot.uniqueVisitorsTotal,
+						accountsTotal: cachedSnapshot.accountsTotal,
+						deckDownloadsTotal: cachedSnapshot.deckDownloadsTotal,
+					}
+					: {
+						uniqueVisitorsTotal: 0,
+						accountsTotal: 0,
+						deckDownloadsTotal: 0,
+					});
 
-			setAdminUniqueVisitorsTotal(nextUniqueVisitorsTotal);
-			setAdminAccountsTotal(nextAccountsTotal);
-			writeAppV2AdminOverviewCache(nextUniqueVisitorsTotal, nextAccountsTotal);
+			setAdminUniqueVisitorsTotal(nextOverview.uniqueVisitorsTotal);
+			setAdminAccountsTotal(nextOverview.accountsTotal);
+			setAdminDeckDownloadsTotal(nextOverview.deckDownloadsTotal);
+			writeAppV2AdminOverviewCache(nextOverview);
 		};
 
 		void loadAdminOverview();
@@ -4454,12 +4452,14 @@ export default function AppPage() {
 											: "nombre d'utilisateurs uniques total :"}{" "}
 										{adminUniqueVisitorsTotal}
 										<br />
-										{isEnglish
-											? "number of accounts:"
-											: "nombre de comptes :"}{" "}
-										{adminAccountsTotal}
-									</>
-								) : null}
+									{isEnglish
+										? "number of accounts:"
+										: "nombre de comptes :"}{" "}
+									{adminAccountsTotal}
+									<br />
+									total deck downloads: {adminDeckDownloadsTotal}
+								</>
+							) : null}
 							</div>
 						</div>
 					</div>

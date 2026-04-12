@@ -10,7 +10,8 @@
       "WebFetch(domain:marhabtainarabic.com)",
       "WebFetch(domain:forum.nocramming.com)",
       "WebFetch(domain:www.sabrina.dev)",
-      "WebFetch(domain:www.littleflamecreative.com)"
+      "WebFetch(domain:www.littleflamecreative.com)",
+      "Bash(curl:*)"
     ]
   }
 }
