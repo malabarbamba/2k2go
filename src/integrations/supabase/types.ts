@@ -889,6 +889,13 @@ export type Database = {
 			[_ in never]: never;
 		};
 		Functions: {
+			get_my_review_daily_counts_v1: {
+				Args: { p_days_back?: number };
+				Returns: {
+					review_date: string;
+					review_count: number;
+				}[];
+			};
 			get_app_admin_overview_v1: {
 				Args: never;
 				Returns: {

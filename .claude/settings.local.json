@@ -11,7 +11,8 @@
       "WebFetch(domain:forum.nocramming.com)",
       "WebFetch(domain:www.sabrina.dev)",
       "WebFetch(domain:www.littleflamecreative.com)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(__NEW_LINE_be0ea3517919bb44__ curl:*)"
     ]
   }
 }

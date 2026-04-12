@@ -558,7 +558,7 @@ function removeAppV2ProfileCacheByUsername(username: string | null | undefined):
 }
 
 function buildAppV2AccountPath(username: string): string {
-	return `${APP_V2_BASE_PATH}/profile/${encodeURIComponent(username)}`;
+	return `${APP_V2_BASE_PATH}/account/${encodeURIComponent(username)}`;
 }
 
 function resolveAppV2ProfileUsername(value: string | null | undefined): string {
@@ -645,7 +645,7 @@ function resolveCanonicalAppV2Path(pathname: string): string | null {
 		const canonicalUsername = resolveAppV2ProfileUsername(usernameSegment);
 		const canonicalProfilePath = buildAppV2AccountPath(canonicalUsername);
 
-		if (slug !== "profile" || canonicalProfilePath !== pathname) {
+		if (slug !== "account" || canonicalProfilePath !== pathname) {
 			return canonicalProfilePath;
 		}
 
@@ -654,10 +654,6 @@ function resolveCanonicalAppV2Path(pathname: string): string | null {
 
 	if (pathname === `${APP_V2_BASE_PATH}/camarades`) {
 		return `${APP_V2_BASE_PATH}/contacts`;
-	}
-
-	if (pathname === `${APP_V2_BASE_PATH}/account`) {
-		return `${APP_V2_BASE_PATH}/profile`;
 	}
 
 	if (pathname === `${APP_V2_BASE_PATH}/end`) {
@@ -3990,33 +3986,18 @@ export default function AppPage() {
 			return;
 		}
 
-		const cachedSnapshot = readAppV2HomeMetricsCache(user.id);
-		if (
-			cachedSnapshot &&
-			cachedSnapshot.weeklyRemainingCount > todayRemainingCount &&
-			Date.now() - cachedSnapshot.updatedAt <= APP_V2_HOME_METRICS_CACHE_TTL_MS
-		) {
-			return;
-		}
-
 		let cancelled = false;
 
 		const refreshHomeMetrics = async () => {
 			let nextWeeklyRemainingCount = todayRemainingCount;
 			let nextAverageReviewsPerDay = PROFILE_NEW_CARDS_PER_DAY_DEFAULT;
 			let schedulerWeeklyCount = todayRemainingCount;
-			const monthAgo = new Date();
-			monthAgo.setDate(monthAgo.getDate() - 30);
 			const { fetchDueCardsByReviewTypes } = await import(
 				"@/services/deckPersoDueReviewService"
 			);
 
 			const [reviewAverageResult, weeklyDueResult] = await Promise.allSettled([
-				supabase
-					.from("user_daily_activity")
-					.select("activity_date,reviews_count")
-					.eq("user_id", user.id)
-					.gte("activity_date", monthAgo.toISOString().slice(0, 10)),
+				supabase.rpc("get_my_review_daily_counts_v1", { p_days_back: 30 }),
 				fetchDueCardsByReviewTypes(["foundation", "collected", "sent"], 320),
 			]);
 
@@ -4025,11 +4006,11 @@ export default function AppPage() {
 				if (!error && Array.isArray(data)) {
 					const activeRows = data.filter(
 						(row) =>
-							typeof row.reviews_count === "number" && row.reviews_count > 0,
+							typeof row.review_count === "number" && row.review_count > 0,
 					);
 					if (activeRows.length > 0) {
 						const totalReviews = activeRows.reduce(
-							(sum, row) => sum + Math.max(0, row.reviews_count ?? 0),
+							(sum, row) => sum + Math.max(0, row.review_count ?? 0),
 							0,
 						);
 						nextAverageReviewsPerDay = Math.floor(

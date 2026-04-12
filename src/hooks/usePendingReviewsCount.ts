@@ -172,9 +172,15 @@ const loadPendingReviewsSnapshot = async (
 		return cachedSnapshot;
 	}
 
-	const inFlightRequest = inFlightPendingReviewsRequests.get(scope);
-	if (inFlightRequest) {
-		return inFlightRequest;
+	// Only reuse an in-flight request for non-forced refreshes.
+	// Forced refreshes (maxAgeMs === null) must start a fresh request so they
+	// don't accidentally reuse a pre-review in-flight request and return a
+	// stale count that was fetched before the card was reviewed.
+	if (maxAgeMs !== null) {
+		const inFlightRequest = inFlightPendingReviewsRequests.get(scope);
+		if (inFlightRequest) {
+			return inFlightRequest;
+		}
 	}
 
 	const request = (async (): Promise<PendingReviewsSnapshot> => {
@@ -284,12 +290,17 @@ export const usePendingReviewsCount = (
 	const requestIdRef = useRef(0);
 
 	const refreshInternal = useCallback(
-		async (force: boolean) => {
+		// silent=true: fetch fresh data in the background without showing a loading
+		// spinner. Used on mount so the cached value is shown immediately while a
+		// revalidation request runs concurrently to catch any cards reviewed in a
+		// previous session that fired emitPendingReviewsInvalidated() while this
+		// component was unmounted (and the event was therefore missed).
+		async (force: boolean, silent = false) => {
 			const requestId = requestIdRef.current + 1;
 			requestIdRef.current = requestId;
 
 			if (authLoading) {
-				setLoading(true);
+				if (!silent) setLoading(true);
 				return;
 			}
 
@@ -314,9 +325,11 @@ export const usePendingReviewsCount = (
 				return;
 			}
 
-			setLoading(cachedSnapshot === null);
-			if (!cachedSnapshot) {
-				setError(null);
+			if (!silent) {
+				setLoading(cachedSnapshot === null);
+				if (!cachedSnapshot) {
+					setError(null);
+				}
 			}
 
 			const snapshot = await loadPendingReviewsSnapshot(
@@ -341,13 +354,18 @@ export const usePendingReviewsCount = (
 	}, [refreshInternal]);
 
 	useEffect(() => {
+		// Always force a background revalidation on mount so that counts reviewed
+		// in a previous session (which fired emitPendingReviewsInvalidated while
+		// this component was unmounted) are reflected immediately. The cached value
+		// shown via useState is preserved until the fresh result arrives, so there
+		// is no visible loading flash.
 		if (initialLoadDelayMs === 0) {
-			void refreshInternal(false);
+			void refreshInternal(true, /* silent */ true);
 			return;
 		}
 
 		const timeoutId = window.setTimeout(() => {
-			void refreshInternal(false);
+			void refreshInternal(true, /* silent */ true);
 		}, initialLoadDelayMs);
 
 		return () => {

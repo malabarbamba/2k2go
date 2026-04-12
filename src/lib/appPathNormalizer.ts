@@ -20,6 +20,8 @@ const PREVIEW_APP_FIRST_SEGMENTS = new Set([
 	"end",
 	"immersion-video",
 	"notifications",
+	"account",
+	"compte",
 	"profile",
 	"profil",
 	"session",

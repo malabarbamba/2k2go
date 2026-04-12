@@ -3,7 +3,7 @@ import type { FriendListItem } from "@/services/friendsService";
 import type { PreviewReviewCard } from "./types";
 
 const PREVIEW_NEW_CONCEPT_BASE_PATH = "/app";
-const PREVIEW_PROFILE_PATH_SEGMENT = "profil";
+const PREVIEW_PROFILE_PATH_SEGMENT = "account";
 
 export function resolveReviewActionHints(card: PreviewReviewCard | null): {
 	fail: string;
