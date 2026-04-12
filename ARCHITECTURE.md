@@ -15,7 +15,7 @@ Backend schema, migrations, edge functions, and production deploy workflows live
 - `src/App.tsx` mounts a dedicated router for the preview app shell.
 - `src/pages/AppPage.tsx` remains the main runtime controller for `/app/*`.
 - `src/pages/HomePage.tsx`, `LoginPage.tsx`, and `SignupPage.tsx` provide the public entry flow.
-- `src/pages/WhyItWorksPage.tsx` renders the `/app/why-it-works/*` docs subtree.
+- `src/pages/WhyItWorksPage.tsx` renders the `/app/why-2000-to-go/*` docs subtree.
 
 ## Dependency Centers
 

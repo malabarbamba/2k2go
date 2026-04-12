@@ -78,6 +78,7 @@ export const theme = {
 
 const HTML_BUTTON_BACKGROUND = "#efefef";
 const HTML_BUTTON_BACKGROUND_HOVER = "#e3e3e3";
+const AUDIO_PLAY_INTENT_WINDOW_MS = 1500;
 
 const createHtmlButtonStyle = ({
 	hovered = false,
@@ -1072,9 +1073,34 @@ const AudioButton = ({
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [isHovered, setIsHovered] = useState(false);
 	const audioRef = useRef<HTMLAudioElement | null>(null);
+	const playbackIntentAtRef = useRef<number | null>(null);
+
+	const markPlaybackIntent = () => {
+		playbackIntentAtRef.current = Date.now();
+	};
+
+	const clearPlaybackIntent = () => {
+		playbackIntentAtRef.current = null;
+	};
+
+	const hasFreshPlaybackIntent = () => {
+		const playbackIntentAt = playbackIntentAtRef.current;
+		if (playbackIntentAt === null) {
+			return false;
+		}
+
+		const isFresh = Date.now() - playbackIntentAt <= AUDIO_PLAY_INTENT_WINDOW_MS;
+		if (!isFresh) {
+			playbackIntentAtRef.current = null;
+		}
+
+		return isFresh;
+	};
 
 	const playAudio = async (e: React.MouseEvent) => {
 		e.stopPropagation();
+		if (!hasFreshPlaybackIntent()) return;
+		clearPlaybackIntent();
 		if (!audioUrl || isPlaying || externalLoading || isMuted) return;
 
 		try {
@@ -1116,11 +1142,19 @@ const AudioButton = ({
 	return (
 		<button
 			type="button"
+			onPointerDown={markPlaybackIntent}
+			onKeyDown={(event) => {
+				if (event.key === "Enter" || event.key === " ") {
+					markPlaybackIntent();
+				}
+			}}
+			onBlur={clearPlaybackIntent}
 			onMouseEnter={() => {
 				setIsHovered(true);
 			}}
 			onMouseLeave={() => {
 				setIsHovered(false);
+				clearPlaybackIntent();
 				onMouseLeave?.();
 			}}
 			className="cursor-pointer disabled:cursor-not-allowed"

@@ -24,8 +24,8 @@ const PREVIEW_APP_FIRST_SEGMENTS = new Set([
 	"profil",
 	"session",
 	"settings",
-	"why-it-works",
-	"pourquoi-ca-marche",
+	"why-2000-to-go",
+	"pourquoi-2000-to-go",
 ]);
 
 const ABSOLUTE_HTTP_URL_PATTERN = /^https?:\/\//i;

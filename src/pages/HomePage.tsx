@@ -157,7 +157,7 @@ export default function HomePage() {
 								display: "inline-block",
 							}}
 						>
-							{isEnglish ? "ready to go" : "commencer"}
+							{isEnglish ? "start the deck" : "commencer"}
 						</Link>
 					</p>
 				</div>

@@ -3443,7 +3443,7 @@ export const CardsReview = ({
 				</div>
 
 				<a
-					href="/app/why-it-works"
+					href="/app/why-2000-to-go"
 					target="_blank"
 					rel="noreferrer"
 					data-tutorial="review-docs-link"

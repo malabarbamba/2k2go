@@ -65,7 +65,7 @@ const LazyCardsReview = lazy(() =>
 		default: module.CardsReview,
 	})),
 );
-const LazyWhyItWorksPage = lazy(
+const LazyWhy2000ToGoPage = lazy(
 	() => import("@/pages/WhyItWorksPage"),
 );
 
@@ -125,8 +125,8 @@ const APP_PUBLIC_BASE_PATH = (import.meta.env.BASE_URL ?? "/").replace(
 );
 const HOME_V2_PUBLIC_PATH = `${APP_PUBLIC_BASE_PATH}${HOME_V2_PATH}`;
 const LOGIN_V2_PATH = "/login";
-const LEGACY_DOCS_PATH_SEGMENT = "pourquoi-ca-marche";
-const DOCS_PATH_SEGMENT = "why-it-works";
+const LEGACY_DOCS_PATH_SEGMENT = "pourquoi-2000-to-go";
+const DOCS_PATH_SEGMENT = "why-2000-to-go";
 const LEGACY_KEYBOARD_PATH_SEGMENT = "clavier-arabe-en-ligne";
 const KEYBOARD_PATH_SEGMENT = "arabic-keyboard";
 const LEGACY_IMMERSION_VIDEO_PATH_SEGMENT = "video-immersion";
@@ -140,7 +140,7 @@ const APP_V2_DEFAULT_WEEKLY_REMAINING_CARDS =
 const APP_V2_TOTAL_DECK_CARDS = 2000;
 const APP_V2_HOME_METRICS_CACHE_TTL_MS = 5_000;
 const APP_V2_ADMIN_OVERVIEW_CACHE_KEY = "app:admin-overview:v2";
-const APP_V2_ADMIN_OVERVIEW_CACHE_TTL_MS = 5 * 60_000;
+const APP_V2_ADMIN_OVERVIEW_POLL_INTERVAL_MS = 60_000;
 const APP_V2_PROFILE_CACHE_TTL_MS = 5 * 60_000;
 const APP_V2_FOUNDATION_REMAINING_CACHE_TTL_MS = 5 * 60_000;
 const APP_V2_ACCOUNT_BANK_SEARCH_LIMIT = 500;
@@ -1134,7 +1134,7 @@ function AppV2TopNav({ monComptePath }: { monComptePath: string }) {
 				to={`${APP_V2_BASE_PATH}/${DOCS_PATH_SEGMENT}`}
 				style={plainLinkStyle}
 			>
-				{isEnglish ? "why does this work?" : "pourquoi ça marche ?"}
+				{isEnglish ? "why 2000 to go?" : "pourquoi 2000 to go ?"}
 			</Link>
 			{" • "}
 			<div
@@ -3708,7 +3708,7 @@ export default function AppPage() {
 		normalizedPathname ===
 			`${APP_V2_BASE_PATH}/${OLDER_LEGACY_IMMERSION_VIDEO_PATH_SEGMENT}` ||
 		normalizedPathname === `${APP_V2_BASE_PATH}/end`;
-	const isWhyItWorksPage =
+	const isWhy2000ToGoPage =
 		normalizedPathname === `${APP_V2_BASE_PATH}/${DOCS_PATH_SEGMENT}` ||
 		normalizedPathname.startsWith(`${APP_V2_BASE_PATH}/${DOCS_PATH_SEGMENT}/`) ||
 		normalizedPathname === `${APP_V2_BASE_PATH}/${LEGACY_DOCS_PATH_SEGMENT}` ||
@@ -3724,7 +3724,7 @@ export default function AppPage() {
 		isSettingsPage ||
 		isKeyboardPage ||
 		isImmersionVideoPage ||
-		isWhyItWorksPage ||
+		isWhy2000ToGoPage ||
 		isContactsPage ||
 		isProfilePage;
 	const activeProfileUsername = resolveAppV2ProfileUsername(profileMatch?.[1]);
@@ -4189,21 +4189,14 @@ export default function AppPage() {
 			return;
 		}
 
-		let cancelled = false;
 		const cachedSnapshot = readAppV2AdminOverviewCache();
 		if (cachedSnapshot) {
 			setAdminUniqueVisitorsTotal(cachedSnapshot.uniqueVisitorsTotal);
 			setAdminAccountsTotal(cachedSnapshot.accountsTotal);
 			setAdminDeckDownloadsTotal(cachedSnapshot.deckDownloadsTotal);
-			if (
-				Date.now() - cachedSnapshot.updatedAt <=
-				APP_V2_ADMIN_OVERVIEW_CACHE_TTL_MS
-			) {
-				return () => {
-					cancelled = true;
-				};
-			}
 		}
+
+		let cancelled = false;
 
 		const loadAdminOverview = async () => {
 			const adminOverviewResponse = await supabase.rpc(
@@ -4243,9 +4236,13 @@ export default function AppPage() {
 		};
 
 		void loadAdminOverview();
+		const intervalId = setInterval(() => {
+			void loadAdminOverview();
+		}, APP_V2_ADMIN_OVERVIEW_POLL_INTERVAL_MS);
 
 		return () => {
 			cancelled = true;
+			clearInterval(intervalId);
 		};
 	}, [user?.id, isAdmin]);
 
@@ -4321,7 +4318,7 @@ export default function AppPage() {
 						</Link>
 						{" • "}
 						<Link to={`${APP_V2_BASE_PATH}/${DOCS_PATH_SEGMENT}`} style={plainLinkStyle}>
-							{isEnglish ? "why this works?" : "pourquoi ca marche ?"}
+							{isEnglish ? "why 2000 to go?" : "pourquoi 2000 to go ?"}
 						</Link>
 					</p>
 				)}
@@ -4337,9 +4334,9 @@ export default function AppPage() {
 						wordsAcquiredCount={wordsAcquiredCount}
 						wordsAcquiredCountLoading={wordsAcquiredCountLoading}
 					/>
-				) : isWhyItWorksPage ? (
+				) : isWhy2000ToGoPage ? (
 					<Suspense fallback={<AppV2SectionLoading />}>
-					<LazyWhyItWorksPage />
+					<LazyWhy2000ToGoPage />
 					</Suspense>
 				) : isProfilePage ? (
 					<AppV2ProfilePage

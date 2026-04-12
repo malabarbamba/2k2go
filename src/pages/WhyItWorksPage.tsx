@@ -22,8 +22,8 @@ type MarkdownBlock =
 	| { type: "image"; src: string; alt: string; caption: string | null; id: string }
 	| { type: "rule"; id: string };
 
-const APP_DOCS_BASE_PATH = "/app/why-it-works";
-const LEGACY_APP_DOCS_BASE_PATH = "/app-v2/pourquoi-ca-marche";
+const APP_DOCS_BASE_PATH = "/app/why-2000-to-go";
+const LEGACY_APP_DOCS_BASE_PATH = "/app-v2/pourquoi-2000-to-go";
 
 const BASE_TEXT_STYLE = {
 	fontSize: "13.3333px",
@@ -775,7 +775,7 @@ export default function WhyItWorksPage() {
 				}
 			`}</style>
 			<p style={BASE_TEXT_STYLE}>
-				{isEnglish ? "why does this work?" : "pourquoi ça marche ?"}
+				{isEnglish ? "why 2000 to go?" : "pourquoi 2000 to go ?"}
 			</p>
 			<div
 				ref={layoutRef}

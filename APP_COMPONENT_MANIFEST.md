@@ -20,7 +20,7 @@ who: `src/App.tsx`
 type: frontend
 
 `src/pages/WhyItWorksPage.tsx`, `src/lib/webappDocs*.ts`
-why: docs subtree under `/app/why-it-works/*`
+why: docs subtree under `/app/why-2000-to-go/*`
 who: `src/pages/AppPage.tsx`
 type: frontend
 

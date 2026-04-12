@@ -9,8 +9,8 @@ const LoginPage = lazy(() => import("@/pages/LoginPage"));
 const SignupPage = lazy(() => import("@/pages/SignupPage"));
 const AppShell = lazy(() => import("@/pages/AppShell"));
 
-const APP_DOCS_BASE_PATH = "/app/why-it-works";
-const LEGACY_APP_DOCS_BASE_PATH = "/app-v2/pourquoi-ca-marche";
+const APP_DOCS_BASE_PATH = "/app/why-2000-to-go";
+const LEGACY_APP_DOCS_BASE_PATH = "/app-v2/pourquoi-2000-to-go";
 
 function LoadingPage() {
 	const isEnglish = detectNavigatorLocale() === "en";
