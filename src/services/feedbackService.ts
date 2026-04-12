@@ -6,6 +6,8 @@ import type {
 	FeedbackFrequency,
 } from "@/lib/feedback";
 
+type FeedbackEnvLike = Record<string, string | undefined>;
+
 type FeedbackEvidenceAttachment = {
 	filename: string;
 	mimeType: string;
@@ -32,6 +34,22 @@ type FeedbackSubmissionResponse = {
 	ok: boolean;
 	id: string;
 };
+
+const feedbackEnv: FeedbackEnvLike =
+	(import.meta as ImportMeta & { env?: FeedbackEnvLike }).env ?? {};
+
+const normalizeOptionalString = (value: unknown): string | undefined => {
+	if (typeof value !== "string") {
+		return undefined;
+	}
+
+	const trimmedValue = value.trim();
+	return trimmedValue.length > 0 ? trimmedValue : undefined;
+};
+
+const FEEDBACK_FUNCTIONS_BEARER_TOKEN = normalizeOptionalString(
+	feedbackEnv.VITE_SUPABASE_ANON_KEY,
+);
 
 const toBase64 = async (file: File): Promise<string> => {
 	const dataUrl = await new Promise<string>((resolve, reject) => {
@@ -88,10 +106,13 @@ export const submitFeedback = async (
 	evidenceFile: File | null,
 ): Promise<FeedbackSubmissionResponse> => {
 	const payload = await buildFeedbackPayload(data, evidenceFile);
+	const headers = FEEDBACK_FUNCTIONS_BEARER_TOKEN
+		? { Authorization: `Bearer ${FEEDBACK_FUNCTIONS_BEARER_TOKEN}` }
+		: undefined;
 	const { data: response, error } =
 		await supabase.functions.invoke<FeedbackSubmissionResponse>(
 			"send-feedback-email",
-			{ body: payload },
+			{ body: payload, headers },
 		);
 
 	if (error) {

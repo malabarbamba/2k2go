@@ -82,15 +82,19 @@ describe("FeedbackPage", () => {
 			expect(invokeMock).toHaveBeenCalledTimes(1);
 		});
 
-		expect(invokeMock).toHaveBeenCalledWith("send-feedback-email", {
-			body: expect.objectContaining({
-				summary: "Profile page bug",
-				frequency: "once",
-				device: "computer",
-				browser: "chrome",
-				evidenceUrl: "https://example.com/evidence",
+		expect(invokeMock).toHaveBeenCalledWith(
+			"send-feedback-email",
+			expect.objectContaining({
+				body: expect.objectContaining({
+					summary: "Profile page bug",
+					frequency: "once",
+					device: "computer",
+					browser: "chrome",
+					evidenceUrl: "https://example.com/evidence",
+				}),
+				headers: undefined,
 			}),
-		});
+		);
 
 		expect(await screen.findByText(/Feedback sent successfully./)).toBeInTheDocument();
 		expect(screen.getByText("fb-123")).toBeInTheDocument();

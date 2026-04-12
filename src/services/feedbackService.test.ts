@@ -31,5 +31,11 @@ describe("submitFeedback", () => {
 		formData.device = "iphone";
 
 		await expect(submitFeedback(formData, null)).rejects.toThrow("Boom");
+		expect(invokeMock).toHaveBeenCalledWith(
+			"send-feedback-email",
+			expect.objectContaining({
+				headers: undefined,
+			}),
+		);
 	});
 });

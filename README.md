@@ -39,6 +39,7 @@ cp .env.example .env
 - Then set:
   - `VITE_SUPABASE_URL`
   - `VITE_SUPABASE_PUBLISHABLE_KEY`
+  - `VITE_SUPABASE_ANON_KEY` for Edge Function calls that require a bearer JWT
 
 - Or create an untracked `public/runtime-config.local.json` with your local values. This file is loaded before `public/runtime-config.json` and is ignored by git.
 
