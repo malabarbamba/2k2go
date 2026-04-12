@@ -249,7 +249,7 @@ interface MutationOptions {
 const CLIENT_REVIEW_ID_STORAGE_KEY = "deck_perso_review_client_ids";
 const RECENT_REVIEW_STORAGE_KEY = "deck_perso_recent_review_keys";
 const REVIEW_SESSION_ID_STORAGE_KEY = "deck_perso_review_session_id_v1";
-const REVIEW_SESSION_IDS_STORAGE_KEY = "deck_perso_review_session_ids_v2";
+const REVIEW_SESSION_IDS_STORAGE_KEY = "deck_perso_review_session_ids_v3";
 const REVIEW_SESSION_LEASE_SECONDS = 90;
 const RECENT_REVIEW_TTL_MS = 15000;
 const REVIEW_QUEUE_STORAGE_KEY = "deck_perso_review_submit_queue_v1";
@@ -683,6 +683,50 @@ async function claimActiveReviewSessionLease(
 		p_lease_seconds: REVIEW_SESSION_LEASE_SECONDS,
 	});
 	return error ?? null;
+}
+
+async function resolveActiveReviewSessionLeaseId(
+	client: AppSupabaseClient,
+): Promise<string | null> {
+	const leaseClient = client as unknown as {
+		from: (table: string) => {
+			select: (columns: string) => {
+				maybeSingle: () => Promise<{
+					data: { review_session_id?: unknown; lease_expires_at?: unknown } | null;
+					error: PostgrestError | null;
+				}>;
+			};
+		};
+	};
+
+	const { data, error } = await leaseClient
+		.from("review_session_leases")
+		.select("review_session_id, lease_expires_at")
+		.maybeSingle();
+
+	if (error || !data) {
+		return null;
+	}
+
+	const reviewSessionId =
+		typeof data.review_session_id === "string" ? data.review_session_id : null;
+	if (!isUuidLike(reviewSessionId)) {
+		return null;
+	}
+
+	const leaseExpiresAt =
+		typeof data.lease_expires_at === "string"
+			? new Date(data.lease_expires_at)
+			: null;
+	if (!leaseExpiresAt || Number.isNaN(leaseExpiresAt.getTime())) {
+		return null;
+	}
+
+	if (leaseExpiresAt.getTime() <= Date.now()) {
+		return null;
+	}
+
+	return reviewSessionId;
 }
 
 async function waitForReviewLeaseRetry(delayMs: number): Promise<void> {
@@ -1403,7 +1447,7 @@ function isUuidLike(value: string | null | undefined): value is string {
 
 async function startServerReviewSession(
 	client: AppSupabaseClient,
-	accountKey: string,
+	_accountKey: string,
 ): Promise<{ sessionId: string | null; error: PostgrestError | null }> {
 	const { data, error } = await startReviewSessionV1(client, {});
 	if (error) {
@@ -1427,7 +1471,6 @@ async function startServerReviewSession(
 		};
 	}
 
-	setReviewSessionId(accountKey, sessionId);
 	return { sessionId, error: null };
 }
 
@@ -1440,16 +1483,51 @@ async function claimReviewSessionLeaseWithRecovery(
 		allowSessionRotation?: boolean;
 	},
 ): Promise<PostgrestError | null> {
+	const adoptActiveLease = async (): Promise<PostgrestError | null> => {
+		const leasedSessionId = await resolveActiveReviewSessionLeaseId(client);
+		if (!isUuidLike(leasedSessionId)) {
+			return {
+				code: "PGRST116",
+				details: null,
+				hint: null,
+				message: "Active review session lease could not be recovered.",
+				name: "PostgrestError",
+			};
+		}
+
+		setReviewSessionId(leasedSessionId);
+		const adoptedLeaseError = await claimActiveReviewSessionLease(
+			client,
+			leasedSessionId,
+		);
+		return adoptedLeaseError;
+	};
+
 	const startFreshSession = async (): Promise<PostgrestError | null> => {
 		clearReviewSessionId(accountKey);
 		const { sessionId, error: startError } = await startServerReviewSession(
 			client,
 			accountKey,
 		);
-		if (!startError && sessionId) {
-			setReviewSessionId(sessionId);
+		if (startError || !sessionId) {
+			return startError;
 		}
-		return startError;
+
+		const leaseError = await claimActiveReviewSessionLease(client, sessionId);
+		if (!leaseError) {
+			setReviewSessionId(sessionId);
+			return null;
+		}
+
+		if (isActiveSessionLockedError(leaseError)) {
+			const adoptedLeaseError = await adoptActiveLease();
+			if (!adoptedLeaseError) {
+				return null;
+			}
+			return adoptedLeaseError;
+		}
+
+		return leaseError;
 	};
 
 	const currentReviewSessionId = getReviewSessionId();
@@ -1468,6 +1546,17 @@ async function claimReviewSessionLeaseWithRecovery(
 
 	if (!isActiveSessionLockedError(error)) {
 		return error;
+	}
+
+	const adoptedLeaseError = await adoptActiveLease();
+	if (!adoptedLeaseError) {
+		return null;
+	}
+	if (isReviewSessionNotOpenError(adoptedLeaseError)) {
+		return startFreshSession();
+	}
+	if (!isActiveSessionLockedError(adoptedLeaseError)) {
+		return adoptedLeaseError;
 	}
 
 	for (const delayMs of [300, 1000]) {
@@ -6019,6 +6108,42 @@ async function submitReviewNow(
 				  schedulerCardId
 				? schedulerCardId
 				: null;
+	const invokeClient = client as unknown as {
+		functions?: {
+			invoke?: (
+				name: string,
+				options?: { body?: Record<string, unknown> },
+			) => Promise<{ data: unknown; error: unknown }>;
+		};
+	};
+	const invoke =
+		typeof invokeClient.functions?.invoke === "function"
+			? (name: string, options?: { body?: Record<string, unknown> }) =>
+				invokeClient.functions!.invoke!(name, options)
+			: null;
+	const canUseRuntimeReviewScheduler =
+		invoke !== null &&
+		!!runtimeFoundationCardId &&
+		!isDeckPersoSchedulerRollbackToLegacyEnabled();
+
+	const ensureRuntimeReviewSession = async (): Promise<PostgrestError | null> => {
+		if (isUuidLike(reviewSessionId)) {
+			return null;
+		}
+
+		const { sessionId, error } = await startServerReviewSession(client, accountKey);
+		if (!error && sessionId) {
+			reviewSessionId = sessionId;
+			setReviewSessionId(accountKey, sessionId);
+		}
+		return error;
+	};
+
+	const renewRuntimeReviewSession = async (): Promise<PostgrestError | null> => {
+		clearReviewSessionId(accountKey);
+		reviewSessionId = "";
+		return ensureRuntimeReviewSession();
+	};
 
 	const renewReviewSessionLease = async (): Promise<PostgrestError | null> => {
 		clearReviewSessionId(accountKey);
@@ -6035,17 +6160,24 @@ async function submitReviewNow(
 	};
 
 	try {
-		const leaseError = await claimReviewSessionLeaseWithRecovery(
-			client,
-			accountKey,
-			() => reviewSessionId,
-			(nextReviewSessionId) => {
-				reviewSessionId = nextReviewSessionId;
-			},
-		);
-		if (leaseError) {
-			if (!isActiveSessionLockedError(leaseError)) {
-				return { ok: false, error: fromPostgrestError(leaseError) };
+		if (canUseRuntimeReviewScheduler) {
+			const runtimeSessionError = await ensureRuntimeReviewSession();
+			if (runtimeSessionError) {
+				return { ok: false, error: fromPostgrestError(runtimeSessionError) };
+			}
+		} else {
+			const leaseError = await claimReviewSessionLeaseWithRecovery(
+				client,
+				accountKey,
+				() => reviewSessionId,
+				(nextReviewSessionId) => {
+					reviewSessionId = nextReviewSessionId;
+				},
+			);
+			if (leaseError) {
+				if (!isActiveSessionLockedError(leaseError)) {
+					return { ok: false, error: fromPostgrestError(leaseError) };
+				}
 			}
 		}
 
@@ -6149,21 +6281,6 @@ async function submitReviewNow(
 			};
 		};
 
-		const invoke = (
-			client as unknown as {
-				functions?: {
-					invoke?: (
-						name: string,
-						options?: { body?: Record<string, unknown> },
-					) => Promise<{ data: unknown; error: unknown }>;
-				};
-			}
-		).functions?.invoke;
-		const canUseRuntimeReviewScheduler =
-			typeof invoke === "function" &&
-			!!runtimeFoundationCardId &&
-			!isDeckPersoSchedulerRollbackToLegacyEnabled();
-
 		const shadowDiffContext = canUseRuntimeReviewScheduler
 			? await resolveSchedulerShadowDiffContext(client)
 			: { userId: null, enabled: false };
@@ -6171,7 +6288,6 @@ async function submitReviewNow(
 		if (canUseRuntimeReviewScheduler) {
 			// Foundation review submission now depends on the runtime scheduler path.
 			// The legacy SQL RPC no longer matches the backend event contract.
-			const legacyFallbackSunsetGuardEnabled = false;
 			const buildRuntimeReviewRequestPayload = () => ({
 				schema_version: 1,
 				now_utc: nowUtc,
@@ -6199,11 +6315,9 @@ async function submitReviewNow(
 
 			if (runtimeInvokeError) {
 				if (isReviewSessionNotOpenError(runtimeInvokeError)) {
-					const renewedLeaseError = await renewReviewSessionLease();
-					if (renewedLeaseError) {
-						if (!isActiveSessionLockedError(renewedLeaseError)) {
-							return { ok: false, error: fromPostgrestError(renewedLeaseError) };
-						}
+					const renewedSessionError = await renewRuntimeReviewSession();
+					if (renewedSessionError) {
+						return { ok: false, error: fromPostgrestError(renewedSessionError) };
 					}
 
 					runtimeReviewRequestPayload = buildRuntimeReviewRequestPayload();
@@ -6242,89 +6356,6 @@ async function submitReviewNow(
 							false,
 						),
 					};
-				}
-
-				if (shouldFallbackToLegacySubmitRpc(runtimeInvokeError)) {
-					const bypassSunsetGuard =
-						shouldAllowLegacyFallbackOnTransportFailure(runtimeInvokeError);
-					if (!legacyFallbackSunsetGuardEnabled && !bypassSunsetGuard) {
-						if (shadowDiffContext.enabled && shadowDiffContext.userId) {
-							const weightsVersion = await resolveActiveWeightsVersion(
-								client,
-								shadowDiffContext.userId,
-							);
-
-							await insertSchedulerShadowDiffEvent(client, {
-								userId: shadowDiffContext.userId,
-								operation: "review_submit",
-								primaryPath: "runtime_edge",
-								occurredAt: nowUtc,
-								requestNowUtc: nowUtc,
-								weightsVersion,
-								schedulerInputs: {
-									card_key: cardKey,
-									vocabulary_card_id: card.vocabularyCardId ?? null,
-									foundation_card_id: card.foundationCardId,
-									rating,
-									runtime_request: runtimeReviewRequestPayload,
-								},
-								runtimeOutput: serializeShadowOutput(null, runtimeInvokeError),
-								legacyOutput: serializeShadowOutput(null),
-								diffSummary: {
-									matches: false,
-									reason:
-										SHADOW_DIFF_REASON_CODES.RUNTIME_REVIEW_FALLBACK_BLOCKED_BY_SUNSET_GUARD,
-									runtime_error: serializeShadowError(runtimeInvokeError),
-								},
-							});
-						}
-
-						return {
-							ok: false,
-							error: createServiceError(
-								"RPC_ERROR",
-								REVIEW_SUNSET_GUARD_BLOCKED_ERROR_MESSAGE,
-								true,
-							),
-						};
-					}
-
-					const legacyFallbackResult = await submitViaLegacyRpc();
-
-					if (shadowDiffContext.enabled && shadowDiffContext.userId) {
-						const weightsVersion = await resolveActiveWeightsVersion(
-							client,
-							shadowDiffContext.userId,
-						);
-
-						await insertSchedulerShadowDiffEvent(client, {
-							userId: shadowDiffContext.userId,
-							operation: "review_submit",
-							primaryPath: "legacy_sql",
-							occurredAt: nowUtc,
-							requestNowUtc: nowUtc,
-							weightsVersion,
-							schedulerInputs: {
-								card_key: cardKey,
-								vocabulary_card_id: card.vocabularyCardId ?? null,
-								foundation_card_id: card.foundationCardId,
-								rating,
-								runtime_request: runtimeReviewRequestPayload,
-							},
-							runtimeOutput: serializeShadowOutput(null, runtimeInvokeError),
-							legacyOutput:
-								serializeServiceResultForShadow(legacyFallbackResult),
-							diffSummary: {
-								matches: false,
-								reason:
-									SHADOW_DIFF_REASON_CODES.RUNTIME_REVIEW_FALLBACK_TO_LEGACY,
-								legacy_ok: legacyFallbackResult.ok,
-								runtime_error: serializeShadowError(runtimeInvokeError),
-							},
-						});
-					}
-
-					return legacyFallbackResult;
 				}
 
 				return { ok: false, error: fromUnknownError(runtimeInvokeError) };

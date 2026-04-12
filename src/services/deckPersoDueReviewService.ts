@@ -617,18 +617,21 @@ export async function fetchDueCardsByReviewTypes(
 			};
 		};
 
-		const invoke = (
-			client as unknown as {
-				functions?: {
-					invoke?: (
-						name: string,
-						options?: { body?: Record<string, unknown> },
-					) => Promise<{ data: unknown; error: unknown }>;
-				};
-			}
-		).functions?.invoke;
+		const invokeClient = client as unknown as {
+			functions?: {
+				invoke?: (
+					name: string,
+					options?: { body?: Record<string, unknown> },
+				) => Promise<{ data: unknown; error: unknown }>;
+			};
+		};
+		const invoke =
+			typeof invokeClient.functions?.invoke === "function"
+				? (name: string, options?: { body?: Record<string, unknown> }) =>
+					invokeClient.functions!.invoke!(name, options)
+				: null;
 		const canUseRuntimeDueScheduler =
-			typeof invoke === "function" &&
+			invoke !== null &&
 			!isDeckPersoSchedulerRollbackToLegacyEnabled();
 
 		const shadowDiffContext = canUseRuntimeDueScheduler
@@ -636,8 +639,7 @@ export async function fetchDueCardsByReviewTypes(
 			: { userId: null, enabled: false };
 
 		if (canUseRuntimeDueScheduler) {
-			const legacyFallbackSunsetGuardEnabled =
-				isDeckPersoSchedulerLegacyFallbackSunsetGuardEnabled();
+			const legacyFallbackSunsetGuardEnabled = true;
 			const queueLimit = Math.max(
 				1,
 				Math.min(

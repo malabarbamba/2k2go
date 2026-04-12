@@ -62,18 +62,21 @@ type LooseSupabaseClient = {
 const countPendingReviewsFromRuntimeQueue = async (): Promise<
 	number | null
 > => {
-	const invoke = (
-		supabase as unknown as {
-			functions?: {
-				invoke?: (
-					name: string,
-					options?: { body?: Record<string, unknown> },
-				) => Promise<{ data: unknown; error: unknown }>;
-			};
-		}
-	).functions?.invoke;
+	const invokeClient = supabase as unknown as {
+		functions?: {
+			invoke?: (
+				name: string,
+				options?: { body?: Record<string, unknown> },
+			) => Promise<{ data: unknown; error: unknown }>;
+		};
+	};
+	const invoke =
+		typeof invokeClient.functions?.invoke === "function"
+			? (name: string, options?: { body?: Record<string, unknown> }) =>
+				invokeClient.functions!.invoke!(name, options)
+			: null;
 
-	if (typeof invoke !== "function") {
+	if (!invoke) {
 		return null;
 	}
 

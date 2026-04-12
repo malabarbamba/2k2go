@@ -359,56 +359,54 @@ The algorithm does the scheduling so you can focus on honest answers and consist
 	"/understand/arabic-roadmap": {
 		slug: "/understand/arabic-roadmap",
 		title: "The Arabic Roadmap",
-		subtitle: "From zero to comprehension, phase by phase",
+		subtitle: "3 months to being understood and understanding natives",
 		content: `# The Arabic Roadmap
 
-**What do I actually do, step by step?**
-
-Four phases. Build Arabic into your daily environment first. Then lay foundations over about a month: alphabet, 2,000 core words, grammar basics, daily reviews. Then let content carry you. Then reach autonomy. Here's the full map.
+3 months. Intense, but if you follow it, you'll be able to be understood and understand natives. It's the most direct path.
 
 ---
 
-## Phase 0: Build the environment
+## Before anything: make Arabic part of your daily life
 
-Before a single flashcard, before any grammar, you do one thing: make Arabic part of your daily life.
+Before any method, course, or app, do one thing: start playing Arabic content in the background.
 
-Start playing Arabic content in the background. YouTube news clips, podcasts, educational videos, whatever. Don't worry about understanding. The goal right now is familiarity. Your ear needs to get used to the sounds, the rhythm, the flow. This is passive exposure, and it costs almost no effort.
+YouTube news clips, podcasts, educational videos, news — whatever. Don't worry about understanding. The goal right now is familiarity. Your ear needs to get used to the sounds, the rhythm, the flow. This is passive exposure, and it costs almost no effort.
 
-Cut distractions where you can. Your attention is a limited resource. The less it's scattered, the faster acquisition goes.
+Cut distractions where you can. Attention is a limited resource. The less it's scattered, the faster acquisition goes.
 
-What you get at the end of Phase 0: Arabic stops sounding alien. You're ready for Phase 1.
+What you get at the end of this phase: Arabic stops sounding alien. You're ready for Phase 1.
 
 ---
 
 ## Phase 1: The foundations (about 1 month)
 
-This is where the real system kicks in. Five things happen at the same time.
+Five things run in parallel.
 
 **1. Learn the Arabic alphabet (days 1 to 3)**
 
 28 letters, each with 4 forms depending on position. Don't aim for perfect calligraphy. Aim for fast recognition. Many letters share the same base shape and only differ by dots, which makes them easier to group. With a dedicated alphabet deck and focused effort, most learners reach functional recognition in 2 to 3 days.
 
-**2. Start the Foundations 2000 deck**
+**2. Start your vocabulary acquisition**
 
-Research shows that the 2,000 most frequent words in Arabic cover about 80% of what you'll encounter in standard texts (Masrai, 2016). That's the threshold where immersion stops feeling like pure noise and starts making partial sense. The Foundations deck is pre-built with those 2,000 words, and you review them daily using FSRS.
+Research shows that the 2,000 most frequent words in Arabic cover about 80% of what you'll encounter in standard texts (Masrai, 2016). That's the threshold where immersion stops feeling like pure noise and starts making partial sense. The Foundations deck is pre-built with those 2,000 words, reviewed daily using FSRS.
 
 **3. Read a grammar guide (15 to 30 minutes per day)**
 
-Grammar here is not a prerequisite. It's a decoder. You're not trying to master everything. You're trying to understand enough structure that immersion starts to make sense faster.
+Grammar here is not a prerequisite. It's a decoder. You're not trying to master everything. You're trying to understand enough structure so immersion starts to make sense faster.
 
 Two free PDFs that cover what you need:
-- [Al-Hakkak grammar guide (PDF)](/downloads/grammaire/arabe-quelques-reperes-grammaticaux-al-hakkak.pdf): progressive, clear, well-organized
-- [Medina Book 2 grammar guide (PDF)](/downloads/grammaire/regles-grammaire-deuxieme-livre-medine.pdf): classic, structured reference
+- [Arabic Verbs & Essentials of Grammar (PDF)](https://institutes.abu.edu.ng/idr/public/assets/docs/Arabic%20Verbs%20&%20Essentials%20of%20Grammar%20(%20PDFDrive%20).pdf)
+- [Medina Book 1 grammar guide (PDF)](https://dn710800.ca.archive.org/0/items/MadinaBooksHandouts/Book1.pdf)
 
 One thing to keep in mind: these guides may contain language learning advice that conflicts with this method. Use their grammar explanations, ignore their learning strategy recommendations.
 
-**4. Launch your daily 9-minute review session**
+**4. Launch your daily review session**
 
-Every day. No exceptions. This is the non-negotiable part of the system. The FSRS algorithm schedules each card at the moment you're about to forget it. Nine minutes is not a marketing number. It's what consistent daily reviews actually take at a steady card load. See [How to Do Your Reviews](/start/reviews) for the full grading approach.
+Every day. No exceptions. This is the non-negotiable part of the system. The FSRS algorithm schedules each card at the moment you're about to forget it. See [How to Do Your Reviews](/start/reviews) for the full grading approach.
 
 **5. Build your personal deck from immersion**
 
-Every time you watch or listen to Arabic content, extract 1 to 3 words you want to keep. Turn them into cards. This deck grows with you and reflects the exact vocabulary you actually encounter. It's yours, not a pre-made list.
+Every time you watch or listen to Arabic content, extract 1 to 3 words you want to keep. Turn them into cards. This deck grows with you and reflects the vocabulary you actually encounter in real content. It's yours, not a pre-made list.
 
 ---
 

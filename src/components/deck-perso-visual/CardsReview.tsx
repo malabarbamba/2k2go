@@ -461,9 +461,7 @@ const CARD_HORIZONTAL_PADDING = 16;
 const CARD_VERTICAL_PADDING = 12;
 const CARD_VIEWPORT_EDGE_GUTTER = 8;
 const SESSION_CARD_WIDTH = "clamp(320px, min(36vw, 54vh), 540px)";
-const DUE_FEEDBACK_FADE_IN_MS = 600;
-const DUE_FEEDBACK_HOLD_MS = 1600;
-const DUE_FEEDBACK_FADE_OUT_MS = 1000;
+const DUE_FEEDBACK_HOLD_MS = 3000;
 const SWIPE_DRAG_COOLDOWN_MS = 1000;
 const SESSION_DUE_CARDS_CACHE_TTL_MS = 45_000;
 const REVIEW_LEGEND_MESSAGE =
@@ -519,8 +517,6 @@ const loadSessionDueCardsWithDedup = (
 	return request;
 };
 
-type DueFeedbackPhase = "hidden" | "entering" | "visible" | "exiting";
-
 function resolveSchedulerDueAt(data: unknown): Date | null {
 	if (!data || typeof data !== "object") {
 		return null;
@@ -560,7 +556,7 @@ function formatDueTiming(nextDueAt: Date, now = new Date()): string {
 	const deltaMs = nextDueAt.getTime() - now.getTime();
 
 	if (deltaMs <= ONE_MINUTE_MS) {
-		return "moins d'une minute";
+		return "less than a minute";
 	}
 
 	if (deltaMs < ONE_HOUR_MS) {
@@ -570,11 +566,11 @@ function formatDueTiming(nextDueAt: Date, now = new Date()): string {
 
 	if (deltaMs < ONE_DAY_MS) {
 		const hours = Math.ceil(deltaMs / ONE_HOUR_MS);
-		return hours > 1 ? `${hours} heures` : "1 heure";
+		return hours > 1 ? `${hours} hours` : "1 hour";
 	}
 
 	const days = Math.ceil(deltaMs / ONE_DAY_MS);
-	return days > 1 ? `${days} jours` : "1 jour";
+	return days > 1 ? `${days} days` : "1 day";
 }
 
 function resolveActionHints(card: VocabCard | null): {
@@ -649,9 +645,11 @@ export const CardsReview = ({
 	const [dueTimingFeedback, setDueTimingFeedback] = useState<string | null>(
 		null,
 	);
-	const [dueFeedbackPhase, setDueFeedbackPhase] =
-		useState<DueFeedbackPhase>("hidden");
+	const [dueTimingFeedbackRevision, setDueTimingFeedbackRevision] = useState(0);
 	const [lastRating, setLastRating] = useState<"pass" | "fail" | null>(null);
+	const dueTimingFeedbackTimeoutKey = dueTimingFeedback
+		? `${dueTimingFeedbackRevision}:${dueTimingFeedback}`
+		: null;
 	const [pendingFinishSound, setPendingFinishSound] = useState(false);
 
 	// Request ID ref for preventing stale updates
@@ -785,10 +783,51 @@ export const CardsReview = ({
 		shouldUseDemoData,
 	]);
 
+	const scheduleDueCardsRefresh = useCallback(
+		(nextDueAt: Date | null) => {
+			if (isGuestLocalReviewMode || shouldUseDemoData || !nextDueAt) {
+				return;
+			}
+
+			const refreshAt = nextDueAt.getTime();
+			if (!Number.isFinite(refreshAt)) {
+				return;
+			}
+
+			const existingRefreshAt = dueCardsRefreshAtRef.current;
+			if (existingRefreshAt !== null && existingRefreshAt <= refreshAt) {
+				return;
+			}
+
+			if (dueCardsRefreshTimeoutRef.current !== null) {
+				window.clearTimeout(dueCardsRefreshTimeoutRef.current);
+			}
+
+			dueCardsRefreshAtRef.current = refreshAt;
+			dueCardsRefreshTimeoutRef.current = window.setTimeout(() => {
+				dueCardsRefreshTimeoutRef.current = null;
+				dueCardsRefreshAtRef.current = null;
+				sessionDueCardsCacheByScope.delete(dueCardsCacheScope);
+				void fetchCards();
+			}, Math.max(0, refreshAt - Date.now()) + 1_000);
+		},
+		[dueCardsCacheScope, fetchCards, isGuestLocalReviewMode, shouldUseDemoData],
+	);
+
 	// Fetch cards when mode/session context changes
 	useEffect(() => {
 		void fetchCards();
 	}, [fetchCards]);
+
+	useEffect(() => {
+		return () => {
+			if (dueCardsRefreshTimeoutRef.current !== null) {
+				window.clearTimeout(dueCardsRefreshTimeoutRef.current);
+				dueCardsRefreshTimeoutRef.current = null;
+			}
+			dueCardsRefreshAtRef.current = null;
+		};
+	}, []);
 
 	// ============================================================================
 	// SUBMIT REVIEW
@@ -815,7 +854,6 @@ export const CardsReview = ({
 					);
 
 					if (!localResult.ok) {
-						setDueFeedbackPhase("hidden");
 						setDueTimingFeedback(null);
 						setFetchError(localResult.error);
 						return;
@@ -823,6 +861,7 @@ export const CardsReview = ({
 
 					const nextDueAt = new Date(localResult.nextReviewAt);
 					setDueTimingFeedback(formatDueTiming(nextDueAt));
+					setDueTimingFeedbackRevision((previous) => previous + 1);
 
 					if (resolveCardReviewType(cardState) === "foundation") {
 						markFoundationDeckStarted();
@@ -844,7 +883,6 @@ export const CardsReview = ({
 				);
 
 				if (!result.ok) {
-					setDueFeedbackPhase("hidden");
 					setDueTimingFeedback(null);
 					if (result.error.code === "DUPLICATE_REVIEW") {
 						removeCardFromSession(cardState.id);
@@ -857,6 +895,10 @@ export const CardsReview = ({
 
 				const nextDueAt = resolveSchedulerDueAt(result.data);
 				setDueTimingFeedback(nextDueAt ? formatDueTiming(nextDueAt) : null);
+				if (nextDueAt) {
+					setDueTimingFeedbackRevision((previous) => previous + 1);
+				}
+				scheduleDueCardsRefresh(nextDueAt);
 
 				if (resolveCardReviewType(cardState) === "foundation") {
 					markFoundationDeckStarted();
@@ -865,7 +907,6 @@ export const CardsReview = ({
 				finishSoundOnNextCardsUpdateRef.current = true;
 				removeCardFromSession(cardState.id);
 			} catch (err) {
-				setDueFeedbackPhase("hidden");
 				setDueTimingFeedback(null);
 				setFetchError(err instanceof Error ? err.message : String(err));
 			} finally {
@@ -879,6 +920,7 @@ export const CardsReview = ({
 			isGuestLocalReviewMode,
 			isSubmittingReview,
 			removeCardFromSession,
+			scheduleDueCardsRefresh,
 			shouldUseDemoData,
 		],
 	);
@@ -974,6 +1016,8 @@ export const CardsReview = ({
 	const cardAudioFetchRequestIdRef = useRef(0);
 	const cardAudioCacheScopeRef = useRef<string>(sessionAudioCacheScopeKey);
 	const sessionAudioMenuRef = useRef<HTMLDivElement | null>(null);
+	const dueCardsRefreshTimeoutRef = useRef<number | null>(null);
+	const dueCardsRefreshAtRef = useRef<number | null>(null);
 	const [cardFrameSize, setCardFrameSize] = useState<{
 		width: number;
 		height: number;
@@ -1191,14 +1235,6 @@ export const CardsReview = ({
 					minWidth: `${CARD_MIN_WIDTH}px`,
 					aspectRatio: CARD_ASPECT_RATIO,
 				};
-	const dueFeedbackIsVisible =
-		dueFeedbackPhase === "entering" || dueFeedbackPhase === "visible";
-	const dueFeedbackTransitionMs =
-		dueFeedbackPhase === "entering"
-			? DUE_FEEDBACK_FADE_IN_MS
-			: dueFeedbackPhase === "exiting"
-				? DUE_FEEDBACK_FADE_OUT_MS
-				: 220;
 	const reviewSourceChipProps = {
 		sourceChipPlacement: "bottom",
 		sourceChipTone: "muted",
@@ -2166,40 +2202,18 @@ export const CardsReview = ({
 	}, []);
 
 	useEffect(() => {
-		if (!dueTimingFeedback) {
-			setDueFeedbackPhase("hidden");
+		if (!dueTimingFeedbackTimeoutKey || !dueTimingFeedback) {
 			return;
 		}
 
-		setDueFeedbackPhase("hidden");
-
-		const frameId = window.requestAnimationFrame(() => {
-			setDueFeedbackPhase("entering");
-		});
-
-		const markVisibleTimeoutId = window.setTimeout(() => {
-			setDueFeedbackPhase("visible");
-		}, DUE_FEEDBACK_FADE_IN_MS);
-
-		const startFadeOutTimeoutId = window.setTimeout(() => {
-			setDueFeedbackPhase("exiting");
-		}, DUE_FEEDBACK_FADE_IN_MS + DUE_FEEDBACK_HOLD_MS);
-
-		const clearTimeoutId = window.setTimeout(
-			() => {
-				setDueTimingFeedback(null);
-				setDueFeedbackPhase("hidden");
-			},
-			DUE_FEEDBACK_FADE_IN_MS + DUE_FEEDBACK_HOLD_MS + DUE_FEEDBACK_FADE_OUT_MS,
-		);
+		const timeoutId = window.setTimeout(() => {
+			setDueTimingFeedback(null);
+		}, DUE_FEEDBACK_HOLD_MS);
 
 		return () => {
-			window.cancelAnimationFrame(frameId);
-			window.clearTimeout(markVisibleTimeoutId);
-			window.clearTimeout(startFadeOutTimeoutId);
-			window.clearTimeout(clearTimeoutId);
+			window.clearTimeout(timeoutId);
 		};
-	}, [dueTimingFeedback]);
+	}, [dueTimingFeedback, dueTimingFeedbackTimeoutKey]);
 
 	useEffect(() => {
 		if (!finishSoundOnNextCardsUpdateRef.current) {
@@ -3449,6 +3463,28 @@ export const CardsReview = ({
 				>
 					how do I do my reviews?
 				</a>
+				<a
+					href="/feedback"
+					target="_blank"
+					rel="noreferrer"
+					className={
+						usePlainHtmlSessionChrome
+							? "mt-1"
+							: "mt-1 text-[11px] text-muted-foreground underline underline-offset-2 decoration-muted-foreground/60 opacity-70 transition-colors hover:text-foreground"
+					}
+					style={
+						usePlainHtmlSessionChrome
+							? {
+									fontSize: "13.3333px",
+									fontFamily: "Arial, sans-serif",
+									color: "#000000",
+									textDecoration: "underline",
+							  }
+							: undefined
+					}
+				>
+					bug report/feedback
+				</a>
 			</div>
 		);
 	};
@@ -3604,29 +3640,22 @@ export const CardsReview = ({
 
 					{renderReviewStage()}
 					{renderSessionDecisionControls()}
-					{dueTimingFeedback && lastRating && !fetchError && !isLoadingCards && (
-						<div
+					{dueTimingFeedback && lastRating && !fetchError && (
+						<p
 							aria-live="polite"
 							style={{
-								display: "flex",
-								justifyContent: "center",
-								alignItems: "center",
-								opacity: dueFeedbackIsVisible ? 1 : 0,
-								transitionProperty: "opacity",
-								transitionDuration: `${dueFeedbackTransitionMs}ms`,
-								fontSize: "13.3333px",
+								margin: 0,
+								fontSize: "13.33px",
 								fontFamily: "Arial, sans-serif",
 								fontWeight: 400,
 								color: "#000000",
 								textAlign: "center",
-								padding: "4px 8px",
-								minHeight: "24px",
 							}}
 						>
 							{lastRating === "pass"
-								? `card passed — back in ${dueTimingFeedback}`
-								: `card failed — back in ${dueTimingFeedback}`}
-						</div>
+								? `The card you just passed will be back in ${dueTimingFeedback} for review.`
+								: `The card you just failed will be back in ${dueTimingFeedback} for review.`}
+						</p>
 					)}
 					{renderReviewSummarySection()}
 				</div>
