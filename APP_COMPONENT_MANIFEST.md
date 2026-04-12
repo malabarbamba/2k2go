@@ -83,7 +83,7 @@ why: custom media overlay support used by current card/session flow
 who: `src/lib/collectedCardMedia.ts`, `src/services/deckPersoService.ts`
 type: backend
 
-`database schema, migrations, and RPC definitions` (private backend)
+`database schema, migrations, and RPC definitions` (private backend: `malabarbamba/2k2go-backend-private`)
 why: schema and RPC contracts required by the frontend/backend surface
 who: private Supabase backend repository and live infrastructure
 type: backend

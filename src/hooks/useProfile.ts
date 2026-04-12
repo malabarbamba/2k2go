@@ -31,6 +31,13 @@ const resolveBrowserTimeZone = (): string | null => {
 	}
 };
 
+export const normalizeNullableProfileTextValue = (
+	value: string,
+): string | null => {
+	const normalizedValue = value.trim();
+	return normalizedValue.length > 0 ? normalizedValue : null;
+};
+
 export interface UserProfile {
 	id: string;
 	user_id: string;
@@ -108,6 +115,10 @@ export const useProfile = (
 				max_daily_new: number;
 				timezone: string;
 			} | null,
+			profileFieldsRow?: {
+				location: string | null;
+				motto: string | null;
+			} | null,
 		): UserProfile => {
 			const displayName = profileRow.display_name?.trim() ?? "";
 			const [firstName, ...rest] = displayName.length > 0 ? displayName.split(/\s+/) : [];
@@ -121,8 +132,8 @@ export const useProfile = (
 				last_name: lastName.length > 0 ? lastName : null,
 				avatar_url: profileRow.avatar_url,
 				bio: profileRow.bio,
-				motto: null,
-				location: null,
+				motto: profileFieldsRow?.motto ?? null,
+				location: profileFieldsRow?.location ?? null,
 				followers_count: 0,
 				following_count: 0,
 				is_public: true,
@@ -183,11 +194,16 @@ export const useProfile = (
 				targetUserId === authenticatedUserId;
 
 			if (isOwnProfileRequest) {
-				const [profileRpcResult, schedulerResult] = await Promise.all([
+				const [profileRpcResult, schedulerResult, profileFieldsResult] = await Promise.all([
 					supabase.rpc("get_my_profile_v1"),
 					supabase
 						.from("scheduler_profiles")
 						.select("desired_retention,max_daily_new,timezone")
+						.eq("user_id", authenticatedUserId)
+						.maybeSingle(),
+					supabase
+						.from("profiles")
+						.select("location,motto")
 						.eq("user_id", authenticatedUserId)
 						.maybeSingle(),
 				]);
@@ -202,6 +218,10 @@ export const useProfile = (
 					console.error("Error fetching scheduler profile:", schedulerResult.error);
 				}
 
+				if (profileFieldsResult.error) {
+					console.error("Error fetching profile fields:", profileFieldsResult.error);
+				}
+
 				if (!profileRpcResult.data) {
 					setError(null);
 					setProfile(null);
@@ -211,6 +231,7 @@ export const useProfile = (
 				const nextProfile = mapCanonicalProfileToUserProfile(
 					profileRpcResult.data,
 					schedulerResult.data,
+					profileFieldsResult.data,
 				);
 				setProfile(nextProfile);
 				setError(null);
@@ -447,13 +468,13 @@ export const useProfile = (
 
 			const updatedAt = new Date().toISOString();
 
-			const normalizedData: {
-				bio?: string;
-				motto?: string;
-				location?: string;
-				fsrs_target_retention?: number;
-				new_cards_per_day?: number;
-				avatar_url?: string;
+		const normalizedData: {
+			bio?: string;
+			motto?: string | null;
+			location?: string | null;
+			fsrs_target_retention?: number;
+			new_cards_per_day?: number;
+			avatar_url?: string;
 			} = {};
 
 			if (typeof data.bio === "string") {
@@ -461,14 +482,13 @@ export const useProfile = (
 			}
 
 			if (typeof data.motto === "string") {
-				normalizedData.motto = data.motto;
+				normalizedData.motto = normalizeNullableProfileTextValue(data.motto);
 			}
 
 			if (typeof data.location === "string") {
-				const normalizedLocation = data.location.trim();
-				if (normalizedLocation.length > 0) {
-					normalizedData.location = normalizedLocation;
-				}
+				normalizedData.location = normalizeNullableProfileTextValue(
+					data.location,
+				);
 			}
 
 			if (typeof data.fsrs_target_retention === "number") {
@@ -526,12 +546,34 @@ export const useProfile = (
 				}
 			}
 
-			if (typeof normalizedData.location === "string") {
-				console.warn("Profile location is not persisted in baseline v1 schema.");
-			}
+			if (
+				typeof normalizedData.location === "string" ||
+				typeof normalizedData.motto === "string"
+			) {
+				const profileFieldsUpdate: {
+					location?: string | null;
+					motto?: string | null;
+					updated_at: string;
+				} = {
+					updated_at: updatedAt,
+				};
 
-			if (typeof normalizedData.motto === "string") {
-				console.warn("Profile motto is not persisted in baseline v1 schema.");
+				if (Object.hasOwn(normalizedData, "location")) {
+					profileFieldsUpdate.location = normalizedData.location ?? null;
+				}
+
+				if (Object.hasOwn(normalizedData, "motto")) {
+					profileFieldsUpdate.motto = normalizedData.motto ?? null;
+				}
+
+				const { error: profileFieldsUpdateError } = await supabase
+					.from("profiles")
+					.update(profileFieldsUpdate)
+					.eq("user_id", user.id);
+
+				if (profileFieldsUpdateError) {
+					throw profileFieldsUpdateError;
+				}
 			}
 
 			// Update local state directly without refetching

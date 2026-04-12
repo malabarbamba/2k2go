@@ -1,5 +1,9 @@
 name: Deploy to GitHub Pages
 
+# Public frontend deployment only.
+# Supabase functions, migrations, and production backend deploys live in the
+# private repo `malabarbamba/2k2go-backend-private`.
+
 on:
   push:
     branches:

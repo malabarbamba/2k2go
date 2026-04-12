@@ -26,6 +26,7 @@ import {
 	PROFILE_NEW_CARDS_PER_DAY_MAX,
 	PROFILE_NEW_CARDS_PER_DAY_MIN,
 } from "@/lib/profilePreferences";
+import { resolveReviewReminderEmailEnabled } from "@/lib/settingsPreferences";
 import {
 	PROFILE_UPDATED_EVENT,
 	type ProfileUpdatedDetail,
@@ -2366,7 +2367,7 @@ function AppV2SettingsPage({ monComptePath }: { monComptePath: string }) {
 
 	useEffect(() => {
 		if (!reviewReminderEmailCacheKey) {
-			setReviewReminderEmailEnabled(false);
+			setReviewReminderEmailEnabled(Boolean(profile?.notifications_email));
 			return;
 		}
 
@@ -2374,16 +2375,21 @@ function AppV2SettingsPage({ monComptePath }: { monComptePath: string }) {
 			const cachedValue = window.localStorage.getItem(
 				reviewReminderEmailCacheKey,
 			);
-			if (cachedValue === "1") {
-				setReviewReminderEmailEnabled(true);
-				return;
-			}
+			setReviewReminderEmailEnabled(
+				resolveReviewReminderEmailEnabled(
+					cachedValue,
+					profile?.notifications_email,
+				),
+			);
+			return;
 		} catch {
 			// Ignore localStorage read errors and keep safe default (non).
 		}
 
-		setReviewReminderEmailEnabled(false);
-	}, [reviewReminderEmailCacheKey]);
+		setReviewReminderEmailEnabled(
+			resolveReviewReminderEmailEnabled(null, profile?.notifications_email),
+		);
+	}, [profile?.notifications_email, reviewReminderEmailCacheKey]);
 
 	const canChangeUsername = (profile?.username_change_count ?? 0) < 1;
 
@@ -2605,10 +2611,16 @@ function AppV2SettingsPage({ monComptePath }: { monComptePath: string }) {
 
 			if (!reminderPreferencesResult.ok) {
 				reminderSyncFailed = true;
-				console.error(
-					"Unable to sync review reminder preferences:",
-					reminderPreferencesResult.error,
-				);
+				if (reminderPreferencesResult.error.code === "NOT_AUTHENTICATED") {
+					console.warn(
+						"Review reminder preferences were saved locally but edge sync requires a fresh session.",
+					);
+				} else {
+					console.error(
+						"Unable to sync review reminder preferences:",
+						reminderPreferencesResult.error,
+					);
+				}
 			}
 
 			if (reviewReminderEmailCacheKey) {
@@ -3897,10 +3909,23 @@ export default function AppPage() {
 		let cancelled = false;
 
 		const warmAccountProfileCache = async () => {
-			const { data, error } = await supabase.rpc("get_my_profile_v1");
+			const [profileResult, profileFieldsResult] = await Promise.all([
+				supabase.rpc("get_my_profile_v1"),
+				supabase
+					.from("profiles")
+					.select("location,motto")
+					.eq("user_id", user.id)
+					.maybeSingle(),
+			]);
+
+			const { data, error } = profileResult;
 
 			if (cancelled || error || !data) {
 				return;
+			}
+
+			if (profileFieldsResult.error) {
+				console.error("Error warming account profile fields cache:", profileFieldsResult.error);
 			}
 
 			const displayName = data.display_name?.trim() ?? "";
@@ -3914,8 +3939,8 @@ export default function AppPage() {
 				last_name: rest.join(" ").trim() || null,
 				avatar_url: data.avatar_url,
 				bio: data.bio,
-				motto: null,
-				location: null,
+				motto: profileFieldsResult.data?.motto ?? null,
+				location: profileFieldsResult.data?.location ?? null,
 				followers_count: 0,
 				following_count: 0,
 				is_public: true,

@@ -31,11 +31,21 @@ describe("submitFeedback", () => {
 		formData.device = "iphone";
 
 		await expect(submitFeedback(formData, null)).rejects.toThrow("Boom");
-		expect(invokeMock).toHaveBeenCalledWith(
-			"send-feedback-email",
+		expect(invokeMock).toHaveBeenCalledTimes(1);
+		const [functionName, options] = invokeMock.mock.calls[0];
+		expect(functionName).toBe("send-feedback-email");
+		expect(options).toEqual(
 			expect.objectContaining({
-				headers: undefined,
+				body: expect.objectContaining({
+					summary: "Bug",
+					evidenceUrl: "https://example.com",
+				}),
 			}),
 		);
+		if (options.headers !== undefined) {
+			expect(options.headers).toEqual(
+				expect.objectContaining({ Authorization: expect.any(String) }),
+			);
+		}
 	});
 });

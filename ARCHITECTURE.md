@@ -5,7 +5,10 @@
 2k2go is an arabic language learning website based on the fact : 2000 words = 80% comprehension, documented on more than 9 languages, including Arabic (English, French, Russian, Japanese, Greek, Spanish, Italian...).
 
 This repo contains the public frontend experience and foundation deck assets.
-The backend implementation is maintained separately in a private repository and live infrastructure.
+The backend implementation is maintained separately in the private repository `malabarbamba/2k2go-backend-private` and live Supabase infrastructure.
+
+Frontend agents should not recreate or track `supabase/` in this public repo.
+Backend schema, migrations, edge functions, and production deploy workflows live in the private backend repo.
 
 ## Frontend Shell
 

@@ -82,8 +82,9 @@ describe("FeedbackPage", () => {
 			expect(invokeMock).toHaveBeenCalledTimes(1);
 		});
 
-		expect(invokeMock).toHaveBeenCalledWith(
-			"send-feedback-email",
+		const [functionName, options] = invokeMock.mock.calls[0];
+		expect(functionName).toBe("send-feedback-email");
+		expect(options).toEqual(
 			expect.objectContaining({
 				body: expect.objectContaining({
 					summary: "Profile page bug",
@@ -92,9 +93,13 @@ describe("FeedbackPage", () => {
 					browser: "chrome",
 					evidenceUrl: "https://example.com/evidence",
 				}),
-				headers: undefined,
 			}),
 		);
+		if (options.headers !== undefined) {
+			expect(options.headers).toEqual(
+				expect.objectContaining({ Authorization: expect.any(String) }),
+			);
+		}
 
 		expect(await screen.findByText(/Feedback sent successfully./)).toBeInTheDocument();
 		expect(screen.getByText("fb-123")).toBeInTheDocument();

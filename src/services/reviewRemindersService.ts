@@ -53,11 +53,28 @@ type ServiceResult<T> =
 
 type InvokeMethod = "GET" | "POST" | "PATCH" | "DELETE";
 type ReviewReminderRequestOptions = { userId?: string };
+type ReviewReminderEnvLike = Record<string, string | undefined>;
 
 const REMINDER_CONFIG_FUNCTION = "review-reminders-config-v1";
 const REMINDER_WEB_PUSH_FUNCTION = "review-reminder-web-push-v1";
 const REVIEW_REMINDER_CONFIG_CACHE_STORAGE_KEY_PREFIX =
 	"review-reminders:config:v1";
+
+const reviewReminderEnv: ReviewReminderEnvLike =
+	(import.meta as ImportMeta & { env?: ReviewReminderEnvLike }).env ?? {};
+
+const normalizeOptionalString = (value: unknown): string | undefined => {
+	if (typeof value !== "string") {
+		return undefined;
+	}
+
+	const trimmedValue = value.trim();
+	return trimmedValue.length > 0 ? trimmedValue : undefined;
+};
+
+const REVIEW_REMINDER_FUNCTIONS_API_KEY =
+	normalizeOptionalString(reviewReminderEnv.VITE_SUPABASE_PUBLISHABLE_KEY) ??
+	normalizeOptionalString(reviewReminderEnv.VITE_SUPABASE_ANON_KEY);
 
 const reviewReminderConfigMemoryCache = new Map<
 	string,
@@ -286,6 +303,29 @@ export function getCachedReviewReminderConfig(
 }
 
 function toServiceError(error: unknown, fallbackMessage: string): ServiceError {
+	const status = getFunctionErrorStatus(error);
+	if (status === 401 || status === 403) {
+		return {
+			code: "NOT_AUTHENTICATED",
+			message: "Your session is no longer valid. Sign in again and retry.",
+		};
+	}
+
+	const message = getFunctionErrorMessage(error);
+	if (typeof message === "string") {
+		const normalizedMessage = message.toLowerCase();
+		if (
+			normalizedMessage.includes("unauthorized") ||
+			normalizedMessage.includes("jwt") ||
+			normalizedMessage.includes("forbidden")
+		) {
+			return {
+				code: "NOT_AUTHENTICATED",
+				message: "Your session is no longer valid. Sign in again and retry.",
+			};
+		}
+	}
+
 	if (error instanceof Error) {
 		return { code: "FUNCTION_ERROR", message: error.message };
 	}
@@ -305,15 +345,145 @@ function toServiceError(error: unknown, fallbackMessage: string): ServiceError {
 	return { code: "FUNCTION_ERROR", message: fallbackMessage };
 }
 
+function getFunctionErrorMessage(error: unknown): string | null {
+	if (error instanceof Error) {
+		return error.message;
+	}
+
+	if (
+		typeof error === "object" &&
+		error !== null &&
+		"message" in error &&
+		typeof (error as { message?: unknown }).message === "string"
+	) {
+		return (error as { message: string }).message;
+	}
+
+	return null;
+}
+
+function getFunctionErrorStatus(error: unknown): number | null {
+	if (typeof error !== "object" || error === null || !("context" in error)) {
+		return null;
+	}
+
+	const context = (error as { context?: unknown }).context;
+	if (
+		typeof context === "object" &&
+		context !== null &&
+		"status" in context &&
+		typeof (context as { status?: unknown }).status === "number"
+	) {
+		return (context as { status: number }).status;
+	}
+
+	return null;
+}
+
+function shouldRetryReminderInvoke(error: unknown): boolean {
+	const status = getFunctionErrorStatus(error);
+	if (status === 401 || status === 403) {
+		return true;
+	}
+
+	const message = getFunctionErrorMessage(error)?.toLowerCase() ?? "";
+	return (
+		message.includes("non-2xx status code") ||
+		message.includes("unauthorized") ||
+		message.includes("jwt") ||
+		message.includes("forbidden")
+	);
+}
+
+async function resolveReminderFunctionHeaders(): Promise<
+	ServiceResult<Record<string, string> | undefined>
+> {
+	const headers: Record<string, string> = {};
+	if (REVIEW_REMINDER_FUNCTIONS_API_KEY) {
+		headers.apikey = REVIEW_REMINDER_FUNCTIONS_API_KEY;
+	}
+
+	try {
+		const { data, error } = await supabase.auth.getSession();
+		if (error) {
+			return {
+				ok: false,
+				error: toServiceError(error, "Unable to resolve auth session."),
+			};
+		}
+
+		const accessToken = data.session?.access_token?.trim();
+		if (!accessToken) {
+			return {
+				ok: false,
+				error: {
+					code: "NOT_AUTHENTICATED",
+					message: "You must be signed in to update reminder settings.",
+				},
+			};
+		}
+
+		headers.Authorization = `Bearer ${accessToken}`;
+		return {
+			ok: true,
+			data: Object.keys(headers).length > 0 ? headers : undefined,
+		};
+	} catch (error) {
+		return {
+			ok: false,
+			error: toServiceError(error, "Unable to resolve auth session."),
+		};
+	}
+}
+
+async function refreshReminderFunctionHeaders(): Promise<
+	ServiceResult<Record<string, string> | undefined>
+> {
+	const auth = (supabase as unknown as {
+		auth?: {
+			refreshSession?: () => Promise<unknown>;
+		};
+	}).auth;
+
+	if (typeof auth?.refreshSession === "function") {
+		try {
+			await auth.refreshSession();
+		} catch {
+			// Fall through to a best-effort fresh session read.
+		}
+	}
+
+	return resolveReminderFunctionHeaders();
+}
+
 async function invokeJson<T>(
 	functionName: string,
 	method: InvokeMethod,
 	body?: Record<string, unknown>,
 ): Promise<ServiceResult<T>> {
-	const { data, error } = await supabase.functions.invoke(functionName, {
+	const headersResult = await resolveReminderFunctionHeaders();
+	if (!headersResult.ok) {
+		return headersResult;
+	}
+
+	let { data, error } = await supabase.functions.invoke(functionName, {
 		method,
 		body,
+		headers: headersResult.data,
 	});
+
+	if (error && shouldRetryReminderInvoke(error)) {
+		const retryHeadersResult = await refreshReminderFunctionHeaders();
+		if (!retryHeadersResult.ok) {
+			return retryHeadersResult;
+		}
+
+		({ data, error } = await supabase.functions.invoke(functionName, {
+			method,
+			body,
+			headers: retryHeadersResult.data,
+		}));
+	}
 
 	if (error) {
 		return { ok: false, error: toServiceError(error, "Function call failed") };

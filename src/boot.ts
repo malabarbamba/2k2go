@@ -14,10 +14,16 @@ const normalizedBaseUrl = import.meta.env.BASE_URL.endsWith("/")
 const basePrefix =
 	normalizedBaseUrl === "/" ? "" : normalizedBaseUrl.replace(/\/+$/, "");
 
-const runtimeConfigPaths = [
-	`${normalizedBaseUrl}runtime-config.local.json`,
-	`${normalizedBaseUrl}runtime-config.json`,
-];
+const isLocalRuntimeHost = ["localhost", "127.0.0.1", "::1"].includes(
+	window.location.hostname,
+);
+
+const runtimeConfigPaths = isLocalRuntimeHost
+	? [
+			`${normalizedBaseUrl}runtime-config.local.json`,
+			`${normalizedBaseUrl}runtime-config.json`,
+		]
+	: [`${normalizedBaseUrl}runtime-config.json`];
 
 const redirectPathParams = new URLSearchParams(window.location.search);
 const redirectedPath = redirectPathParams.get("p");
