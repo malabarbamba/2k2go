@@ -747,11 +747,9 @@ export default function WhyItWorksPage() {
 				aria-label={isEnglish ? "Go back" : "Revenir en arriere"}
 				style={{
 					...LINK_STYLE,
-					position: "fixed",
-					top: 0,
-					left: 0,
-					padding: "8px 10px",
-					zIndex: 40,
+					display: "inline-block",
+					padding: 0,
+					margin: "0 0 8px 0",
 					background: "none",
 					border: 0,
 					cursor: "pointer",
@@ -774,9 +772,6 @@ export default function WhyItWorksPage() {
 					}
 				}
 			`}</style>
-			<p style={BASE_TEXT_STYLE}>
-				{isEnglish ? "why 2000 to go?" : "pourquoi 2000 to go ?"}
-			</p>
 			<div
 				ref={layoutRef}
 				className="appv2-why-layout"

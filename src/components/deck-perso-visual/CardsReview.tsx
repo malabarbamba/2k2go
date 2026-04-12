@@ -651,6 +651,7 @@ export const CardsReview = ({
 	);
 	const [dueFeedbackPhase, setDueFeedbackPhase] =
 		useState<DueFeedbackPhase>("hidden");
+	const [lastRating, setLastRating] = useState<"pass" | "fail" | null>(null);
 	const [pendingFinishSound, setPendingFinishSound] = useState(false);
 
 	// Request ID ref for preventing stale updates
@@ -803,6 +804,7 @@ export const CardsReview = ({
 			}
 
 			setIsSubmittingReview(true);
+			setLastRating(rating);
 			try {
 				setFetchError(null);
 
@@ -3326,25 +3328,7 @@ export const CardsReview = ({
 					)}
 				</div>
 
-				{dueTimingFeedback && !fetchError && !isLoadingCards && (
-					<div
-						aria-live="polite"
-						className="pointer-events-none absolute inset-x-0 bottom-1 z-30 flex justify-center px-2"
-					>
-						<div
-							className={`max-w-[min(92vw,520px)] rounded-full border border-border/80 bg-popover/90 px-3 py-1.5 text-center text-[11px] leading-[1.25] text-popover-foreground/80 ${
-								dueFeedbackIsVisible ? "opacity-100" : "opacity-0"
-							}`}
-							style={{
-								transitionProperty: "opacity",
-								transitionDuration: `${dueFeedbackTransitionMs}ms`,
-							}}
-						>
-							This card will come back in {dueTimingFeedback}
-							.
-						</div>
-					</div>
-				)}
+
 			</div>
 		</div>
 	);
@@ -3620,6 +3604,30 @@ export const CardsReview = ({
 
 					{renderReviewStage()}
 					{renderSessionDecisionControls()}
+					{dueTimingFeedback && lastRating && !fetchError && !isLoadingCards && (
+						<div
+							aria-live="polite"
+							style={{
+								display: "flex",
+								justifyContent: "center",
+								alignItems: "center",
+								opacity: dueFeedbackIsVisible ? 1 : 0,
+								transitionProperty: "opacity",
+								transitionDuration: `${dueFeedbackTransitionMs}ms`,
+								fontSize: "13.3333px",
+								fontFamily: "Arial, sans-serif",
+								fontWeight: 400,
+								color: "#000000",
+								textAlign: "center",
+								padding: "4px 8px",
+								minHeight: "24px",
+							}}
+						>
+							{lastRating === "pass"
+								? `card passed — back in ${dueTimingFeedback}`
+								: `card failed — back in ${dueTimingFeedback}`}
+						</div>
+					)}
 					{renderReviewSummarySection()}
 				</div>
 			</div>

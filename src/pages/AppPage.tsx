@@ -361,7 +361,13 @@ function toAppV2AccountBankGridData(rows: SearchCardsV2Row[]): VocabGridData {
 	const uniqueByArabicWord = new Map<string, SearchCardsV2Row>();
 
 	rows.forEach((row) => {
-		const normalizedWord = normalizeAppV2BankArabicWord(row.word_ar);
+		const normalizedWord = normalizeAppV2BankArabicWord(
+			typeof row.word_ar === "string"
+				? row.word_ar
+				: typeof row.term === "string"
+					? row.term
+					: null,
+		);
 		if (!normalizedWord) {
 			return;
 		}
@@ -383,8 +389,17 @@ function toAppV2AccountBankGridData(rows: SearchCardsV2Row[]): VocabGridData {
 		const unitId =
 			row.foundation_card_id ??
 			row.vocabulary_card_id ??
+			(typeof row.card_id === "string" && row.card_id.trim().length > 0
+				? row.card_id.trim()
+				: null) ??
 			`app-v2-bank-unit-${row.word_ar ?? ""}-${index}`;
-		const normalizedWord = normalizeAppV2BankArabicWord(row.word_ar);
+		const normalizedWord = normalizeAppV2BankArabicWord(
+			typeof row.word_ar === "string"
+				? row.word_ar
+				: typeof row.term === "string"
+					? row.term
+					: null,
+		);
 
 		return {
 			id: unitId,
@@ -414,7 +429,7 @@ function toAppV2AccountBankGridData(rows: SearchCardsV2Row[]): VocabGridData {
 }
 
 function getAppV2AccountBankCacheKey(userId: string): string {
-	return `app:account-bank:${userId.trim()}`;
+	return `app:account-bank:v4:${userId.trim()}`;
 }
 
 function readAppV2AccountBankCache(userId: string): VocabGridData | null {
@@ -1838,7 +1853,8 @@ function AppV2ProfilePage({
 					}
 
 					const pageRows = Array.isArray(result.data) ? result.data : [];
-					allRows.push(...pageRows.filter((row) => Boolean(row.is_seen)));
+					// Include all cards: new (unseen) cards appear as white tiles in the grid.
+					allRows.push(...pageRows);
 
 					if (pageIndex === 0 && pageRows.length > 0 && !cancelled) {
 						setBankGridData(toAppV2AccountBankGridData(allRows));
@@ -2251,9 +2267,8 @@ function AppV2ProfilePage({
 								searchQuery=""
 								categoryFilter={null}
 								maxRows={4}
-								hideUnseenUnits
 								gridOnly
-								gridJustify="center"
+								gridJustify="start"
 							/>
 						</Suspense>
 					</div>

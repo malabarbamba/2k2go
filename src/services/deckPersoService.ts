@@ -1472,7 +1472,12 @@ async function claimReviewSessionLeaseWithRecovery(
 
 	for (const delayMs of [300, 1000]) {
 		await waitForReviewLeaseRetry(delayMs);
-		error = await claimActiveReviewSessionLease(client, getReviewSessionId());
+		const nextReviewSessionId = getReviewSessionId();
+		if (!isUuidLike(nextReviewSessionId)) {
+			return startFreshSession();
+		}
+
+		error = await claimActiveReviewSessionLease(client, nextReviewSessionId);
 		if (!error) {
 			return null;
 		}

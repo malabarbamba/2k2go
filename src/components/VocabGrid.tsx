@@ -76,7 +76,7 @@ const KANJI_GRADIENT_COLORS = [
 	"#2ee6e6",
 ];
 
-const UNSEEN_COLOR = "#ffffff";
+const UNSEEN_COLOR = KANJI_GRADIENT_COLORS[0];
 const TEXT_COLOR = "#000000";
 
 // Example data for new users (overlay mode like Stripe) - 275 words with varied mastery levels
@@ -3199,8 +3199,11 @@ export const VocabGrid = ({
 					}}
 				>
 					{gridOnlyVisibleUnits.map((unit, index) => {
-						const bgColor = unit.seenCount > 0 ? unit.color : UNSEEN_COLOR;
-						const score = unit.seenCount > 0 ? unit.score : 0;
+						const bgColor =
+							typeof unit.color === "string" && unit.color.trim().length > 0
+								? unit.color
+								: UNSEEN_COLOR;
+						const score = unit.score;
 						return (
 							<div
 								key={getUnitRenderKey(unit, index)}
@@ -3212,8 +3215,9 @@ export const VocabGrid = ({
 									cursor: "pointer",
 									display: "flex",
 									alignItems: "center",
-									justifyContent: "center",
+									justifyContent: "flex-start",
 									boxSizing: "border-box",
+									paddingInline: "2px",
 								}}
 								title={`${unit.word} - ${unit.vocabFull} | Score: ${score.toFixed(1)}%`}
 							>
@@ -3223,7 +3227,8 @@ export const VocabGrid = ({
 										color: TEXT_COLOR,
 										fontFamily: "'Yakout Linotype', 'Lateef', serif",
 										display: "block",
-										textAlign: "center",
+										textAlign: "start",
+										direction: "rtl",
 										width: "100%",
 										lineHeight: 1,
 										fontSize: gridWordFontSize,
@@ -3332,8 +3337,11 @@ export const VocabGrid = ({
 					}}
 				>
 					{visibleUnits.map((unit, index) => {
-						const bgColor = unit.seenCount > 0 ? unit.color : UNSEEN_COLOR;
-						const score = unit.seenCount > 0 ? unit.score : 0;
+						const bgColor =
+							typeof unit.color === "string" && unit.color.trim().length > 0
+								? unit.color
+								: UNSEEN_COLOR;
+						const score = unit.score;
 
 						return (
 							<div
@@ -3346,8 +3354,9 @@ export const VocabGrid = ({
 									cursor: "pointer",
 									display: "flex",
 									alignItems: "center",
-									justifyContent: "center",
+									justifyContent: "flex-start",
 									boxSizing: "border-box",
+									paddingInline: "2px",
 								}}
 								title={`${unit.word} - ${unit.vocabFull} | Score: ${score.toFixed(1)}%`}
 							>
@@ -3357,7 +3366,8 @@ export const VocabGrid = ({
 										color: TEXT_COLOR,
 										fontFamily: "'Yakout Linotype', 'Lateef', serif",
 										display: "block",
-										textAlign: "center",
+										textAlign: "start",
+										direction: "rtl",
 										width: "100%",
 										lineHeight: 1,
 										fontSize: gridWordFontSize,

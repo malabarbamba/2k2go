@@ -345,6 +345,7 @@ export function supabaseCardToVocabCard(
 			sourceWordStartSeconds,
 		});
 	const fsrsStateRaw = (record as { fsrs_state?: unknown }).fsrs_state;
+	// FSRS state enum: 0=New, 1=Learning, 2=Review, 3=Relearning
 	const statusFromFsrsState =
 		typeof fsrsStateRaw === "number" && Number.isFinite(fsrsStateRaw)
 			? fsrsStateRaw === 0
@@ -353,7 +354,9 @@ export function supabaseCardToVocabCard(
 					? "learning"
 					: fsrsStateRaw === 2
 						? "review"
-						: undefined
+						: fsrsStateRaw === 3
+							? "relearning"
+							: undefined
 			: undefined;
 	const rawStatus =
 		readOptionalString((record as { status?: unknown }).status) ??
