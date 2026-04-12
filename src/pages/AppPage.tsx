@@ -117,6 +117,11 @@ function useAppV2WordsAcquiredCount(userId: string | null | undefined): {
 const APP_V2_BASE_PATH = "/app";
 const APP_V2_LEGACY_BASE_PATH = "/app-v2";
 const HOME_V2_PATH = "/home";
+const APP_PUBLIC_BASE_PATH = (import.meta.env.BASE_URL ?? "/").replace(
+	/\/+$/,
+	"",
+);
+const HOME_V2_PUBLIC_PATH = `${APP_PUBLIC_BASE_PATH}${HOME_V2_PATH}`;
 const LOGIN_V2_PATH = "/login";
 const LEGACY_DOCS_PATH_SEGMENT = "pourquoi-ca-marche";
 const DOCS_PATH_SEGMENT = "why-it-works";
@@ -3787,7 +3792,7 @@ export default function AppPage() {
 		} finally {
 			navigate(HOME_V2_PATH, { replace: true });
 			window.setTimeout(() => {
-				window.location.assign(HOME_V2_PATH);
+				window.location.assign(HOME_V2_PUBLIC_PATH);
 			}, 0);
 			setIsSigningOut(false);
 		}
