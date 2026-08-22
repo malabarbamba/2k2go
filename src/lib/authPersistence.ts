@@ -161,25 +161,25 @@ export const supabaseAuthStorage: Storage = {
 	getItem(key: string) {
 		trackedAuthKeys.add(key);
 
-		const preferredStorage = getStorage(getPreferredStorageType());
-		const preferredValue = preferredStorage.getItem(key);
-		if (preferredValue !== null) {
-			return preferredValue;
+		const persistentStorage = getStorage("local");
+		const persistentValue = persistentStorage.getItem(key);
+		if (persistentValue !== null) {
+			return persistentValue;
 		}
 
-		if (!readRememberMePreference()) {
+		// Older builds stored the Supabase refresh token in sessionStorage unless
+		// a now-removed "remember me" preference had been enabled. iOS can discard
+		// a Home Screen web app's sessionStorage when the app process is closed, so
+		// migrate any surviving legacy session to persistent storage on first read.
+		const legacyStorage = getStorage("session");
+		const legacyValue = legacyStorage.getItem(key);
+		if (legacyValue === null) {
 			return null;
 		}
 
-		const fallbackStorage = getStorage(getFallbackStorageType());
-		const fallbackValue = fallbackStorage.getItem(key);
-		if (fallbackValue === null) {
-			return null;
-		}
-
-		preferredStorage.setItem(key, fallbackValue);
-		fallbackStorage.removeItem(key);
-		return fallbackValue;
+		persistentStorage.setItem(key, legacyValue);
+		legacyStorage.removeItem(key);
+		return legacyValue;
 	},
 	key(index: number) {
 		const keys = Array.from(trackedAuthKeys);
@@ -192,10 +192,8 @@ export const supabaseAuthStorage: Storage = {
 	setItem(key: string, value: string) {
 		trackedAuthKeys.add(key);
 
-		const preferredStorage = getStorage(getPreferredStorageType());
-		const fallbackStorage = getStorage(getFallbackStorageType());
-		preferredStorage.setItem(key, value);
-		fallbackStorage.removeItem(key);
+		getStorage("local").setItem(key, value);
+		getStorage("session").removeItem(key);
 	},
 };
 
